@@ -67,12 +67,15 @@ class WeappUUID {
         $account          = $platform_account->getAccount();
         
         if ($platform == 'weapp') {
+            $wechat = royalcms('wechat');
+            $wechat->init();
+            
             $config = array(
                 'app_id'     => $account['appid'],
                 'app_secret' => $account['appsecret'],
             );
-            royalcms('wechat')->make('config')->set('mini_app', $config);
-            $this->weapp = royalcms('wechat')->make('mini_app_user');
+            $wechat->make('config')->set('mini_app', $config);
+            $this->weapp = $wechat->make('mini_app_user');
         } else {
             throw new Exception('UUID is not available, please check and try again.', 'uuid_not_available');
         }
