@@ -53,16 +53,16 @@ use platform_account;
 
 class WeappUser {
     
-    protected $WeappUUID;
+    protected $weappUUID;
     
-    public function __construct(WeappUUID $WeappUUID)
+    public function __construct(WeappUUID $weappUUID)
     {
-        $this->WeappUUID = $WeappUUID;
+        $this->weappUUID = $weappUUID;
     }
     
     public function login($code)
     {
-        return $this->WeappUUID->getWeapp()->get($code);
+        return $this->weappUUID->getWeapp()->get($code);
     }
     
     
