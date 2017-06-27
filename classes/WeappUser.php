@@ -51,59 +51,18 @@ use RC_WeChat;
 use RC_Loader;
 use platform_account;
 
-class WeappUUID {
+class WeappUser {
     
-    protected $uuid;
+    protected $WeappUUID;
     
-    protected $weapp;
-    
-    public function __construct($uuid) {
-        $this->uuid = trim($uuid);   
-        
-        RC_Loader::load_app_class('platform_account', 'platform', false);
-        
-        $platform_account = platform_account::make($this->uuid);
-        $platform         = $platform_account->getPlatform();
-        $account          = $platform_account->getAccount();
-        
-        if ($platform == 'weapp') {
-            $config = array(
-                'app_id'     => $account['appid'],
-                'app_secret' => $account['appsecret'],
-            );
-            royalcms('wechat')->make('config')->set('mini_app', $config);
-            $this->weapp = royalcms('wechat')->make('mini_app_user');
-        } else {
-            throw new Exception('UUID is not available, please check and try again.', 'uuid_not_available');
-        }
-    }
-    
-    /**
-     * 获取微信小程序用户对象
-     * @return \Royalcms\Component\WeChat\User\MiniAppUser;
-     */
-    public function getWeapp() {
-        return $this->weapp;
-    }
-    
-    /**
-     * 获取公众号添加后的Weapp_Id
-     * @return integer
-     */
-    public function getWeappID()
+    public function __construct(WeappUUID $WeappUUID)
     {
-        $account = platform_account::make($this->uuid);
-        $weapp_id = $account->getAccountID();
-        return $weapp_id;
+        $this->WeappUUID = $WeappUUID;
     }
     
-    /**
-     * 获取公众号添加后台UUID
-     * @return string
-     */
-    public function getUUID()
+    public function login($code)
     {
-        return $this->uuid;
+        return $this->WeappUUID->getWeapp()->get($code);
     }
     
     
