@@ -91,7 +91,7 @@ class WechatUserRepository extends AbstractRepository
     
     public function updateUser(array $data)
     {
-        $openid = array_get($data, 'openid');
+        $openid = array_get($data, 'openId');
 
         if (boolval($user = $this->findBy('openid', $openid))) {
             $attributes = [
