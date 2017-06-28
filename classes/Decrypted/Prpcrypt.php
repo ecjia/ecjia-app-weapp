@@ -47,6 +47,7 @@
 namespace Ecjia\App\Weapp\Decrypted;
 
 use Ecjia\App\Weapp\Exception;
+use ecjia_error;
 
 /**
  * Prpcrypt class
@@ -82,7 +83,7 @@ class Prpcrypt
             mcrypt_generic_deinit($module);
             mcrypt_module_close($module);
         } catch (Exception $e) {
-            return array(ErrorCode::IllegalBuffer, null);
+            return new ecjia_error(ErrorCode::IllegalBuffer, ErrorCode::errorDesc(ErrorCode::IllegalBuffer));
         }
 
 
@@ -93,8 +94,9 @@ class Prpcrypt
 
         } catch (Exception $e) {
             //print $e;
-            return array(ErrorCode::IllegalBuffer, null);
+            return new ecjia_error(ErrorCode::IllegalBuffer, ErrorCode::errorDesc(ErrorCode::IllegalBuffer));
         }
-        return array(0, $result);
+        
+        return $result;
     }
 }

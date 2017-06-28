@@ -92,12 +92,12 @@ class BizDataCrypt
 		$pc = new Prpcrypt($aesKey);
 		$result = $pc->decrypt($aesCipher,$aesIV);
         
-		if ($result[0] != 0) {
-			return $result[0];
+		if (is_ecjia_error($result)) {
+			return $result;
 		}
      
-        $dataObj = json_decode( $result[1] );
-        if( $dataObj == NULL )
+        $dataObj = json_decode( $result );
+        if( is_null($dataObj) )
         {
             return new ecjia_error(ErrorCode::IllegalAes, ErrorCode::errorDesc(ErrorCode::IllegalAes));
         }
@@ -106,10 +106,8 @@ class BizDataCrypt
         {
             return new ecjia_error(ErrorCode::IllegalBuffer, ErrorCode::errorDesc(ErrorCode::IllegalBuffer));
         }
-        
-		$data = $result[1];
 		
-		return $data;
+		return $result;
 	}
 
 }
