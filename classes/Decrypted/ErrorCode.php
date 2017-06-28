@@ -59,8 +59,8 @@ class ErrorCode
 	
 	protected static $desciption = array(
 		'illegal_aes_key'     => 'encodingAesKey非法',
-		'illegal_iv'          => 'iv 非法',
-		'illegal_aes'         => 'aes 解密失败',
+		'illegal_iv'          => 'iv非法',
+		'illegal_aes'         => 'aes解密失败',
 		'illegal_buffer'      => '解密后得到的buffer非法',
 		'encode_base64_error' => 'base64加密失败',
 		'decode_base64_error' => 'base64解密失败',
