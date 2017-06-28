@@ -88,6 +88,27 @@ class WechatUserRepository extends AbstractRepository
         return $user;
     } 
     
+    
+    public function updateUser(array $data)
+    {
+        $openid = array_get($data, 'openid');
+
+        if (boolval($user = $this->findBy('openid', $openid))) {
+            $attributes = [
+                'openid' => array_get($data, 'openId'),
+                'nickname' => array_get($data, 'nickName'),
+                'sex' => array_get($data, 'gender'),
+                'city' => array_get($data, 'city'),
+                'province' => array_get($data, 'province'),
+                'country' => array_get($data, 'country'),
+                'headimgurl' => array_get($data, 'avatarUrl'),
+                'unionid' => array_get($data, 'unionId'),
+            ];
+            return $this->update($user, $attributes);
+        }
+        return false;
+    }
+    
    
     public function findWhereLimit(array $where, $columns = ['*'], $limit = null)
     {
