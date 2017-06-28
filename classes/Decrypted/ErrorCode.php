@@ -68,7 +68,7 @@ class ErrorCode
 	
 	public static function errorDesc($code)
 	{
-	    return array_get($this->desciption, $code);
+	    return array_get(self::$desciption, $code);
 	}
 }
 
