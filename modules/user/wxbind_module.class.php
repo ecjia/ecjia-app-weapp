@@ -94,24 +94,49 @@ class wxbind_module extends api_front implements api_interface {
 		$WeappUUID =  new Ecjia\App\Weapp\WeappUUID($uuid);
 		$weappId   = $WeappUUID->getWeappID();
 		
-		
-		
+
 		/*更新用户数据*/
 		if (!empty($data)) {
 			$WechatUserRepository = new Ecjia\App\Weapp\Repositories\WechatUserRepository($weappId);
 			$update = $WechatUserRepository->updateUser($data);
 			
+			if (!$update) {
+				return new ecjia_error('update_userinfo_fail', '更新用户数据失败');
+			}
 		}
 		
-		if ($update === true) {
-			$out = array(
-					'token' => RC_Session::session_id()
-			);
-			return $out;
-		} else {
-			return new ecjia_error('update_userinfo_fail', '更新用户数据失败');
+		//转换数据格式
+		$data = array(
+			'openid' => $data['openId'],
+			'nickname' => $data['nickName'],
+			'sex' => $data['gender'],
+			'language' => $data['language'],
+			'city' => $data['city'],
+			'province' => $data['province'],
+			'country' => $data['country'],
+			'headimgurl' => $data['avatarUrl'],
+			'privilege' => '',
+			'unionid' => $data['unionId'],
+		);
+		
+		$result = RC_Api::api('connect', 'connect_user_bind', array('connect_code' => 'sns_wechat', 'openid' => $data['unionid'], 'profile' => $data));
+		if (is_ecjia_error($result)) {
+			return $result;
+		} 
+		
+		$user_info = RC_Api::api('user', 'user_info', array('user_id' => $result['user_id']));
+		if (is_ecjia_error($user_info)) {
+			return $user_info;
 		}
 		
+		RC_Loader::load_app_class('integrate', 'user', false);
+		$user = integrate::init_users();
+		$user->set_session($user_info['user_name']);
+		$user->set_cookie($user_info['user_name']);
+		$out = array(
+				'token' => RC_Session::session_id()
+		);
+		return $out;
 	}
 }
 
