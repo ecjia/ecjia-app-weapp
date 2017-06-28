@@ -95,7 +95,6 @@ class WechatUserRepository extends AbstractRepository
 
         if (boolval($user = $this->findBy('openid', $openid))) {
             $attributes = [
-                'openid' => array_get($data, 'openId'),
                 'nickname' => array_get($data, 'nickName'),
                 'sex' => array_get($data, 'gender'),
                 'city' => array_get($data, 'city'),
@@ -103,6 +102,9 @@ class WechatUserRepository extends AbstractRepository
                 'country' => array_get($data, 'country'),
                 'headimgurl' => array_get($data, 'avatarUrl'),
                 'unionid' => array_get($data, 'unionId'),
+                'subscribe' => 1,
+                'subscribe_time' => \RC_Time::gmtime()
+                
             ];
             return $this->update($user, $attributes);
         }

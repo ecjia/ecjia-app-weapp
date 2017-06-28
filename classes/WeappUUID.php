@@ -77,7 +77,7 @@ class WeappUUID {
             $wechat->make('config')->set('mini_app', $config);
             $this->weapp = $wechat->make('mini_app_user');
         } else {
-            throw new Exception('UUID is not available, please check and try again.', 'uuid_not_available');
+            throw new Exception('UUID is not available, please check and try again.');
         }
     }
     

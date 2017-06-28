@@ -72,7 +72,8 @@ class WechatUserModel extends Model
 	    'headimgurl',
 	    'subscribe_time',
 	    'unionid',
-	    ];
+	    'subscribe'
+	];
 	
 	/**
 	 * 该模型是否被自动维护时间戳
