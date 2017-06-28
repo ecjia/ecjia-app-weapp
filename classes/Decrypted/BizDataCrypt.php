@@ -72,11 +72,10 @@ class BizDataCrypt
 	 * 检验数据的真实性，并且获取解密后的明文.
 	 * @param $encryptedData string 加密的用户数据
 	 * @param $iv string 与用户数据一同返回的初始向量
-	 * @param $data string 解密后的原文
      *
-	 * @return int 成功0，失败返回对应的错误码
+	 * @return $data string 解密后的原文 | ecjia_error，失败返回对应的错误对象
 	 */
-	public function decryptData( $encryptedData, $iv, $data )
+	public function decryptData( $encryptedData, $iv )
 	{
 		if (strlen($this->sessionKey) != 24) {
 			return new ecjia_error(ErrorCode::IllegalAesKey, ErrorCode::errorDesc(ErrorCode::IllegalAesKey));
