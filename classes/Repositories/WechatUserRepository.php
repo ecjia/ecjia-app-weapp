@@ -101,6 +101,7 @@ class WechatUserRepository extends AbstractRepository
                 'city' => array_get($data, 'city'),
                 'province' => array_get($data, 'province'),
                 'country' => array_get($data, 'country'),
+                'language' => array_get($data, 'language'),
                 'headimgurl' => array_get($data, 'avatarUrl'),
                 'unionid' => array_get($data, 'unionId'),
                 'subscribe' => 1,
