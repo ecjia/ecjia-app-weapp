@@ -55,7 +55,7 @@ class wxlogin_module extends api_front implements api_interface {
 		if (empty($uuid) || empty($code)) {
 			return new ecjia_error('invalid_parameter', RC_Lang::get('system::system.invalid_parameter'));
 		}
-		
+       
 		/*获取weappid*/
 		$WeappUUID =  new Ecjia\App\Weapp\WeappUUID($uuid);
 		$weappId   = $WeappUUID->getWeappID();
@@ -63,15 +63,18 @@ class wxlogin_module extends api_front implements api_interface {
 		/*登录*/
 		$WeappUser = new Ecjia\App\Weapp\WeappUser($WeappUUID);
 		$data = $WeappUser->login($code);
-		
+		_dump($data,1);
 		/*创建用户*/
 		$WechatUserRepository = new Ecjia\App\Weapp\Repositories\WechatUserRepository($weappId);
 		$wechat_user = $WechatUserRepository->createUser(array('openid' => $data['openid'], 'session_key' => $data['session_key']));
 		
 		$out = array();
 		if ($wechat_user) {
+		    RC_Session::put('openid', $data['openid']);
+		    RC_Session::put('session_key', $data['session_key']);
+		    
 			$out = array(
-					'token' => RC_Session::session_id()
+				'token' => RC_Session::session_id()
 			);
 		}
 		return $out;
