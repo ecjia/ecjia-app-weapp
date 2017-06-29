@@ -72,7 +72,7 @@ class WechatUserRepository extends AbstractRepository
      * 创建微信小程序用户
      * @param array $data ['openid', 'session_key']
      */
-    public function createUser($weappId, array $data)
+    public function createUser($weapp_id, array $data)
     {
         $openid = array_get($data, 'openid');
         $session_key = array_get($data, 'session_key');
