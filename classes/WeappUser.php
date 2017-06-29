@@ -50,6 +50,7 @@ namespace Ecjia\App\Weapp;
 use RC_WeChat;
 use RC_Loader;
 use platform_account;
+use Ecjia\App\Weapp\Decrypted\BizDataCrypt;
 
 class WeappUser {
     
@@ -63,6 +64,25 @@ class WeappUser {
     public function login($code)
     {
         return $this->weappUUID->getWeapp()->get($code);
+    }
+    
+    
+    public function decryptedData($session_key, $encrypteddata, $iv)
+    {
+        $weappId = $this->weappUUID->getWeappID();
+
+        $appid = $this->weappUUID->getAppId();
+        
+        /*获取用户解密信息*/
+        $BizDataCrypt = new BizDataCrypt($appid, $session_key);
+        $data = $BizDataCrypt->decryptData($encrypteddata, $iv);
+        if (is_ecjia_error($data)) {
+            return $data;
+        }
+        
+        $data = json_decode($data, true);
+        
+        return $data;
     }
     
     

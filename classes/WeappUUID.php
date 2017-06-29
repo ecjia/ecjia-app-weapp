@@ -57,6 +57,8 @@ class WeappUUID {
     
     protected $weapp;
     
+    protected $appid;
+    
     public function __construct($uuid) {
         $this->uuid = trim($uuid);   
         
@@ -67,13 +69,15 @@ class WeappUUID {
         $account          = $platform_account->getAccount();
         
         if ($platform == 'weapp') {
-            $wechat = royalcms('wechat');
-            $wechat->init();
+            $this->appid = $account['appid'];
             
             $config = array(
                 'app_id'     => $account['appid'],
                 'app_secret' => $account['appsecret'],
             );
+            RC_WeChat::init($config);
+            
+            $wechat = royalcms('wechat');
             $wechat->make('config')->set('mini_app', $config);
             $this->weapp = $wechat->make('mini_app_user');
         } else {
@@ -98,6 +102,14 @@ class WeappUUID {
         $account = platform_account::make($this->uuid);
         $weapp_id = $account->getAccountID();
         return $weapp_id;
+    }
+    
+    /**
+     * 获取公众号的AppId
+     */
+    public function getAppId()
+    {
+        return $this->appid;
     }
     
     /**
