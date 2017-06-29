@@ -48,16 +48,17 @@ defined('IN_ECJIA') or exit('No permission resources.');
 
 class wxbind_module extends api_front implements api_interface {
     public function handleRequest(\Royalcms\Component\HttpKernel\Request $request) {	
-    	$this->authSession();	
-		$iv      	  = $this->requestData('iv');
-		$encrypteddata= $this->requestData('encrypteddata');
-		$uuid	  	  = $this->requestData('uuid');
-		$iv 		  = trim($iv);
-		$encrypteddata= trim($encrypteddata);
+    	$this->authSession();
+    	$device       = $this->device;
+		$iv      	  = trim($this->requestData('iv'));
+		$encrypteddata= trim($this->requestData('encrypteddata'));
+		$uuid	  	  = trim($this->requestData('uuid'));
+	
 		$uuid		  = 'ed36dc5a059c4a10a41f31d1bbbfc3c7';
-// 		if (empty($iv) || empty($encrypteddata) || empty($uuid) ) {
-// 			return new ecjia_error('invalid_parameter', RC_Lang::get('system::system.invalid_parameter'));
-// 		}
+		
+		//if (empty($iv) || empty($encrypteddata) || empty($uuid) ) {
+		//	return new ecjia_error('invalid_parameter', RC_Lang::get('system::system.invalid_parameter'));
+		//}
 
 		$iv = trim('r7BXXKkLb8qrSNn05n0qiA==');
 		$encrypteddata = 'CiyLU1Aw2KjvrjMdj8YKliAjtP4gsMZM
@@ -136,12 +137,67 @@ class wxbind_module extends api_front implements api_interface {
 		$user = integrate::init_users();
 		$user->set_session($user_info['user_name']);
 		$user->set_cookie($user_info['user_name']);
+		
+		//修正咨询信息
+		feedback_batch_userid($_SESSION['user_id'], $_SESSION['user_name'], $device);
+		
+		//同步会员信息
+		RC_Loader::load_app_func('admin_user', 'user');
+		$user_info = EM_user_info($_SESSION['user_id']);
+		
+		update_user_info(); // 更新用户信息
+		RC_Loader::load_app_func('cart','cart');
+		recalculate_price(); // 重新计算购物车中的商品价格
+		
+		//修正关联设备号
+		$result = ecjia_app::validate_application('mobile');
+		if (!is_ecjia_error($result)) {
+			if (!empty($device['udid']) && !empty($device['client']) && !empty($device['code'])) {
+				$db_mobile_device = RC_Model::model('mobile/mobile_device_model');
+				$device_data = array(
+						'device_udid'	=> $device['udid'],
+						'device_client'	=> $device['client'],
+						'device_code'	=> $device['code'],
+						'user_type'		=> 'user',
+				);
+				$db_mobile_device->where($device_data)->update(array('user_id' => $_SESSION['user_id'], 'update_time' => RC_Time::gmtime()));
+			}
+		}
+		
+		//返回token及会员信息
 		$out = array(
-				'token' => RC_Session::session_id()
+				'token' => RC_Session::session_id(),
+				'user'	=> $user_info
 		);
 		return $out;
 	}
 }
 
+
+/**
+ * 修正咨询信息
+ * @param string $user_id
+ * @param string $device
+ */
+function feedback_batch_userid($user_id, $user_name, $device) {
+	$device_udid	  = $device['udid'];
+	$device_client	  = $device['client'];
+	$db_term_relation = RC_Model::model('term_relationship_model');
+
+	$object_id = $db_term_relation->where(array(
+			'object_type'	=> 'ecjia.feedback',
+			'object_group'	=> 'feedback',
+			'item_key2'		=> 'device_udid',
+			'item_value2'	=> $device_udid
+	))->get_field('object_id', true);
+	//更新未登录用户的咨询
+	$db_term_relation->where(array('item_key2' => 'device_udid', 'item_value2' => $device_udid))->update(array('item_key2' => '', 'item_value2' => ''));
+
+	if (!empty($object_id)) {
+		$db = RC_Model::model('feedback/feedback_model');
+		$db->where(array('msg_id' => $object_id, 'msg_area' => '4'))->update(array('user_id' => $user_id, 'user_name' => $user_name));
+		$db->where(array('parent_id' => $object_id, 'msg_area' => '4'))->update(array('user_id' => $user_id, 'user_name' => $user_name));
+	}
+}
 
 // end
