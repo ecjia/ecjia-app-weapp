@@ -79,7 +79,7 @@ class WechatUserRepository extends AbstractRepository
         
         if (! ($user = $this->findBy('openid', $openid))) {
             $attributes = [
-                'wechat_id'  => $weappId,
+                'wechat_id'  => $weapp_id,
             	'openid' => $openid,
                 'privilege' => $session_key
             ];

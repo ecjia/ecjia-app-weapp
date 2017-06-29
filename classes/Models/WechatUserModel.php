@@ -62,6 +62,7 @@ class WechatUserModel extends Model
 	 * @var array
 	 */
 	protected $fillable = [
+	    'wechat_id',
 	    'openid',
 	    'nickname',
 	    'sex',
