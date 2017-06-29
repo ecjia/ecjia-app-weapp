@@ -1,5 +1,4 @@
 <?php
-use GuzzleHttp\json_decode;
 //
 //    ______         ______           __         __         ______
 //   /\  ___\       /\  ___\         /\_\       /\_\       /\  __ \
@@ -52,7 +51,7 @@ class wxbind_module extends api_front implements api_interface {
     	$this->authSession();	
 		$iv      	  = $this->requestData('iv');
 		$encrypteddata= $this->requestData('encrypteddata');
-		$uuid	  	  = $this->requestData('uuid', 'ed36dc5a059c4a10a41f31d1bbbfc3c7');
+		$uuid	  	  = $this->requestData('uuid');
 		$iv 		  = trim($iv);
 		$encrypteddata= trim($encrypteddata);
 		$uuid		  = 'ed36dc5a059c4a10a41f31d1bbbfc3c7';
@@ -91,6 +90,7 @@ class wxbind_module extends api_front implements api_interface {
 		
 		$data = json_decode($data, true);
 		
+		//获取小程序的weappid,即小程序自增id
 		$WeappUUID =  new Ecjia\App\Weapp\WeappUUID($uuid);
 		$weappId   = $WeappUUID->getWeappID();
 		
@@ -107,28 +107,31 @@ class wxbind_module extends api_front implements api_interface {
 		
 		//转换数据格式
 		$data = array(
-			'openid' => $data['openId'],
-			'nickname' => $data['nickName'],
-			'sex' => $data['gender'],
-			'language' => $data['language'],
-			'city' => $data['city'],
-			'province' => $data['province'],
-			'country' => $data['country'],
-			'headimgurl' => $data['avatarUrl'],
+			'openid' 	=> $data['openId'],
+			'nickname' 	=> $data['nickName'],
+			'sex' 		=> $data['gender'],
+			'language' 	=> $data['language'],
+			'city' 		=> $data['city'],
+			'province' 	=> $data['province'],
+			'country' 	=> $data['country'],
+			'headimgurl'=> $data['avatarUrl'],
 			'privilege' => '',
-			'unionid' => $data['unionId'],
+			'unionid' 	=> $data['unionId'],
 		);
 		
+		//绑定会员
 		$result = RC_Api::api('connect', 'connect_user_bind', array('connect_code' => 'sns_wechat', 'openid' => $data['unionid'], 'profile' => $data));
 		if (is_ecjia_error($result)) {
 			return $result;
 		} 
 		
+		//获取会员信息
 		$user_info = RC_Api::api('user', 'user_info', array('user_id' => $result['user_id']));
 		if (is_ecjia_error($user_info)) {
 			return $user_info;
 		}
 		
+		//设置session,设置cookie
 		RC_Loader::load_app_class('integrate', 'user', false);
 		$user = integrate::init_users();
 		$user->set_session($user_info['user_name']);
