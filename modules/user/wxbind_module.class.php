@@ -54,53 +54,20 @@ class wxbind_module extends api_front implements api_interface {
 		$encrypteddata= trim($this->requestData('encrypteddata'));
 		$uuid	  	  = trim($this->requestData('uuid'));
 		$token        = $this->token;
-	
-// 		$uuid		  = 'ed36dc5a059c4a10a41f31d1bbbfc3c7';
 		
-		//if (empty($iv) || empty($encrypteddata) || empty($uuid) ) {
-		//	return new ecjia_error('invalid_parameter', RC_Lang::get('system::system.invalid_parameter'));
-		//}
+		if (empty($iv) || empty($encrypteddata) || empty($uuid) ) {
+			return new ecjia_error('invalid_parameter', RC_Lang::get('system::system.invalid_parameter'));
+		}
 
-// 		$iv = trim('r7BXXKkLb8qrSNn05n0qiA==');
-// 		$encrypteddata = 'CiyLU1Aw2KjvrjMdj8YKliAjtP4gsMZM
-//                 QmRzooG2xrDcvSnxIMXFufNstNGTyaGS
-//                 9uT5geRa0W4oTOb1WT7fJlAC+oNPdbB+
-//                 3hVbJSRgv+4lGOETKUQz6OYStslQ142d
-//                 NCuabNPGBzlooOmB231qMM85d2/fV6Ch
-//                 evvXvQP8Hkue1poOFtnEtpyxVLW1zAo6
-//                 /1Xx1COxFvrc2d7UL/lmHInNlxuacJXw
-//                 u0fjpXfz/YqYzBIBzD6WUfTIF9GRHpOn
-//                 /Hz7saL8xz+W//FRAUid1OksQaQx4CMs
-//                 8LOddcQhULW4ucetDf96JcR3g0gfRK4P
-//                 C7E/r7Z6xNrXd2UIeorGj5Ef7b1pJAYB
-//                 6Y5anaHqZ9J6nKEBvB4DnNLIVWSgARns
-//                 /8wR2SiRS7MNACwTyrGvt9ts8p12PKFd
-//                 lqYTopNHR1Vf7XjfhQlVsAJdNiKdYmYV
-//                 oKlaRv85IfVunYzO0IKXsyl7JCUjCpoG
-//                 20f0a04COwfneQAGGwd5oa+T8yO5hzuy
-//                 Db/XcxxmK01EpqOyuxINew==';
-		
-// 		$appid = 'wx4f4bc4dec97d474b';
-// 		$sessionKey = 'tiihtNczf5v6AKRyjwEUhQ==';
-		
-// 		/*获取用户解密信息*/
-// 		$BizDataCrypt = new Ecjia\App\Weapp\Decrypted\BizDataCrypt($appid, $sessionKey);			
-// 		$data = $BizDataCrypt->decryptData($encrypteddata, $iv);	
-// 		if (is_ecjia_error($data)) {
-// 			return $data;
-// 		}
-		
-// 		$data = json_decode($data, true);
-
-		$openid = RC_Session::get('openid');
-		$session_key = RC_Session::get('session_key');
+		$openid = $_SESSION['openid'];
+		$session_key = $_SESSION['session_key'];
 		
 		//获取小程序的weappid,即小程序自增id
 		$WeappUUID =  new Ecjia\App\Weapp\WeappUUID($uuid);
 		$weappId   = $WeappUUID->getWeappID();
 		
+		//获取用户解密数据
 		$WeappUser = new Ecjia\App\Weapp\WeappUser($WeappUUID);
-		
 		$data = $WeappUser->decryptedData($session_key, $encrypteddata, $iv);
 
 		/*更新用户数据*/
