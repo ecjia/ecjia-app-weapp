@@ -72,7 +72,8 @@ class WechatUserModel extends Model
 	    'headimgurl',
 	    'subscribe_time',
 	    'unionid',
-	    'subscribe'
+	    'subscribe',
+	    'privilege',
 	];
 	
 	/**
