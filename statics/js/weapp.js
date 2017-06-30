@@ -17,6 +17,20 @@
 				}
 				ecjia.pjax(url);
 			});
+			//小程序用户列表搜索/筛选
+			$("form[name='filterForm']").on('submit', function(e) {
+				e.preventDefault();
+				var keywords = $("input[name='keywords']").val();
+				var weapp_id = $("select[name='weapp_id']").val();
+				var url = $(this).attr('action'); 
+				if (keywords) {
+					url += '&keywords=' + keywords;
+				}
+				if (weapp_id) {
+					url += '&weapp_id=' + weapp_id;
+				}
+				ecjia.pjax(url);
+			});
 		},
 		
 		//小程序 添加/编辑

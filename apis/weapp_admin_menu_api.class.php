@@ -59,6 +59,7 @@ class weapp_admin_menu_api extends Component_Event_Api
         
         $submenus = array(
         	ecjia_admin::make_admin_menu('01_weapp', RC_Lang::get('weapp::weapp.weapp_manage'), RC_Uri::url('weapp/admin/init'), 1)->add_purview('weapp_manage'),
+        	ecjia_admin::make_admin_menu('02_weapp_user_manage', RC_Lang::get('weapp::weapp.weapp_user_manage'), RC_Uri::url('weapp/admin/user_list'), 2)->add_purview('weapp_user_manage'),
         );
         
         $menus->add_submenu($submenus);

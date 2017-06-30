@@ -93,6 +93,19 @@ return array(
 	'delete_selected_weapp' => '请先选中要删除的小程序！',
 	'deleted'          	 	=> '本次删除了',
 	'record_account'    	=> '条记录！',
+	'weapp_user_manage'		=> '用户管理',
+	'input_keywords'		=> '请输入昵称/省/市搜索',
+	'male_sign'				=> '男',
+	'female_sign'			=> '女',
+	'filter'				=> '筛选',
+	'set_tag'				=> '打标签',
+	'headimg_url'			=> '头像',
+	'nickname'				=> '昵称',
+	'province'				=> '省（直辖市）',
+	'subscribe_time'		=> '关注时间',
+	'bind_user'				=> '绑定用户',
+	'no_tag'				=> '无标签',
+	
 );
 
 // end

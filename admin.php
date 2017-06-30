@@ -69,9 +69,7 @@ class admin extends ecjia_admin {
 		
 		RC_Script::enqueue_script('bootstrap-editable.min', RC_Uri::admin_url('statics/lib/x-editable/bootstrap-editable/js/bootstrap-editable.min.js'));
 		RC_Style::enqueue_style('bootstrap-editable', RC_Uri::admin_url('statics/lib/x-editable/bootstrap-editable/css/bootstrap-editable.css'));
-		//RC_Style::enqueue_style('goods-colorpicker-style', RC_Uri::admin_url('statics/lib/colorpicker/css/colorpicker.css'));
-		//RC_Script::enqueue_script('goods-colorpicker-script', RC_Uri::admin_url('statics/lib/colorpicker/bootstrap-colorpicker.js'), array());
-		
+		RC_Style::enqueue_style('admin_subscribe', RC_App::apps_url('statics/css/admin_subscribe.css', __FILE__));
 		RC_Script::enqueue_script('weapp', RC_App::apps_url('statics/js/weapp.js', __FILE__), array(), false, true);
 		
 		ecjia_screen::get_current_screen()->add_nav_here(new admin_nav_here(RC_Lang::get('weapp::weapp.weapp_list'), RC_Uri::url('weapp/admin/init')));
@@ -355,6 +353,41 @@ class admin extends ecjia_admin {
 	}
 	
 	/**
+	 * 小程序用户列表
+	 */
+	public function user_list() {
+		$this->admin_priv('weapp_user_manage');
+	
+		ecjia_screen::get_current_screen()->remove_last_nav_here();
+		ecjia_screen::get_current_screen()->add_nav_here(new admin_nav_here(RC_Lang::get('weapp::weapp.weapp_user_manage')));
+		//ecjia_screen::get_current_screen()->add_help_tab(array(
+		//	'id'		=> 'overview',
+		//	'title'		=> RC_Lang::get('platform::platform.summarize'),
+		//	'content'	=>
+		//	'<p>' . RC_Lang::get('platform::platform.welcome_pub_list') . '</p>'
+		//));
+	
+		//ecjia_screen::get_current_screen()->set_help_sidebar(
+		//	'<p><strong>' . RC_Lang::get('platform::platform.more_info') . '</strong></p>' .
+		//	'<p>' . __('<a href="https://ecjia.com/wiki/帮助:ECJia公众平台:管理公众号" target="_blank">'.RC_Lang::get('platform::platform.pub_list_help').'</a>') . '</p>'
+		//);
+		$this->assign('ur_here', RC_Lang::get('weapp::weapp.weapp_user_manage'));
+		//$this->assign('action_link', array('text' => RC_Lang::get('weapp::weapp.weapp_add'), 'href'=>RC_Uri::url('weapp/admin/add')));
+	
+		$weapp_user_list = $this->weapp_user_list();
+		$this->assign('weapp_user_list', $weapp_user_list);
+		
+		$weapp_list = RC_DB::table('platform_account')->selectRaw('id, name')->where(RC_DB::raw('platform'), 'weapp')->get();
+		$this->assign('weapp_list', $weapp_list);
+		$this->assign('filter', $weapp_user_list['filter']);
+		
+		$this->assign('search_action', RC_Uri::url('weapp/admin/user_list'));
+	
+		$this->display('weapp_user_list.dwt');
+	}
+	
+	
+	/**
 	 * 小程序列表
 	 */
 	private function weapp_list() {
@@ -363,7 +396,6 @@ class admin extends ecjia_admin {
 		$filter['keywords'] = empty($_GET['keywords']) ? '' : trim($_GET['keywords']);
 		
 		if ($filter['keywords']) {
-			$where[]= "name LIKE '%" . mysql_like_quote($filter['keywords']) . "%'";
 			$db_platform_account->where(RC_DB::Raw('name'), 'like', '%' . mysql_like_quote($filter['keywords']) . '%');
 		}
 		$db_platform_account->where('platform', 'weapp');
@@ -382,6 +414,57 @@ class admin extends ecjia_admin {
 				} else {
 					$rows['logo'] = RC_Upload::upload_url($rows['logo']);
 				}
+				$arr[] = $rows;
+			}
+		}
+		return array('item' => $arr, 'filter' => $filter, 'page' => $page->show(2), 'desc' => $page->page_desc());
+	}
+	
+	
+	/**
+	 * 小程序用户列表
+	 */
+	private function weapp_user_list() {
+		$db_wechat_user = RC_DB::table('wechat_user as wu')
+							->leftJoin('connect_user as cu', RC_DB::raw('wu.unionid'), '=', RC_DB::raw('cu.open_id'))
+							->leftJoin('platform_account as pa', RC_DB::raw('pa.id'), '=', RC_DB::raw('wu.wechat_id'));
+		$filter = array();
+		$filter['keywords'] = empty($_GET['keywords']) ? '' : trim($_GET['keywords']);
+		$filter['weapp_id'] = empty($_GET['weapp_id']) ? '' : intval($_GET['weapp_id']);
+	
+		if ($filter['keywords']) {
+			$db_wechat_user->where(RC_DB::Raw('wu.nickname'), 'like', '%' . mysql_like_quote($filter['keywords']) . '%')
+							->orWhere(RC_DB::Raw('wu.province'), 'like', '%' . mysql_like_quote($filter['keywords']) . '%')
+							->orWhere(RC_DB::Raw('wu.city'), 'like', '%' . mysql_like_quote($filter['keywords']) . '%');
+		}
+		
+		if (!empty($filter['weapp_id'])) {
+			$db_wechat_user->where(RC_DB::raw('wu.wechat_id'), $filter['weapp_id']);
+		}
+		
+		$db_wechat_user->where(RC_DB::raw('pa.platform'), 'weapp');
+		$db_wechat_user->where(RC_DB::raw('cu.connect_code'), 'sns_wechat');
+	
+		$count = $db_wechat_user->count (RC_DB::raw('wu.uid'));
+		
+		$filter['record_count'] = $count;
+		$page = new ecjia_page($count, 10, 5);
+	
+		$arr = array();
+		$data = $db_wechat_user
+					->selectRaw('wu.*, cu.user_id')
+					->orderBy(RC_DB::Raw('subscribe_time'), 'desc')->take(10)->skip($page->start_id-1)->get();
+		if (isset($data)) {
+			foreach ($data as $rows) {
+				if ($rows['user_id'] > 0) {
+					$rows['user_name'] = RC_DB::table('users')->where(RC_DB::raw('user_id'), $rows['user_id'])->pluck('user_name');
+				} else {
+					$rows['user_name'] = '暂未绑定';
+				}
+				$rows['subscribe_time'] = RC_Time::local_date(ecjia::config('time_format'), $rows['subscribe_time']);
+				if (empty($rows['headimgurl'])) {
+					$rows['headimgurl'] = RC_Uri::admin_url('statics/images/nopic.png');
+				} 
 				$arr[] = $rows;
 			}
 		}
