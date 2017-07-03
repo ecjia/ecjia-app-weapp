@@ -433,18 +433,20 @@ class admin extends ecjia_admin {
 		$filter['weapp_id'] = empty($_GET['weapp_id']) ? '' : intval($_GET['weapp_id']);
 	
 		if ($filter['keywords']) {
-			$db_wechat_user->where(RC_DB::Raw('wu.nickname'), 'like', '%' . mysql_like_quote($filter['keywords']) . '%')
-							->orWhere(RC_DB::Raw('wu.province'), 'like', '%' . mysql_like_quote($filter['keywords']) . '%')
-							->orWhere(RC_DB::Raw('wu.city'), 'like', '%' . mysql_like_quote($filter['keywords']) . '%');
+			$db_wechat_user ->whereRaw('(wu.nickname like  "%' . mysql_like_quote($filter['keywords']) . '%" or wu.province like "%'.mysql_like_quote($filter['keywords']).'%" or wu.city like "%'.mysql_like_quote($filter['keywords']).'%")');
 		}
 		
 		if (!empty($filter['weapp_id'])) {
+			/*属于单个小程序筛选条件*/
 			$db_wechat_user->where(RC_DB::raw('wu.wechat_id'), $filter['weapp_id']);
+		} else {
+			/*属于小程序用户条件*/
+			$weappids = RC_DB::table('platform_account')->where(RC_DB::raw('platform'), 'weapp')->lists('id');
+			$db_wechat_user->whereIn(RC_DB::raw('wu.wechat_id'), $weappids);
 		}
-		
+			
 		$db_wechat_user->where(RC_DB::raw('pa.platform'), 'weapp');
-		$db_wechat_user->where(RC_DB::raw('cu.connect_code'), 'sns_wechat');
-	
+		$db_wechat_user->where(RC_DB::raw('cu.connect_code'), 'sns_wechat');	
 		$count = $db_wechat_user->count (RC_DB::raw('wu.uid'));
 		
 		$filter['record_count'] = $count;
