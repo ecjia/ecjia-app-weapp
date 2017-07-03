@@ -9,6 +9,15 @@
 
 <!-- {block name="main_content"} -->
 
+<!-- {if $errormsg} -->
+	<div class="alert alert-error">
+		<strong>{lang key='weapp::weapp.label_notice'}</strong>{$errormsg}
+	</div>
+<!-- {/if} -->
+
+
+{platform_account::getAccountSwtichDisplay('weapp')}
+
 <div>
 	<h3 class="heading">
 		<!-- {if $ur_here}{$ur_here}{/if} -->
@@ -17,21 +26,8 @@
 
 <div class="row-fluid">
 	<!-- {if $smarty.get.type neq 'unsubscribe' && $smarty.get.type neq 'blacklist'} -->
-	<a class="set-label-btn btn f_l m_r15" data-url="{$get_checked}"><i class="fontello-icon-tags"></i>{lang key='weapp::weapp.set_tag'}</a>
+	<!-- <a class="set-label-btn btn f_l m_r15" data-url="{$get_checked}"><i class="fontello-icon-tags"></i>{lang key='weapp::weapp.set_tag'}</a> -->
 	<!-- {/if} -->
-	<form class="form-inline" action="{$search_action}{if $smarty.get.keywords}&keywords={$smarty.get.keywords}{/if}" method="post" name="filterForm">
-		<div class="screen f_l">
-			<div class="f_l m_r5">
-				<select class="w150" name="weapp_id">
-					<option value="0">请选择小程序</option>
-					<!-- {foreach from=$weapp_list item=val} -->
-					<option value="{$val.id}" {if $filter.weapp_id eq $val.id}selected{/if}>{$val.name}</option>
-					<!-- {/foreach} -->
-				</select>
-			</div>
-			<button class="btn filter-btn" type="submit">{lang key='weapp::weapp.filter'}</button>
-		</div>
-	</form>
 	<div class="choost_list f_r">
 		<form class="form-inline" method="post" action="{$search_action}{if $smarty.get.weapp_id}&weapp_id={$smarty.get.weapp_id}{/if}{if $smarty.get.type}&type={$smarty.get.type}{/if}" name="searchForm">
 			<input class="w180" type="text" name="keywords" value="{$smarty.get.keywords}" placeholder="{lang key='weapp::weapp.input_keywords'}"/>
@@ -40,7 +36,7 @@
 	</div>
 </div>
 	
-<div class="row-fluid list-page chat_box">
+<div class="row-fluid list-page chat_box" style="padding-bottom:15px;">
 	<div class="span9 chat_content">	
 		<table class="table table-striped smpl_tbl table-hide-edit subscribe_group_table">
 			<thead>
@@ -67,9 +63,9 @@
 						</span>
 						<div class="edit-list">
 							<!-- {if $val.group_id neq 1 && $val.subscribe neq 0} -->
-								<!-- <a class="set-label-btn cursor_pointer" data-openid="{$val.openid}" data-uid="{$val.uid}" data-url="{$get_checked}">{lang key='weapp::weapp.set_tag'}</a>&nbsp;|&nbsp; -->
+								 <!-- <a class="set-label-btn cursor_pointer" data-openid="{$val.openid}" data-uid="{$val.uid}" data-url="{$get_checked}">{lang key='weapp::weapp.set_tag'}</a>&nbsp;|&nbsp;  -->
 							<!-- {/if} -->
-							<!-- <a class="data-pjax" href='{url path="wechat/admin_subscribe/subscribe_message" args="uid={$val.uid}{if $smarty.get.page}&page={$smarty.get.page}{/if}"}' title="{lang key='wechat::wechat.message_record'}">{lang key='wechat::wechat.message_record'}</a> -->
+							 <!--<a class="data-pjax" href='{url path="wechat/admin_subscribe/subscribe_message" args="uid={$val.uid}{if $smarty.get.page}&page={$smarty.get.page}{/if}"}' title="{lang key='wechat::wechat.message_record'}">{lang key='wechat::wechat.message_record'}</a> -->
 						</div>
 					</td>
 					<td>{$val.province} - {$val.city}</td>
@@ -86,28 +82,28 @@
 	<div class="span3 chat_sidebar">
 		<div class="chat_heading clearfix">
 			<div class="btn-group pull-right">
-				<a class="btn btn-mini ttip_t subscribe-icon-plus" title="{lang key='wechat::wechat.add_user_tag'}" data-toggle="modal" href="#add_tag" ><i class="fontello-icon-plus"></i></a>
+				<a class="btn btn-mini ttip_t subscribe-icon-plus" title="{lang key='weapp::weapp.add_user_tag'}" data-toggle="modal" href="#add_tag" ><i class="fontello-icon-plus"></i></a>
 			</div>
-			{lang key='wechat::wechat.user_tag_list'}
+			{lang key='weapp::weapp.user_tag_list'}
 		</div>
 		<ul class="chat_user_list">
 			<li {if $smarty.get.type eq 'all'}class="active"{/if}>
-				<!-- <a class="f_l data-pjax no-underline" href='{url path="wechat/admin_subscribe/init" args="&type=all"}'>{lang key='wechat::wechat.all_user'}
+				<a class="f_l data-pjax no-underline" href='{url path="weapp/admin/user_list" args="&type=all"}'>{lang key='weapp::weapp.all_user'}
 					<t class="badge badge-info">{$tag_arr.all}</t>
-				</a> -->
+				</a>
 			</li>
 			<!-- {if $tag_arr || $num} -->
 				<!-- {if $tag_arr} -->
 					<!-- {foreach from=$tag_arr.item item=val} -->
 					<li class="{if $val.id eq $smarty.get.id}active{/if}">
-						<a class="{if $val.tag_id neq 1}second_tag{/if} f_l data-pjax no-underline" href='{url path="wechat/admin_subscribe/init" args="id={$val.id}&tag_id={$val.tag_id}&type=blacklist{if $val.tag_id neq 1}&type=subscribed{/if}"}'>
+						<a class="{if $val.tag_id neq 1}second_tag{/if} f_l data-pjax no-underline" href='{url path="weapp/admin/user_list" args="id={$val.id}&tag_id={$val.tag_id}&type=blacklist{if $val.tag_id neq 1}&type=subscribed{/if}"}'>
 							{$val.name}
 							<t class="badge badge-info">{$val.count}</t>
 						</a>
 						{if $val['tag_id'] != 0  && $val['tag_id'] != 1 && $val['tag_id'] != 2}
 						<span>
-							<a class="subscribe-icon-edit" data-toggle="modal" href="#edit_tag" title="{lang key='wechat::wechat.edit_user_tag'}" data-name="{$val.name}" value="{$val.id}"><i class="fontello-icon-edit f_s15"></i></a>
-							<a class="ajaxremove no-underline" data-toggle="ajaxremove" data-msg="{lang key='wechat::wechat.remove_tag_confirm'}" href='{RC_Uri::url("wechat/admin_subscribe/remove","id={$val.id}&tag_id={$val.tag_id}")}' title="{lang key='wechat::wechat.remove_user_tag'}"><i class="fontello-icon-trash f_s15 ecjiafc-red"></i></a>
+							<a class="subscribe-icon-edit" data-toggle="modal" href="#edit_tag" title="{lang key='weapp::weapp.edit_user_tag'}" data-name="{$val.name}" value="{$val.id}"><i class="fontello-icon-edit f_s15"></i></a>
+							<a class="ajaxremove no-underline" data-toggle="ajaxremove" data-msg="{lang key='weapp::weapp.remove_tag_confirm'}" href='{RC_Uri::url("weapp/admin/remove_tag","id={$val.id}&tag_id={$val.tag_id}")}' title="{lang key='weapp::weapp.remove_user_tag'}"><i class="fontello-icon-trash f_s15 ecjiafc-red"></i></a>
 						</span>
 						{/if}
 					</li>
@@ -116,7 +112,7 @@
 				
 				<!-- {if $num} -->
 					<li {if $smarty.get.type eq 'unsubscribe' && !$smarty.get.tag_id}class="active"{/if}>
-						<a class="f_l data-pjax no-underline" href='{url path="wechat/admin_subscribe/init" args="type=unsubscribe"}'>{lang key='wechat::wechat.cancel_subscribe'}
+						<a class="f_l data-pjax no-underline" href='{url path="weapp/admin/user_list" args="type=unsubscribe"}'>{lang key='weapp::weapp.cancel_subscribe'}
 							<t class="badge badge-info">{$num}</t>
 						</a>
 					</li>
@@ -130,25 +126,17 @@
 <div class="modal hide fade" id="edit_tag">
 	<div class="modal-header">
 		<button class="close" data-dismiss="modal">×</button>
-		<h3>{lang key='wechat::wechat.edit_user_tag'}</h3>
+		<h3>{lang key='weapp::weapp.edit_user_tag'}</h3>
 	</div>
 	<div class="modal-body" id="group_modal">
 		<div class="row-fluid">
 			<!-- {if $errormsg} -->
 			    <div class="alert alert-error">
-		            <strong>{lang key='wechat::wechat.label_notice'}</strong>{$errormsg}
+		            <strong>{lang key='weapp::weapp.label_notice'}</strong>{$errormsg}
 		        </div>
 			<!-- {/if} -->
-			
-			<!-- {if $warn} -->
-				<!-- {if $type eq 0} -->
-				<div class="alert alert-error">
-					<strong>{lang key='wechat::wechat.label_notice'}</strong>{$type_error}
-				</div>
-				<!-- {/if} -->
-			<!-- {/if} -->
 			<div class="span12">
-			<form class="form-horizontal" method="post" name="edit_tag" action="{url path='wechat/admin_subscribe/edit_tag'}">
+			<form class="form-horizontal" method="post" name="edit_tag" action="{url path='weapp/admin/edit_tag'}">
 				<fieldset>
 					<div class="control-group formSep">
 						<label class="control-label old_tag_name" for="user_name">{lang key='wechat::wechat.label_old_tag_name'}</label>
@@ -177,35 +165,27 @@
 <div class="modal hide fade" id="add_tag">
 	<div class="modal-header">
 		<button class="close" data-dismiss="modal">×</button>
-		<h3>{lang key='wechat::wechat.add_user_tag'}</h3>
+		<h3>{lang key='weapp::weapp.add_user_tag'}</h3>
 	</div>
 	<div class="modal-body" id="group_modal">
 		<div class="row-fluid">
 			<!-- {if $errormsg} -->
 			    <div class="alert alert-error">
-		            <strong>{lang key='wechat::wechat.label_notice'}</strong>{$errormsg}
+		            <strong>{lang key='weapp::weapp.label_notice'}</strong>{$errormsg}
 		        </div>
 			<!-- {/if} -->
-			
-			<!-- {if $warn} -->
-				<!-- {if $type eq 0} -->
-				<div class="alert alert-error">
-					<strong>{lang key='wechat::wechat.label_notice'}</strong>{$type_error}
-				</div>
-				<!-- {/if} -->
-			<!-- {/if} -->
 			<div class="span12">
-			<form class="form-horizontal" method="post" name="add_tag" action="{url path='wechat/admin_subscribe/edit_tag'}">
+			<form class="form-horizontal" method="post" name="add_tag" action="{url path='weapp/admin/edit_tag'}">
 				<fieldset>
 					<div class="control-group formSep">
-						<label class="control-label new_tag_name" for="user_name">{lang key='wechat::wechat.label_tag_name'}</label>
+						<label class="control-label new_tag_name" for="user_name">{lang key='weapp::weapp.label_tag_name'}</label>
 						<div class="controls">
 							<input type="text" name="new_tag" autocomplete="off"/>
 							<span class="input-must">*</span>
 						</div>
 					</div>
 					<div class="control-group t_c m_b0">
-						<button class="btn btn-gebo" type="submit" {if $errormsg}disabled{/if}>{lang key='wechat::wechat.ok'}</button>
+						<button class="btn btn-gebo" type="submit" {if $errormsg}disabled{/if}>{lang key='weapp::weapp.ok'}</button>
 					</div>
 				</fieldset>
 			</form>

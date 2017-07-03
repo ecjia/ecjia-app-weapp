@@ -47,22 +47,36 @@
 defined('IN_ECJIA') or exit('No permission resources.');
 
 /**
- * 后台权限API
- * @author zrl
+ * ECJIA切换小程序
  */
-class weapp_admin_purview_api extends Component_Event_Api {
-    
-    public function call(&$options) {
-        $purviews = array(
-        	array('action_name' => RC_Lang::get('weapp::weapp.weapp_list'), 'action_code' => 'weapp_manage', 	'relevance'   => ''),
-        	array('action_name' => RC_Lang::get('weapp::weapp.weapp_update'), 'action_code' => 'weapp_update', 	'relevance'   => ''),
-        	array('action_name' => RC_Lang::get('weapp::weapp.weapp_delete'), 'action_code' => 'weapp_delete', 	'relevance'   => ''),
-        	array('action_name' => RC_Lang::get('weapp::weapp.weapp_user_manage'), 'action_code' => 'weapp_user_manage', 	'relevance'   => ''),
-        	array('action_name' => RC_Lang::get('weapp::weapp.update_user_tag'), 'action_code' => 'update_user_tag', 	'relevance'   => ''),
-        	array('action_name' => RC_Lang::get('weapp::weapp.delete_user_tag'), 'action_code' => 'delete_user_tag', 	'relevance'   => ''),
-        );
-        return $purviews;
-    }
+class admin_switch extends ecjia_admin {
+
+	public function __construct() {
+		parent::__construct();
+	}
+	
+	public function init() {
+	    $request = Component_HttpFoundation_Request::createFromGlobals();
+	    $uuid = $request->get('uuid');
+	    $platform = $request->get('platform');
+	    
+	    RC_Loader::load_app_class('platform_account', 'platform', false);
+	    $platform_account = platform_account::make($uuid);
+	    $account = $platform_account->getAccount();
+	    
+	 
+	    
+	    if (platform_account::getCurrentUUID($platform) == $uuid) {
+	        $url = $_SERVER['HTTP_REFERER'];
+	        return $this->showmessage(sprintf(RC_Lang::get('weapp::weapp.exists_public'), $account['name']), ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_SUCCESS, array('pjaxurl' => $url));
+	    }
+
+	    platform_account::setCurrentUUID($platform, $uuid);
+	    
+		$url = $_SERVER['HTTP_REFERER'];
+		
+		return $this->showmessage(sprintf(RC_Lang::get('weapp::weapp.switch_public'), $account['name']), ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_SUCCESS, array('pjaxurl' => $url));
+	}
 }
 
-// end
+//end
