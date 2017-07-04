@@ -6,6 +6,7 @@
 			ecjia.admin.weapp.edit();
 			ecjia.admin.weapp.batch_set_label();
 			ecjia.admin.weapp.edit_tag();
+			ecjia.admin.weapp.edit_remark();
 		},
 		
 		//小程序列表 搜索/筛选
@@ -208,6 +209,46 @@
 				var options = $.extend(ecjia.admin.defaultOptions.validate, option);
 				$form.validate(options);
 			});	
+		},
+		
+		//编辑备注
+		edit_remark : function() {
+			$('.edit_remark_icon').on('click', function(e) {
+				e.preventDefault();
+				var remark = $('input[name="remark"]').val();
+				$('.remark_info').hide();
+				$('.edit_remark_icon').hide();
+				$('.remark').show();
+			});
+			
+			$('.remark_ok').on('click', function(e) {
+				e.preventDefault();
+				var $this = $(this),
+					remark = $('input[name="remark"]').val(),
+					url = $('.edit_remark_url').attr('data-url'),
+					openid = $('.edit_remark_url').attr('data-openid'),
+					page = $('.edit_remark_url').attr('data-page'),
+					uid = $('.edit_remark_url').attr('data-uid'),
+					old_remark = $('.edit_remark_url').attr('data-remark'),
+					info = {remark : remark, openid : openid, page : page, uid : uid};
+				if (remark == old_remark) {
+					$('.remark_info').show();
+					$('.edit_remark_icon').show();
+					$('.remark').hide();
+				} else {
+					$.post(url, info, function(data) {
+						ecjia.admin.showmessage(data);
+					}, 'json');
+				}
+			});
+			
+			$('.remark_cancel').on('click', function(e) {
+				e.preventDefault();
+				var remark = $('input[name="remark"]').val();
+				$('.remark_info').show();
+				$('.edit_remark_icon').show();
+				$('.remark').hide();
+			});
 		},
 	};
 })(ecjia.admin, jQuery);

@@ -409,7 +409,7 @@ class admin extends ecjia_admin {
 		$wechat_id = $platform_account->getAccountID();
 	
 		if (is_ecjia_error($wechat_id)) {
-			return $this->showmessage(RC_Lang::get('weapp::weapp.add_platform_first'), ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_ERROR);
+			return $this->showmessage(RC_Lang::get('weapp::weapp.add_weapp_first'), ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_ERROR);
 		}
 	
 		$id = !empty($_POST['id']) ? intval($_POST['id']) : 0;
@@ -521,7 +521,7 @@ class admin extends ecjia_admin {
 		$wechat_id = $platform_account->getAccountID();
 	
 		if (is_ecjia_error($wechat_id)) {
-			return $this->showmessage(RC_Lang::get('weapp::weapp.add_platform_first'), ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_ERROR);
+			return $this->showmessage(RC_Lang::get('weapp::weapp.add_weapp_first'), ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_ERROR);
 		}
 		//微信端删除
 		//$rs = $wechat->deleteTag($tag_id);
@@ -553,7 +553,7 @@ class admin extends ecjia_admin {
 		$wechat_id = $platform_account->getAccountID();
 	
 		if (is_ecjia_error($wechat_id)) {
-			return $this->showmessage(RC_Lang::get('weapp::weapp.add_platform_first'), ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_ERROR);
+			return $this->showmessage(RC_Lang::get('weapp::weapp.add_weapp_first'), ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_ERROR);
 		}
 		
 		$action = !empty($_GET['action']) 	? $_GET['action'] 	: '';
@@ -631,11 +631,149 @@ class admin extends ecjia_admin {
 		//$this->get_user_tags();
 		if ($action == 'set_label') {
 			$url = RC_Uri::url('weapp/admin/user_list', array('type' => 'all'));
-		} 
-		//elseif ($action == 'set_user_label') {
-		//	$url = RC_Uri::url('wechat/admin_subscribe/subscribe_message', array('uid' => $uid));
-		//}
+		} elseif ($action == 'set_user_label') {
+			$url = RC_Uri::url('weapp/admin/weapp_userinfo', array('uid' => $uid));
+		}
 		return $this->showmessage(RC_Lang::get('weapp::weapp.edit_success'), ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_SUCCESS, array('pjaxurl' => $url));
+	}
+	
+	/**
+	 * 用户信息
+	 */
+	public function weapp_userinfo() {
+		$this->admin_priv('view_weapp_userinfo');
+	
+		$platform_account = platform_account::make(platform_account::getCurrentUUID('weapp'));
+		$wechat_id = $platform_account->getAccountID();
+	
+		$page = !empty($_GET['page']) ? intval($_GET['page']) : 1;
+		$this->assign('ur_here', RC_Lang::get('weapp::weapp.weapp_userinfo'));
+		
+		ecjia_screen::get_current_screen()->remove_last_nav_here();
+		ecjia_screen::get_current_screen()->add_nav_here(new admin_nav_here(RC_Lang::get('weapp::weapp.weapp_user_manage'), RC_Uri::url('weapp/admin/user_list')));
+		ecjia_screen::get_current_screen()->add_nav_here(new admin_nav_here(RC_Lang::get('weapp::weapp.weapp_userinfo')));
+		$this->assign('action_link', array('text' => RC_Lang::get('weapp::weapp.weapp_user_manage'), 'href'=> RC_Uri::url('weapp/admin/user_list', array('page' => $page))));
+	
+		if (is_ecjia_error($wechat_id)) {
+			$this->assign('errormsg', RC_Lang::get('weapp::weapp.add_weapp_first'));
+		} else {
+			$uid = !empty($_GET['uid']) ? intval($_GET['uid']) : 0;
+			$this->assign('label_action', RC_Uri::url('weapp/admin/batch_tag'));
+			$this->assign('get_checked', RC_Uri::url('weapp/admin/get_checked_tag'));
+	
+			if (empty($uid)) {
+				return $this->showmessage(RC_Lang::get('weapp::weapp.pls_select_user'), ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_ERROR);
+			}
+			$db = RC_DB::table('wechat_user as wu')
+							->leftJoin('connect_user as cu', RC_DB::raw('wu.unionid'), '=', RC_DB::raw('cu.open_id'))
+							->leftJoin('users as u', RC_DB::raw('u.user_id'), '=', RC_DB::raw('cu.user_id'));
+			$db->where(RC_DB::raw('wu.wechat_id'), $wechat_id);
+			
+			$info = $db->where(RC_DB::raw('wu.uid'), $uid)->where(RC_DB::raw('wu.wechat_id'), $wechat_id)->selectRaw('wu.*, u.user_name')->first();
+			if (!empty($info)) {
+				if ($info['subscribe_time']) {
+					$info['subscribe_time'] = RC_Time::local_date(ecjia::config('time_format'), $info['subscribe_time']);
+				}
+				$tag_list = RC_DB::table('wechat_user_tag')->where(RC_DB::raw('userid'), $info['uid'])->lists('tagid');
+				$name_list = RC_DB::table('wechat_tag')->whereIn(RC_DB::raw('tag_id'), $tag_list)->where(RC_DB::raw('wechat_id'), $wechat_id)
+								->orderBy(RC_DB::raw('tag_id'), 'desc')->lists('name');
+				if (!empty($name_list)) {
+					$info['tag_name'] = implode('，', $name_list);
+				}
+			}
+			$this->assign('info', $info);
+		}
+		
+		$this->display('weapp_userinfo.dwt');
+	}
+	
+	/**
+	 * 修改用户备注
+	 */
+	public function edit_remark() {
+		$this->admin_priv('update_usersinfo', ecjia::MSGTYPE_JSON);
+	
+		//$uuid = platform_account::getCurrentUUID('wechat');
+		//$wechat = wechat_method::wechat_instance($uuid);
+		$platform_account = platform_account::make(platform_account::getCurrentUUID('weapp'));
+		$wechat_id = $platform_account->getAccountID();
+		
+		if (is_ecjia_error($wechat_id)) {
+			return $this->showmessage(RC_Lang::get('weapp::weapp.add_weapp_first'), ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_ERROR);
+		}
+		// 数据更新
+		$remark	= !empty($_POST['remark'])	? trim($_POST['remark']) : '';
+		$openid = !empty($_POST['openid']) 	? trim($_POST['openid']) : '';
+		$page 	= !empty($_POST['page']) 	? intval($_POST['page']) : 1;
+		$uid 	= !empty($_POST['uid']) 	? intval($_POST['uid'])  : 0;
+	
+		if (strlen($remark) > 30) {
+			return $this->showmessage(RC_Lang::get('weapp::weapp.up_remark_count'), ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_ERROR);
+		}
+		//微信端更新
+		//$rs = $wechat->setUserRemark($openid, $remark);
+		//if (RC_Error::is_error($rs)) {
+		//	return $this->showmessage(wechat_method::wechat_error($rs->get_error_code()), ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_ERROR);
+		//}
+		$info = RC_DB::table('wechat_user')->where(RC_DB::raw('openid'), $openid)->first();
+		$data = array('remark' => $remark);
+		$update = RC_DB::table('wechat_user')->where(RC_DB::raw('openid'), $openid)->where(RC_DB::raw('wechat_id'), $wechat_id)->update($data);
+		ecjia_admin::admin_log(sprintf(RC_Lang::get('weapp::weapp.edit_remark_to'), $info['nickname'], $remark), 'edit', 'users_info');
+		if ($update) {
+			return $this->showmessage(RC_Lang::get('weapp::weapp.edit_success'), ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_SUCCESS, array('pjaxurl' => RC_Uri::url('weapp/admin/weapp_userinfo', array('uid' => $uid, 'page' => $page))));
+		} else {
+			return $this->showmessage(RC_Lang::get('weapp::weapp.edit_failed'), ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_ERROR);
+		}
+	}
+	
+	/**
+	 * 添加/移出黑名单
+	 */
+	public function backlist() {
+		$this->admin_priv('update_usersinfo', ecjia::MSGTYPE_JSON);
+	
+		//$uuid = platform_account::getCurrentUUID('wechat');
+		//$wechat = wechat_method::wechat_instance($uuid);
+		$platform_account = platform_account::make(platform_account::getCurrentUUID('weapp'));
+		$wechat_id = $platform_account->getAccountID();
+	
+		if (is_ecjia_error($wechat_id)) {
+			return $this->showmessage(RC_Lang::get('wechat::wechat.add_weapp_first'), ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_ERROR);
+		}
+		
+		$uid 	= !empty($_GET['uid']) 		? intval($_GET['uid']) 		: 0;
+		$type 	= !empty($_GET['type']) 	? trim($_GET['type']) 		: '';
+		$page 	= !empty($_GET['page']) 	? intval($_GET['page']) 	: 1;
+		$openid = !empty($_GET['openid']) 	? trim($_GET['openid']) 	: '';
+	
+		if ($type == 'remove_out') {
+			$data['group_id']  = 0;
+			$data['subscribe'] = 1;
+			$sn                = RC_Lang::get('weapp::weapp.remove_blacklist');
+			$success_msg       = RC_Lang::get('weapp::weapp.remove_blacklist_success');
+			$error_msg         = RC_Lang::get('weapp::weapp.remove_blacklist_error');
+		} else {
+			$data['group_id']  = 1;
+			$data['subscribe'] = 0;
+			$sn                = RC_Lang::get('weapp::weapp.add_blacklist');
+			$success_msg       = RC_Lang::get('weapp::weapp.add_blacklist_success');
+			$error_msg         = RC_Lang::get('weapp::weapp.add_blacklist_error');
+		}
+	
+		//微信端更新
+		//$rs = $wechat->setUserGroup($openid, $data['group_id']);
+		//if (RC_Error::is_error($rs)) {
+		//	return $this->showmessage(wechat_method::wechat_error($rs->get_error_code()), ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_ERROR);
+		//}
+		ecjia_admin::admin_log($sn, 'setup', 'users_info');
+		$update = RC_DB::table('wechat_user')->where(RC_DB::raw('uid'), $uid)->update($data);
+	
+		if ($update) {
+			//$this->get_user_tags();
+			return $this->showmessage($success_msg, ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_SUCCESS, array('pjaxurl' => RC_Uri::url('weapp/admin/weapp_userinfo', array('uid' => $uid, 'page' => $page))));
+		} else {
+			return $this->showmessage($error_msg, ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_ERROR);
+		}
 	}
 	
 	

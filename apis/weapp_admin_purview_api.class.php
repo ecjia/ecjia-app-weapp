@@ -60,6 +60,8 @@ class weapp_admin_purview_api extends Component_Event_Api {
         	array('action_name' => RC_Lang::get('weapp::weapp.weapp_user_manage'), 'action_code' => 'weapp_user_manage', 	'relevance'   => ''),
         	array('action_name' => RC_Lang::get('weapp::weapp.update_user_tag'), 'action_code' => 'update_user_tag', 	'relevance'   => ''),
         	array('action_name' => RC_Lang::get('weapp::weapp.delete_user_tag'), 'action_code' => 'delete_user_tag', 	'relevance'   => ''),
+        	array('action_name' => RC_Lang::get('weapp::weapp.view_weapp_userinfo'), 'action_code' => 'view_weapp_userinfo', 	'relevance'   => ''),
+        	array('action_name' => RC_Lang::get('weapp::weapp.update_usersinfo'), 'action_code' => 'update_usersinfo', 	'relevance'   => ''),
         );
         return $purviews;
     }

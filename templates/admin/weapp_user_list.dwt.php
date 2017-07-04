@@ -65,7 +65,7 @@
 							<!-- {if $val.group_id neq 1 && $val.subscribe neq 0} -->
 								  <a class="set-label-btn cursor_pointer" data-openid="{$val.openid}" data-uid="{$val.uid}" data-url="{$get_checked}">{lang key='weapp::weapp.set_tag'}</a>  
 							<!-- {/if} -->
-							 <!--&nbsp;|&nbsp;<a class="data-pjax" href='{url path="wechat/admin_subscribe/subscribe_message" args="uid={$val.uid}{if $smarty.get.page}&page={$smarty.get.page}{/if}"}' title="{lang key='wechat::wechat.message_record'}">{lang key='wechat::wechat.message_record'}</a> -->
+							 &nbsp;|&nbsp;<a class="data-pjax" href='{url path="weapp/admin/weapp_userinfo" args="uid={$val.uid}{if $smarty.get.page}&page={$smarty.get.page}{/if}"}' title="{lang key='weapp::weapp.weapp_userinfo'}">{lang key='weapp::weapp.weapp_userinfo'}</a> 
 						</div>
 					</td>
 					<td>{$val.province} - {$val.city}</td>

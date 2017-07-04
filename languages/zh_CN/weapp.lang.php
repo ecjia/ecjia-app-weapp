@@ -140,13 +140,33 @@ return array(
 	'remove_failed'			=> '删除失败',
 	'up_tag_count'			=> '最多只能选择3个标签',
 	'user_tag'		        => '用户标签',
+	'weapp_userinfo'		=> '用户信息',
+	'view_weapp_userinfo'	=> '查看用户信息',
+	'pls_select_user'		=> '请先选择用户',
+	'update_remark'			=> '修改用户备注',
+	'not_bind_yet'			=> '暂未绑定',
+	'male'					=> '男',
+	'female'				=> '女',
+	'up_remark_count'		=> '备注名不能超过30个字符',
+	'edit_remark_to'		=> '%s，修改备注为 %s',
+	'users_remark'			=> '用户备注',
+	'remove_blacklist_confirm'	=> '您确定要将该用户移出黑名单吗？',
+	'remove_blacklist'		=> '移出黑名单',
+	'add_blacklist'			=> '加入黑名单',
+	'add_blacklist_confirm'	=> '您确定要将该用户加入黑名单吗？',
+	'update_backlist'		=> '加入/移出黑名单',
+	'remove_blacklist_success'	=> '移出黑名单成功',
+	'remove_blacklist_error'	=> '移出黑名单失败',
+	'add_blacklist_success'		=> '加入黑名单成功',
+	'add_blacklist_error'		=> '加入黑名单失败',
+	'update_usersinfo'			=> '修改用户信息',
+	'user_info'					=> '用户信息',
 		
 	//js
 	'js_lang'	=> array(
-			'pls_select_user'		=> '请先选择用户',
-			'tag_name_required'		=> '请输入标签名称',
-			'tag_name_maxlength'	=> '不得超过6个汉字或6个字符',
-
+		'pls_select_user'		=> '请先选择用户',
+		'tag_name_required'		=> '请输入标签名称',
+		'tag_name_maxlength'	=> '不得超过6个汉字或6个字符',
 	),
 );
 
