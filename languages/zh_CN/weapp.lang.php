@@ -138,97 +138,16 @@ return array(
 	'delete_user_tag'		=> '删除用户标签',
 	'remove_success'		=> '删除成功',
 	'remove_failed'			=> '删除失败',
-	
-	
+	'up_tag_count'			=> '最多只能选择3个标签',
+	'user_tag'		        => '用户标签',
+		
 	//js
 	'js_lang'	=> array(
-			'sFirst'					=> '首页',
-			'sLast' 					=> '尾页',
-			'sPrevious'					=> '上一页',
-			'sNext'						=> '下一页',
-			'sInfo'						=> '共_TOTAL_条记录 第_START_条到第_END_条',
-			'sZeroRecords' 				=> '没有找到任何记录',
-			'sEmptyTable' 				=> '没有找到任何记录',
-			'sInfoEmpty'				=> '共0条记录',
-			'sInfoFiltered'				=> '（从_MAX_条数据中检索）',
-			'template_code_require'		=> '消息模板名称不能为空',
-			'subject_require'			=> '消息主题不能为空',
-			'content_require'			=> '消息内容不能为空',
-	
-			'ok'					=> '确定',
-			'cancel'				=> '取消',
-			'status_edit_success'	=> '状态修改成功',
-			'kf_account_required'	=> '请输入客服账号',
-			'kf_nick_required'		=> '请输入客服昵称',
-			'password_required'		=> '请输入客服密码',
-			'kf_wx_required'		=> '请输入需要绑定的微信账号',
-	
-			'rule_name_required'	=> '请填写规则名称',
-			'rule_keywords_required'=> '请至少填写1个关键词',
-			'pls_select_material' 	=> '请先选择素材',
-			'no_title'				=> '无标题',
-			'no_material_select'	=> '没有素材可以选择',
-	
-			'male'					=> '男',
-			'female'				=> '女',
-			'not_bind_yet'			=> '暂未绑定',
-			'label_nick'			=> '昵称：',
-			'label_remark'			=> '备注名：',
-			'label_sex'				=> '性别：',
-			'label_province'		=> '省-市：',
-			'label_user_tag'		=> '用户标签：',
-			'label_subscribe_time'	=> '关注时间：',
-			'label_bind_user'		=> '绑定用户：',
-	
-			'getting'				=> '正在获取中...',
-			'get_user_tag'			=> '获取用户标签',
-			'get_user_info'			=> '获取用户信息',
+			'pls_select_user'		=> '请先选择用户',
 			'tag_name_required'		=> '请输入标签名称',
 			'tag_name_maxlength'	=> '不得超过6个汉字或6个字符',
-			'pls_select_user'		=> '请先选择用户',
-	
-			'qrcode_username_required'	=> '请填写推荐人',
-			'qrcode_scene_id_required'	=> '请填写推荐人ID',
-			'qrcode_funcions_required'	=> '请填写功能',
-			'application_adsense_required' => '请填写应用场景',
-	
-			'select_material'       => '请先选择素材！',
-			'unfind_any_recode' 	=> '没有找到任何记录',
-			'Monday'                => '星期一',
-			'Tuesday'               => '星期二',
-			'Wednesday'             => '星期三',
-			'Thursday'              => '星期四',
-			'Friday'                => '星期五',
-			'Saturday'              => '星期六',
-			'Monday'                => '星期日',
-			'num'                  	=> '次',
-			'num_time'              => '次数',
-			'get_message_record'	=> '获取客服会话记录',
-	
-			'menu_name_required'	=> '请填写菜单名称',
-			'menu_url_required'		=> '请输入外链URL',
-			'menu_url_url'			=> '图片链接地址需要以http://开头',
-	
-			'oauth_redirecturi_required'	=> '请填写微信OAuth回调地址！',
-		  
-			//admin_material.js
-			'upload_images_area'    => '将图片拖动至此处上传',
-			'upload_mp3_area'       => '将语音拖动至此处上传（格式：mp3）',
-			'title_placeholder'     => '请输入标题',
-			'title_placeholder_title' => '请输入视频标题',
-			'graphic'               => '图文',
-			'clone_no_parent'       => 'clone-obj方法未设置data-parent参数。',
-			'title'                 => '标题',
-			'thumbnail'             => '缩略图',
-			'batch_less_parameter'  => '批量操作缺少参数！',
-			'images_most8'          => '图文最多只能添加8条',
-			'img_priview'           => '图片预览',
-			'remove_material_cover' => '您确定要删除该封面素材吗？',
-			'title_placeholder_graphic' => '请输入图文标题',
+
 	),
-	
-	
-	
 );
 
 // end

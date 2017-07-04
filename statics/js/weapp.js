@@ -77,10 +77,6 @@
 			$form.validate(options);
 		},
 		
-		
-		
-		
-		
 		//批量给用户打标签
 		batch_set_label : function() {
 			$(".set-label-btn").on('click', function(e) {
@@ -123,7 +119,6 @@
 				});
 			});
 		},
-		
 		
 		load_opt : function(data){
 			if (data.content.length > 0) {

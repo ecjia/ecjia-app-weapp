@@ -49,6 +49,8 @@ defined('IN_ECJIA') or exit('No permission resources.');
 	function assign_adminlog_content() {
 		ecjia_admin_log::instance()->add_object('weapp_logo', RC_Lang::get('weapp::weapp.weapp_logo'));		
 		ecjia_admin_log::instance()->add_object('weapp', RC_Lang::get('weapp::weapp.weapp'));
+			
+		ecjia_admin_log::instance()->add_object('users_tag', RC_Lang::get('weapp::weapp.user_tag'));
 	}
 	
 //end

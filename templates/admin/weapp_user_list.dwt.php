@@ -26,10 +26,10 @@
 
 <div class="row-fluid">
 	<!-- {if $smarty.get.type neq 'unsubscribe' && $smarty.get.type neq 'blacklist'} -->
-	<!-- <a class="set-label-btn btn f_l m_r15" data-url="{$get_checked}"><i class="fontello-icon-tags"></i>{lang key='weapp::weapp.set_tag'}</a> -->
+	 	<a class="set-label-btn btn f_l m_r15" data-url="{$get_checked}"><i class="fontello-icon-tags"></i>{lang key='weapp::weapp.set_tag'}</a> 
 	<!-- {/if} -->
 	<div class="choost_list f_r">
-		<form class="form-inline" method="post" action="{$search_action}{if $smarty.get.weapp_id}&weapp_id={$smarty.get.weapp_id}{/if}{if $smarty.get.type}&type={$smarty.get.type}{/if}" name="searchForm">
+		<form class="form-inline" method="post" action="{$search_action}{if $smarty.get.type}&type={$smarty.get.type}{/if}" name="searchForm">
 			<input class="w180" type="text" name="keywords" value="{$smarty.get.keywords}" placeholder="{lang key='weapp::weapp.input_keywords'}"/>
 			<input type="submit" value="{lang key='weapp::weapp.search'}" class="btn search-btn">
 		</form>
@@ -63,9 +63,9 @@
 						</span>
 						<div class="edit-list">
 							<!-- {if $val.group_id neq 1 && $val.subscribe neq 0} -->
-								 <!-- <a class="set-label-btn cursor_pointer" data-openid="{$val.openid}" data-uid="{$val.uid}" data-url="{$get_checked}">{lang key='weapp::weapp.set_tag'}</a>&nbsp;|&nbsp;  -->
+								  <a class="set-label-btn cursor_pointer" data-openid="{$val.openid}" data-uid="{$val.uid}" data-url="{$get_checked}">{lang key='weapp::weapp.set_tag'}</a>  
 							<!-- {/if} -->
-							 <!--<a class="data-pjax" href='{url path="wechat/admin_subscribe/subscribe_message" args="uid={$val.uid}{if $smarty.get.page}&page={$smarty.get.page}{/if}"}' title="{lang key='wechat::wechat.message_record'}">{lang key='wechat::wechat.message_record'}</a> -->
+							 <!--&nbsp;|&nbsp;<a class="data-pjax" href='{url path="wechat/admin_subscribe/subscribe_message" args="uid={$val.uid}{if $smarty.get.page}&page={$smarty.get.page}{/if}"}' title="{lang key='wechat::wechat.message_record'}">{lang key='wechat::wechat.message_record'}</a> -->
 						</div>
 					</td>
 					<td>{$val.province} - {$val.city}</td>
@@ -100,7 +100,7 @@
 							{$val.name}
 							<t class="badge badge-info">{$val.count}</t>
 						</a>
-						{if $val['tag_id'] != 0  && $val['tag_id'] != 1 && $val['tag_id'] != 2}
+						{if ($val.tag_id != 0)  && ($val.tag_id != 1) && ($val.tag_id != 2)}
 						<span>
 							<a class="subscribe-icon-edit" data-toggle="modal" href="#edit_tag" title="{lang key='weapp::weapp.edit_user_tag'}" data-name="{$val.name}" value="{$val.id}"><i class="fontello-icon-edit f_s15"></i></a>
 							<a class="ajaxremove no-underline" data-toggle="ajaxremove" data-msg="{lang key='weapp::weapp.remove_tag_confirm'}" href='{RC_Uri::url("weapp/admin/remove_tag","id={$val.id}&tag_id={$val.tag_id}")}' title="{lang key='weapp::weapp.remove_user_tag'}"><i class="fontello-icon-trash f_s15 ecjiafc-red"></i></a>
@@ -197,31 +197,23 @@
 <div class="modal hide fade" id="set_label">
 	<div class="modal-header">
 		<button class="close" data-dismiss="modal">×</button>
-		<h3>{lang key='wechat::wechat.set_tag'}</h3>
+		<h3>{lang key='weapp::weapp.set_tag'}</h3>
 	</div>
 	<div class="modal-body tag_popover">
 		<!-- {if $errormsg} -->
 	    <div class="alert alert-error">
-            <strong>{lang key='wechat::wechat.label_notice'}</strong>{$errormsg}
+            <strong>{lang key='weapp::weapp.label_notice'}</strong>{$errormsg}
         </div>
-		<!-- {/if} -->
-		
-		<!-- {if $warn} -->
-			<!-- {if $type eq 0} -->
-			<div class="alert alert-error">
-				<strong>{lang key='wechat::wechat.label_notice'}</strong>{$type_error}
-			</div>
-			<!-- {/if} -->
 		<!-- {/if} -->
 		<form class="form-inline" method="post" action="{$label_action}&action=set_label" name="label_form">
 			<div class="popover_inner">
 				<div class="popover_content">
 					<div class="popover_tag_list">
 					</div>
-					<span class="label_block hide ecjiafc-red">{lang key='wechat::wechat.up_tag_count'}</span>
+					<span class="label_block hide ecjiafc-red">{lang key='weapp::weapp.up_tag_count'}</span>
 				</div>
 				<input type="hidden" name="openid" />
-				<div class="popover_bar"><a href="javascript:;" class="btn btn-gebo set_label" {if $errormsg}disabled{/if}>{lang key='wechat::wechat.ok'}</a>&nbsp;</div>
+				<div class="popover_bar"><a href="javascript:;" class="btn btn-gebo set_label" {if $errormsg}disabled{/if}>{lang key='weapp::weapp.ok'}</a>&nbsp;</div>
 	   		</div>
 	   	</form>
 	</div>
