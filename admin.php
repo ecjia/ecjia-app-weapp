@@ -675,10 +675,12 @@ class admin extends ecjia_admin {
 					$info['subscribe_time'] = RC_Time::local_date(ecjia::config('time_format'), $info['subscribe_time']);
 				}
 				$tag_list = RC_DB::table('wechat_user_tag')->where(RC_DB::raw('userid'), $info['uid'])->lists('tagid');
-				$name_list = RC_DB::table('wechat_tag')->whereIn(RC_DB::raw('tag_id'), $tag_list)->where(RC_DB::raw('wechat_id'), $wechat_id)
-								->orderBy(RC_DB::raw('tag_id'), 'desc')->lists('name');
-				if (!empty($name_list)) {
-					$info['tag_name'] = implode('，', $name_list);
+				if (!empty($tag_list)){
+					$name_list = RC_DB::table('wechat_tag')->whereIn(RC_DB::raw('tag_id'), $tag_list)->where(RC_DB::raw('wechat_id'), $wechat_id)
+					->orderBy(RC_DB::raw('tag_id'), 'desc')->lists('name');
+					if (!empty($name_list)) {
+						$info['tag_name'] = implode('，', $name_list);
+					}
 				}
 			}
 			$this->assign('info', $info);
