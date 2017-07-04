@@ -380,7 +380,7 @@ class admin extends ecjia_admin {
 		
 		//用户标签列表
 		$tag_arr = array();
-		$tag_arr['all']	= RC_DB::table('wechat_user')->where(RC_DB::raw('wechat_id', $wechat_id))->where(RC_DB::raw('subscribe'), 1)->where(RC_DB::raw('group_id'), '!=', 1)->count();
+		$tag_arr['all']	= RC_DB::table('wechat_user')->where(RC_DB::raw('wechat_id'), $wechat_id)->where(RC_DB::raw('subscribe'), 1)->where(RC_DB::raw('group_id'), '!=', 1)->count();
 		$tag_arr['item']= RC_DB::table('wechat_tag')->where(RC_DB::raw('wechat_id'), $wechat_id)->orderBy(RC_DB::raw('id'), 'desc')->selectRaw('id, tag_id, name, count')->get();
 		$this->assign('tag_arr', $tag_arr);
 		
