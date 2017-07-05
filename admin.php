@@ -591,9 +591,12 @@ class admin extends ecjia_admin {
 					//if (RC_Error::is_error($rs)) {
 					//	return $this->showmessage(wechat_method::wechat_error($rs->get_error_code()), ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_ERROR);
 					//}
+					
 					foreach ($openids_no_tag['uid'] as $val) {
 						//$this->wechat_user_tag->insert(array('userid' => $val, 'tagid' => $v));
 						RC_DB::table('wechat_user_tag')->insertGetId(array('userid' => $val, 'tagid' => $v));
+						//更新wechat_tag表中的count
+						$this->update_count($v, $wechat_id);
 					}
 				}
 			}
@@ -602,15 +605,20 @@ class admin extends ecjia_admin {
 		//取消用户标签
 		if (!empty($openids_tag)) {
 			foreach ($openids_tag as $k => $v) {
-				foreach ($v as $val) {
+				//foreach ($v as $val) {
 				//	$rs = $wechat->setBatchunTag($val['openid'], $val['tagid']);
 				//	if (RC_Error::is_error($rs)) {
 				//		return $this->showmessage(wechat_method::wechat_error($rs->get_error_code()), ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_ERROR);
 				//	}
-				}
+				//}
 				RC_DB::table('wechat_user_tag')->where(RC_DB::raw('userid'), $k)->delete();
+				foreach ($v as $val) {
+					//更新wechat_tag表中的count
+					$this->update_count($val['tagid'], $wechat_id);
+				}
 				$new_uid[] = $k;
 				$new_openid[] = $val['openid'];
+				
 			}
 				
 			if (!empty($new_openid)) {
@@ -624,6 +632,8 @@ class admin extends ecjia_admin {
 					//}
 					foreach ($new_uid as $val) {
 						RC_DB::table('wechat_user_tag')->insertGetId(array('userid' => $val, 'tagid' => $v));
+						//更新wechat_tag表中的count
+						$this->update_count($v, $wechat_id);
 					}
 				}
 			}
@@ -778,6 +788,21 @@ class admin extends ecjia_admin {
 		}
 	}
 	
+	/**
+	 * 更新wechat_tag表中count
+	 * @param int $tagid
+	 * @param int $wechat_id
+	 */
+	public function update_count($tagid, $wechat_id) {
+		$userids = RC_DB::table('wechat_user_tag')->where(RC_DB::raw('tagid'), $tagid)->lists('userid');//当前tag_id所拥有的userids
+		$uids =  RC_DB::table('wechat_user')->where(RC_DB::raw('wechat_id'), $wechat_id)->lists('uid');//所有小程序用户uids
+		$arr = array_intersect($userids, $uids);//交集
+		$count = count($arr);
+		$result = RC_DB::table('wechat_tag')->where(RC_DB::raw('wechat_id'), $wechat_id)->where(RC_DB::raw('tag_id'), $tagid)->update(array('count' => $count));
+		if ($result) {
+			return true;
+		}
+	}
 	
 	/**
 	 * 小程序列表
@@ -818,7 +843,6 @@ class admin extends ecjia_admin {
 	 */
 	private function weapp_user_list($weapp_id) {
 		$db_wechat_user = RC_DB::table('wechat_user as wu')
-							->leftJoin('connect_user as cu', RC_DB::raw('wu.unionid'), '=', RC_DB::raw('cu.open_id'))
 							->leftJoin('platform_account as pa', RC_DB::raw('pa.id'), '=', RC_DB::raw('wu.wechat_id'));
 		$filter = array();
 		$filter['keywords'] = empty($_GET['keywords']) ? '' : trim($_GET['keywords']);
@@ -856,26 +880,27 @@ class admin extends ecjia_admin {
 		} 
 
 		$db_wechat_user->where(RC_DB::raw('pa.platform'), 'weapp');
-		$db_wechat_user->where(RC_DB::raw('cu.connect_code'), 'sns_wechat');	
 		$count = $db_wechat_user->count (RC_DB::raw('wu.uid'));
-		
 		$filter['record_count'] = $count;
 		$page = new ecjia_page($count, 10, 5);
 	
 		$arr = array();
 		$data = $db_wechat_user
-					->selectRaw('wu.*, cu.user_id')
+					->selectRaw('wu.*')
 					->orderBy(RC_DB::Raw('subscribe_time'), 'desc')->take(10)->skip($page->start_id-1)->get();
 		
 		if (isset($data)) {
 			foreach ($data as $rows) {
 				//获取绑定会员的名称
-				if ($rows['user_id'] > 0) {
-					$rows['user_name'] = RC_DB::table('users')->where(RC_DB::raw('user_id'), $rows['user_id'])->pluck('user_name');
+					$user_name = RC_DB::table('connect_user as cu')
+										->leftJoin('users as u', RC_DB::raw('cu.user_id'), '=', RC_DB::raw('u.user_id'))
+										->where(RC_DB::raw('cu.open_id'), $rows['unionid'])
+										->pluck('user_name');				
+				if (!empty($user_name)){
+					$rows['user_name'] = $user_name;
 				} else {
 					$rows['user_name'] = '暂未绑定';
-				}
-				
+				}				
 				//关注时间
 				$rows['subscribe_time'] = RC_Time::local_date(ecjia::config('time_format'), $rows['subscribe_time']);
 				if (empty($rows['headimgurl'])) {
