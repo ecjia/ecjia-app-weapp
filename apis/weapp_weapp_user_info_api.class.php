@@ -74,10 +74,7 @@ class weapp_weapp_user_info_api extends Component_Event_Api {
         $wechat_id = $WeappUUID->getWeappID();
         
         $user = RC_DB::table('wechat_user')->where('unionid', $result['open_id'])->where('wechat_id', $wechat_id)->first();
-        if ($user) {
-            return $user;
-        }
-        return array();
+        return $user;
     }
 }
 
