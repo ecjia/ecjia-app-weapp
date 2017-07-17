@@ -50,7 +50,7 @@ defined('IN_ECJIA') or exit('No permission resources.');
  * 获取连接用户信息
  * @author royalwang
  */
-class connect_weapp_user_info_api extends Component_Event_Api {
+class weapp_weapp_user_info_api extends Component_Event_Api {
     
     /**
      * user_id 用户ID
