@@ -83,41 +83,30 @@ class wxpay_module extends api_front implements api_interface {
 		}
 		
 		//支付方式信息
-		$payment_method = RC_Loader::load_app_class('payment_method', 'payment');
-		$payment_info = $payment_method->payment_info_by_id($order['pay_id']);
-		// 取得支付信息，生成支付代码
-		$payment_config = $payment_method->unserialize_config($payment_info['pay_config']);
-
-// 		$handler = $payment_method->get_payment_instance($payment_info['pay_code'], $payment_config);
-		$handler = with(new Ecjia\App\Payment\PaymentPlugin)->channel($payment_info['pay_code']);
+		$handler = with(new Ecjia\App\Payment\PaymentPlugin)->channel(intval($order['pay_id']));
+		if (is_ecjia_error($handler)) {
+		    return $handler;
+		}
+		
+		/* 插入支付流水记录*/
+		RC_Api::api('payment', 'save_payment_record', [
+    		'order_sn' 		 => $order['order_sn'],
+    		'total_fee'      => $order['order_amount'],
+    		'pay_code'       => $handler->getCode(),
+    		'pay_name'		 => $handler->getName(),
+    		'trade_type'	 => 'buy',
+		]);
+		
 		$handler->set_orderinfo($order);
 		$handler->set_mobile($is_mobile);
 		
-		$result = $handler->get_code(payment_abstract::PAYCODE_PARAM);
+		$result = $handler->get_code(Ecjia\App\Payment\PayConstant::PAYCODE_PARAM);
         if (is_ecjia_error($result)) {
             return $result;
         } else {
             $order['payment'] = $result;
         }
-        
-        /* 插入支付流水记录*/
-        $db = RC_DB::table('payment_record');
-        $payment_record = $db->where('order_sn', $order['order_sn'])->first();
-        $payment_data = array(
-        	'order_sn'		=> $order['order_sn'],
-        	'trade_type'	=> 'buy',
-        	'pay_code'		=> $payment_info['pay_code'],
-        	'pay_name'		=> $payment_info['pay_name'],
-        	'total_fee'		=> $order['order_amount'],
-        	'pay_status'	=> 0,
-        );
-        if (empty($payment_record)) {
-        	$payment_data['create_time']	= RC_Time::gmtime();
-        	$db->insertGetId($payment_data);
-        } elseif($payment_record['pay_status'] == 0 && $payment_record['pay_code'] != $payment_info['pay_code'] && $order['order_amount'] != $payment_record['total_fee']) {
-        	$payment_data['update_time']	= RC_Time::gmtime();
-        	$db->where('order_sn', $order['order_sn'])->update($payment_data);
-        }
+
         //增加支付状态
         $order['payment']['order_pay_status'] = $order['pay_status'];//0 未付款，1付款中，2已付款
         
