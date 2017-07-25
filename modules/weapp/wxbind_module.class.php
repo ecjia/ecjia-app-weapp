@@ -70,8 +70,8 @@ class wxbind_module extends api_front implements api_interface {
 		$WeappUser = new Ecjia\App\Weapp\WeappUser($WeappUUID);
 		$data = $WeappUser->decryptedData($session_key, $encrypteddata, $iv);
 		
-		RC_Logger::getLogger('error-weapp1')->info($encrypteddata);
-		RC_Logger::getLogger('error-weapp')->info($data);
+		RC_Logger::getLogger('error')->info($encrypteddata);
+		RC_Logger::getLogger('error')->info($data);
 
 		/*更新用户数据*/
 		if (!empty($data)) {
