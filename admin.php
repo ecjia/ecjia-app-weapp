@@ -376,17 +376,17 @@ class admin extends ecjia_admin {
 		} else{
 			$weapp_user_list = $this->weapp_user_list($wechat_id);
 			$this->assign('weapp_user_list', $weapp_user_list);
+			
+			//用户标签列表
+			$tag_arr = array();
+			$tag_arr['all']	= RC_DB::table('wechat_user')->where('wechat_id', $wechat_id)->where('subscribe', 1)->where('group_id', '!=', 1)->count();
+			$tag_arr['item']= RC_DB::table('wechat_tag')->where('wechat_id', $wechat_id)->orderBy('id', 'desc')->selectRaw('id, tag_id, name, count')->get();
+			$this->assign('tag_arr', $tag_arr);
+			
+			//取消关注用户数量
+			$num = RC_DB::table('wechat_user')->where('wechat_id', $wechat_id)->where('subscribe', 0)->where('group_id', 0)->count();
+			$this->assign('num', $num);
 		}
-		
-		//用户标签列表
-		$tag_arr = array();
-		$tag_arr['all']	= RC_DB::table('wechat_user')->where(RC_DB::raw('wechat_id'), $wechat_id)->where(RC_DB::raw('subscribe'), 1)->where(RC_DB::raw('group_id'), '!=', 1)->count();
-		$tag_arr['item']= RC_DB::table('wechat_tag')->where(RC_DB::raw('wechat_id'), $wechat_id)->orderBy(RC_DB::raw('id'), 'desc')->selectRaw('id, tag_id, name, count')->get();
-		$this->assign('tag_arr', $tag_arr);
-		
-		//取消关注用户数量
-		$num = RC_DB::table('wechat_user')->where(RC_DB::raw('wechat_id'), $wechat_id)->where(RC_DB::raw('subscribe'), 0)->where(RC_DB::raw('group_id'), 0)->count();
-		$this->assign('num', $num);
 
 		$this->assign('get_checked', RC_Uri::url('weapp/admin/get_checked_tag'));
 		$this->assign('label_action', RC_Uri::url('weapp/admin/batch_tag'));
