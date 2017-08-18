@@ -95,13 +95,13 @@ class wxbind_module extends api_front implements api_interface {
 		);
 		
 		//绑定会员
-		$result = RC_Api::api('connect', 'connect_user_bind', array('connect_code' => 'sns_wechat', 'openid' => $data['unionid'], 'profile' => $data));
-		if (is_ecjia_error($result)) {
-			return $result;
+		$connect_user = RC_Api::api('connect', 'connect_user_bind', array('connect_code' => 'sns_wechat', 'open_id' => $data['unionid'], 'profile' => $data));
+		if (is_ecjia_error($connect_user)) {
+			return $connect_user;
 		} 
 		
 		//获取会员信息
-		$user_info = RC_Api::api('user', 'user_info', array('user_id' => $result['user_id']));
+		$user_info = RC_Api::api('user', 'user_info', array('user_id' => $connect_user->getUserId()));
 		if (is_ecjia_error($user_info)) {
 			return $user_info;
 		}
