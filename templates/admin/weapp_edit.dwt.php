@@ -53,7 +53,7 @@
 											<span  class="fileupload-exists">{lang key='weapp::weapp.modification'}</span>
 											<input type='file' name='weapp_logo' size="35"/>
 										</span>
-										<a class="btn fileupload-exists" {if !$wxapp_info.logo}data-dismiss="fileupload" href="javascript:;"{else}data-toggle="ajaxremove" data-msg="{lang key='weapp::weapp.sure_del'}" href='{url path="wxapp/admin/remove_logo" args="id={$wxapp_info.id}"}' title="{lang key='weapp::weapp.delete'}"{/if}>{lang key='weapp::weapp.delete'}</a>
+										<a class="btn fileupload-exists" {if !$wxapp_info.logo}data-dismiss="fileupload" href="javascript:;"{else}data-toggle="ajaxremove" data-msg="{lang key='weapp::weapp.sure_del'}" href='{url path="weapp/admin/remove_logo" args="id={$wxapp_info.id}"}' title="{lang key='weapp::weapp.delete'}"{/if}>{lang key='weapp::weapp.delete'}</a>
 									</div>
 								</div>
 							</div>		

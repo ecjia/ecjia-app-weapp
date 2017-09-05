@@ -213,7 +213,7 @@ class admin extends ecjia_admin {
 		
 		if ((isset($_FILES['weapp_logo']['error']) && $_FILES['weapp_logo']['error'] == 0) || (!isset($_FILES['weapp_logo']['error']) && isset($_FILES['weapp_logo']['tmp_name'] ) &&$_FILES['weapp_logo']['tmp_name'] != 'none')) {
 			$upload = RC_Upload::uploader('image', array('save_path' => 'data/weapp', 'auto_sub_dirs' => false));
-			$image_info = $upload->upload($_FILES['wxapp_logo']);
+			$image_info = $upload->upload($_FILES['weapp_logo']);
 			
 			if (!empty($image_info)) {
 				//删除原来的logo
