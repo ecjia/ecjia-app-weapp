@@ -11,8 +11,8 @@ class wxacode extends ecjia_front
     
     public function init()
     {
-        $uuid = trim($this->request->input('uuid'));
-        $storeid = trim($this->request->input('storeid'));
+        $uuid = trim($this->request->query('uuid'));
+        $storeid = trim($this->request->query('storeid'));
         
 		$qrimg = with(new Ecjia\App\Weapp\WxaCode())->getStoreWxaCode($storeid);
 		
