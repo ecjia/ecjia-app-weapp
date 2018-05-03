@@ -63,7 +63,7 @@ class WeappUser {
     
     public function login($code)
     {
-        return $this->weappUUID->getWeapp()->get($code);
+        return $this->weappUUID->getWeappUser()->get($code);
     }
     
     
