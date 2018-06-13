@@ -2,9 +2,9 @@
 
 namespace Ecjia\App\Weapp;
 
-use Royalcms\Component\App\AppServiceProvider;
+use Royalcms\Component\App\AppParentServiceProvider;
 
-class WeappServiceProvider extends  AppServiceProvider
+class WeappServiceProvider extends  AppParentServiceProvider
 {
     
     public function boot()
