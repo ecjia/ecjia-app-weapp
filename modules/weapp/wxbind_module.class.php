@@ -73,7 +73,8 @@ class wxbind_module extends api_front implements api_interface {
 		/*更新用户数据*/
 		if (!empty($data)) {
 			$WechatUserRepository = new Ecjia\App\Weapp\Repositories\WechatUserRepository($weappId);
-			$update = $WechatUserRepository->updateUser($data->all());
+			$data = !is_array($data) ? $data->all() : $data;
+			$update = $WechatUserRepository->updateUser($data);
 			
 			if (!$update) {
 				return new ecjia_error('update_userinfo_fail', '更新用户数据失败');
