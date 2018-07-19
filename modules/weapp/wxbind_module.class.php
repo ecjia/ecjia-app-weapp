@@ -70,10 +70,13 @@ class wxbind_module extends api_front implements api_interface {
 		$WeappUser = new Ecjia\App\Weapp\WeappUser($WeappUUID);
 		$data = $WeappUser->decryptedData($session_key, $encrypteddata, $iv);
 
+		if (is_ecjia_error($data)) {
+			return $data;
+		}
+
 		/*更新用户数据*/
 		if (!empty($data)) {
 			$WechatUserRepository = new Ecjia\App\Weapp\Repositories\WechatUserRepository($weappId);
-			$data = !is_array($data) ? $data->all() : $data;
 			$update = $WechatUserRepository->updateUser($data);
 			
 			if (!$update) {
