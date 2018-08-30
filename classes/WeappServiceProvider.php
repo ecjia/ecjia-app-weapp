@@ -9,7 +9,7 @@ class WeappServiceProvider extends  AppParentServiceProvider
     
     public function boot()
     {
-        $this->package('ecjia/app-weapp', null, dirname(__DIR__));
+        $this->package('ecjia/app-weapp');
     }
     
     public function register()
