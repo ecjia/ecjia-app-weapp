@@ -47,27 +47,27 @@
 defined('IN_ECJIA') or exit('No permission resources.');
 
 /**
- * 微信小程序
- * @author zrl
+ * 公众平台菜单
  */
-class weapp_admin_menu_api extends Component_Event_Api
+class weapp_platform_menu_api extends Component_Event_Api
 {
 
     public function call(&$options)
     {
-        if (ecjia_platform::$controller->getPlatformAccount()->getPlatform() != 'weapp') {
-            return null;
-        }
 
-        $menus = ecjia_admin::make_admin_menu('16_weapp', RC_Lang::get('weapp::package.weapp'), '', 19);
-        
-        $submenus = array(
-        	ecjia_admin::make_admin_menu('01_weapp', RC_Lang::get('weapp::weapp.weapp_manage'), RC_Uri::url('weapp/admin/init'), 1)->add_purview('weapp_manage'),
-        	ecjia_admin::make_admin_menu('02_weapp_user_manage', RC_Lang::get('weapp::weapp.weapp_user_manage'), RC_Uri::url('weapp/admin/user_list'), 2)->add_purview('weapp_user_manage'),
+        $navmenus = ecjia_admin::make_admin_menu('nav-header', '微信小程序', '', 100);
+
+        $usermenus = ecjia_admin::make_admin_menu('15_content', '粉丝管理', '', 101)->add_icon('icon-user')->add_submenu(
+            array(
+                ecjia_admin::make_admin_menu('02_weapp_user_manage', RC_Lang::get('weapp::weapp.weapp_user_manage'), RC_Uri::url('weapp/platform_user/init'), 1)->add_purview('weapp_user_manage'),
+            )
         );
-        
-        $menus->add_submenu($submenus);
-        return $menus;
+
+
+        return array(
+            $navmenus,
+            $usermenus,
+        );
     }
 }
 
