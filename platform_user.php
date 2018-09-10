@@ -578,7 +578,6 @@ class platform_user extends ecjia_platform
         ecjia_platform_screen::get_current_screen()->add_nav_here(new admin_nav_here(RC_Lang::get('wechat::wechat.user_message_record')));
         $this->assign('action_link', array('text' => RC_Lang::get('wechat::wechat.subscribe_manage'), 'href' => RC_Uri::url('weapp/platform_user/init', array('page' => $page))));
 
-        $wechat_id = 1;
         if (is_ecjia_error($wechat_id)) {
             $this->assign('errormsg', RC_Lang::get('wechat::wechat.add_platform_first'));
         } else {
