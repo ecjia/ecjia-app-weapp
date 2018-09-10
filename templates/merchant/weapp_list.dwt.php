@@ -8,7 +8,6 @@
 <!-- {/block} -->
 
 <!-- {block name="home-content"} -->
-
 <div class="page-header">
 	<div class="pull-left">
 		<h2><!-- {if $ur_here}{$ur_here}{/if} --></h2>
@@ -33,17 +32,17 @@
 						<li><a class="button_remove" data-toggle="ecjiabatch" data-idClass=".checkbox:checked" data-url='{url path="weapp/merchant/batch_remove"}'  data-msg="{lang key='platform::platform.sure_want_do'}" data-noSelectMsg="请先选择要删除的小程序！" data-name="id" href="javascript:;"><i class="fa fa-trash-o"></i> 删除小程序</a></li>
 		           	</ul>
 				</div>
-				
+
 				<form class="form-inline f_r" action="{$search_action}" method="post" name="searchForm">
 					<div class="screen f_r">
 						<div class="form-group">
-							<input class="form-control" type="text" name="keywords" value="{$smarty.get.keywords}" placeholder="请输入小程序名称关键词"/>
+							<input class="form-control" type="text" name="keywords" value="{$smarty.get.keywords}" placeholder="请输入小程序名称关键词" />
 						</div>
 						<button class="btn btn-primary search_wechat" type="submit"><i class="fa fa-search"></i> 搜索 </button>
 					</div>
 				</form>
 			</div>
-			
+
 			<div class="panel-body panel-body-small">
 				<section class="panel">
 					<table class="table table-striped table-hover table-hide-edit ecjiaf-tlf">
@@ -77,9 +76,9 @@
 							     	</div>
 								</td>
 								<td>
-							        <i class="fa {if $val.status eq 1}fa-check{else}fa-times{/if} cursor_pointer" data-trigger="toggleState" data-url="{RC_Uri::url('weapp/merchant/toggle_show')}" data-id="{$val.id}" ></i>
+							        <i class="fa {if $val.status eq 1}fa-check{else}fa-times{/if} cursor_pointer" data-trigger="toggleState" data-url="{RC_Uri::url('weapp/merchant/toggle_show')}" data-id="{$val.id}"></i>
 								</td>
-								<td><span class="cursor_pointer" data-trigger="editable" data-url="{RC_Uri::url('weapp/merchant/edit_sort')}" data-name="sort" data-pk="{$val.id}"  data-title="编辑排序">{$val.sort}</span></td>
+								<td><span class="cursor_pointer" data-trigger="editable" data-url="{RC_Uri::url('weapp/merchant/edit_sort')}" data-name="sort" data-pk="{$val.id}" data-title="编辑排序">{$val.sort}</span></td>
 								<td>
 									{$val.add_time}
 								</td>
