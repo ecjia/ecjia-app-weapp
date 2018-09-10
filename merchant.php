@@ -47,7 +47,7 @@
 defined('IN_ECJIA') or exit('No permission resources.');
 
 /**
- * ECJIA平台、小程序配置
+ * ECJIA小程序
  */
 class merchant extends ecjia_merchant
 {
@@ -57,7 +57,6 @@ class merchant extends ecjia_merchant
 
         Ecjia\App\Weapp\Helper::assign_adminlog_content();
 
-//         RC_Loader::load_app_class('platform_factory', null, false);
         /* 加载全局 js/css */
         RC_Script::enqueue_script('jquery-validate');
         RC_Script::enqueue_script('jquery-form');
@@ -70,10 +69,10 @@ class merchant extends ecjia_merchant
         RC_Style::enqueue_style('ecjia-mh-editable-css');
 
         RC_Script::enqueue_script('clipboard', RC_App::apps_url('statics/js/clipboard.min.js', __FILE__));
-        
+
         RC_Script::enqueue_script('weapp', RC_App::apps_url('statics/js/mh_weapp.js', __FILE__), array(), false, true);
         RC_Script::localize_script('weapp', 'js_lang', RC_Lang::get('platform::platform.js_lang'));
-        
+
         ecjia_merchant_screen::get_current_screen()->add_nav_here(new admin_nav_here('小程序列表', RC_Uri::url('weapp/merchant/init')));
         ecjia_merchant_screen::get_current_screen()->set_parentage('weapp', 'weapp/merchant.php');
     }
@@ -126,11 +125,6 @@ class merchant extends ecjia_merchant
         $appid = !empty($_POST['appid']) ? trim($_POST['appid']) : '';
         $appsecret = !empty($_POST['appsecret']) ? trim($_POST['appsecret']) : '';
 
-//         $count = RC_DB::table('platform_account')->where('shop_id', $_SESSION['store_id'])->count();
-//         if ($count != 0) {
-//         	return $this->showmessage('每个商家只能添加一个小程序', ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_ERROR);
-//         }
-        
         if (empty($name)) {
             return $this->showmessage('请输入小程序名称', ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_ERROR);
         }
@@ -158,7 +152,7 @@ class merchant extends ecjia_merchant
 
         $data = array(
             'uuid' => $uuid,
-        	'platform' => 'weapp',
+            'platform' => 'weapp',
             'logo' => $platform_logo,
             'name' => $name,
             'appid' => $appid,
@@ -283,22 +277,22 @@ class merchant extends ecjia_merchant
             return $this->showmessage(RC_Lang::get('platform::platform.remove_pub_failed'), ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_ERROR);
         }
     }
-    
+
     /**
      * 批量删除
      */
     public function batch_remove()
     {
-    	$this->admin_priv('weapp_delete', ecjia::MSGTYPE_JSON);
-    
-    	$idArr = explode(',', $_POST['id']);
-    
-    	$info = RC_DB::table('platform_account')->where('shop_id', $_SESSION['store_id'])->whereIn('id', $idArr)->select('name')->get();
-    	foreach ($info as $v) {
-    		ecjia_merchant::admin_log($v['name'], 'batch_remove', 'weapp');
-    	}
-    	RC_DB::table('platform_account')->where('shop_id', $_SESSION['store_id'])->whereIn('id', $idArr)->delete();
-    	return $this->showmessage('批量删除成功', ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_SUCCESS, array('pjaxurl' => RC_Uri::url('weapp/merchant/init')));
+        $this->admin_priv('weapp_delete', ecjia::MSGTYPE_JSON);
+
+        $idArr = explode(',', $_POST['id']);
+
+        $info = RC_DB::table('platform_account')->where('shop_id', $_SESSION['store_id'])->whereIn('id', $idArr)->select('name')->get();
+        foreach ($info as $v) {
+            ecjia_merchant::admin_log($v['name'], 'batch_remove', 'weapp');
+        }
+        RC_DB::table('platform_account')->where('shop_id', $_SESSION['store_id'])->whereIn('id', $idArr)->delete();
+        return $this->showmessage('批量删除成功', ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_SUCCESS, array('pjaxurl' => RC_Uri::url('weapp/merchant/init')));
     }
 
     /**
@@ -339,7 +333,6 @@ class merchant extends ecjia_merchant
         } else {
             ecjia_merchant::admin_log($name, 'stop', 'weapp');
         }
-
         return $this->showmessage(RC_Lang::get('platform::platform.switch_succeed'), ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_SUCCESS, array('content' => $val, 'pjaxurl' => RC_Uri::url('weapp/merchant/init')));
     }
 
@@ -412,7 +405,7 @@ class merchant extends ecjia_merchant
         $db_platform_account->where('platform', 'weapp');
 
         $count = $db_platform_account->count();
-        
+
         $filter['record_count'] = $count;
         $page = new ecjia_merchant_page($count, 10, 5);
 
@@ -432,7 +425,6 @@ class merchant extends ecjia_merchant
         }
         return array('item' => $arr, 'filter' => $filter, 'page' => $page->show(5), 'desc' => $page->page_desc(), 'count' => $count);
     }
-
 }
 
 //end
