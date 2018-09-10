@@ -385,7 +385,7 @@ class merchant extends ecjia_merchant
 
         $authcode_str = http_build_query($authcode_array);
         $authcode = RC_Crypt::encrypt($authcode_str);
-        $url = str_replace("sites/merchant/index.php", "sites/weapp/index.php", RC_Uri::url('weapp/privilege/autologin')) . '&authcode=' . $authcode;
+        $url = str_replace("sites/merchant/index.php", "sites/platform/index.php", RC_Uri::url('weapp/privilege/autologin')) . '&authcode=' . $authcode;
         return $this->redirect($url);
     }
 
