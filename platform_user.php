@@ -48,7 +48,7 @@
 defined('IN_ECJIA') or exit('No permission resources.');
 
 /**
- * ECJIA粉丝管理
+ * ECJIA用户管理
  */
 class platform_user extends ecjia_platform
 {
@@ -73,7 +73,7 @@ class platform_user extends ecjia_platform
         RC_Script::localize_script('platform_user', 'js_lang', RC_Lang::get('wechat::wechat.js_lang'));
 
         ecjia_platform_screen::get_current_screen()->add_nav_here(new admin_nav_here(RC_Lang::get('wechat::wechat.subscribe_manage'), RC_Uri::url('weapp/platform_user/init')));
-        ecjia_platform_screen::get_current_screen()->set_subject('粉丝管理');
+        ecjia_platform_screen::get_current_screen()->set_subject('用户管理');
     }
 
     public function init()

@@ -54,7 +54,7 @@ class wechat_platform_purview_api extends Component_Event_Api {
     
     public function call(&$options) {
         $purviews = array(        		
-        	array('action_name' => RC_Lang::get('wechat::wechat.user_manage'), 'action_code' => 'weapp_user_manage', 'relevance'   => ''),
+        	array('action_name' => '用户管理', 'action_code' => 'weapp_user_manage', 'relevance'   => ''),
         );
         return $purviews;
     }

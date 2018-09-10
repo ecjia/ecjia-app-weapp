@@ -16,12 +16,6 @@
 </div>
 <!-- {/if} -->
 
-<!-- {if $warn && $type eq 0} -->
-<div class="alert alert-danger">
-	<strong>{lang key='wechat::wechat.label_notice'}</strong>{$type_error}
-</div>
-<!-- {/if} -->
-
 <div class="row">
     <div class="col-12">
         <div class="card">

@@ -16,36 +16,15 @@
 </div>
 <!-- {/if} -->
 
-<!-- {if $errormsg} -->
-<div class="alert alert-danger">
-	<strong>{lang key='wechat::wechat.label_notice'}</strong>{$errormsg}
-</div>
-<!-- {/if} -->
-	
 <div class="alert alert-light alert-dismissible mb-2" role="alert">
 	<button type="button" class="close" data-dismiss="alert" aria-label="Close">
 		<span aria-hidden="true">×</span>
 	</button>
 	<h4 class="alert-heading mb-2">操作提示</h4>
-	<p>粉丝管理：显示已经关注微信公众号的用户信息，未关注的不显示。</p>
+	<p>用户管理：显示已经关注微信公众号的用户信息，未关注的不显示。</p>
 	<p>1.搜索功能支持通过用户昵称、省、市搜索。</p>
 	<p>2.发送客服消息，可以单独发送微信消息给微信用户（只有48小时内和公众号有过互动的粉丝才能接收到信息，否则会发送失败）应用场景 例如，通知用户中奖领取奖品等事宜。</p>
 	<p>★ 注意事项：在对用户进行发送消息，打标签等操作之前，请及时点击获取用户信息按钮，以便同步微信公众号平台的用户分组（标签）与数量。</p>
-</div>
-
-<div class="row">
-    <div class="col-12">
-        <div class="card">
-            <div class="card-header">
-                <h4 class="card-title">
-                	{lang key='wechat::wechat.user_manage_synchro'}
-                </h4>
-            </div>
-            <div class="card-body">
-				<div><button type="button" class="ajaxmenu btn btn-outline-primary" data-url='{RC_Uri::url("weapp/platform_user/get_userinfo")}' data-value="get_userinfo">{lang key='wechat::wechat.get_user_info'}</button><span style="margin-left: 20px;">{lang key='wechat::wechat.get_user_info_notice'}</span></div><br/>
-			</div>
-		</div>
-	</div>
 </div>
 
 <div class="row">

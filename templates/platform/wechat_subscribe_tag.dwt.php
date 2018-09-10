@@ -14,12 +14,6 @@
 </div>
 <!-- {/if} -->
 	
-<!-- {if $warn && $type eq 0} -->
-<div class="alert alert-danger">
-	<strong>{lang key='wechat::wechat.label_notice'}</strong>{$type_error}
-</div>
-<!-- {/if} -->
-
 <div class="alert alert-light alert-dismissible mb-2" role="alert">
 	<button type="button" class="close" data-dismiss="alert" aria-label="Close">
 		<span aria-hidden="true">×</span>

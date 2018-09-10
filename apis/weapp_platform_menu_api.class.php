@@ -61,9 +61,9 @@ class weapp_platform_menu_api extends Component_Event_Api
 
         $navmenus = ecjia_admin::make_admin_menu('nav-header', '微信小程序', '', 100);
 
-        $usermenus = ecjia_admin::make_admin_menu('15_content', '粉丝管理', '', 101)->add_icon('icon-user')->add_submenu(
+        $usermenus = ecjia_admin::make_admin_menu('15_content', '用户管理', '', 101)->add_icon('icon-user')->add_submenu(
             array(
-            	ecjia_admin::make_admin_menu('01_wechat', RC_Lang::get('wechat::wechat.user_manage'), RC_Uri::url('weapp/platform_user/init'), 1)->add_purview('weapp_user_manage'),
+            	ecjia_admin::make_admin_menu('01_wechat', '用户管理', RC_Uri::url('weapp/platform_user/init'), 1)->add_purview('weapp_user_manage'),
             	ecjia_admin::make_admin_menu('02_wechat', '标签管理', RC_Uri::url('weapp/platform_user/tag'), 2)->add_purview('weapp_user_manage'),
             	ecjia_admin::make_admin_menu('03_wechat', '取消关注', RC_Uri::url('weapp/platform_user/cancel_list'), 3)->add_purview('weapp_user_manage'),
             	ecjia_admin::make_admin_menu('04_wechat', '黑名单', RC_Uri::url('weapp/platform_user/back_list'), 4)->add_purview('weapp_user_manage'),
