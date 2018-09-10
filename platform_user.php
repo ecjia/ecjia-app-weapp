@@ -72,7 +72,7 @@ class platform_user extends ecjia_platform
 //         RC_Style::enqueue_style('admin_material', RC_App::apps_url('statics/platform-css/admin_material.css', __FILE__));
         RC_Script::localize_script('platform_user', 'js_lang', RC_Lang::get('wechat::wechat.js_lang'));
 
-        ecjia_platform_screen::get_current_screen()->add_nav_here(new admin_nav_here(RC_Lang::get('wechat::wechat.subscribe_manage'), RC_Uri::url('weapp/platform_user/init')));
+        ecjia_platform_screen::get_current_screen()->add_nav_here(new admin_nav_here('用户管理', RC_Uri::url('weapp/platform_user/init')));
         ecjia_platform_screen::get_current_screen()->set_subject('用户管理');
     }
 
@@ -81,7 +81,7 @@ class platform_user extends ecjia_platform
         $this->admin_priv('weapp_user_manage');
 
         ecjia_platform_screen::get_current_screen()->remove_last_nav_here();
-        ecjia_platform_screen::get_current_screen()->add_nav_here(new admin_nav_here(RC_Lang::get('wechat::wechat.subscribe_manage')));
+        ecjia_platform_screen::get_current_screen()->add_nav_here(new admin_nav_here('用户管理'));
         ecjia_platform_screen::get_current_screen()->add_help_tab(array(
             'id' => 'overview',
             'title' => RC_Lang::get('wechat::wechat.overview'),
@@ -94,7 +94,7 @@ class platform_user extends ecjia_platform
 
         $wechat_id = $this->platformAccount->getAccountID();
 
-        $this->assign('ur_here', RC_Lang::get('wechat::wechat.subscribe_manage'));
+        $this->assign('ur_here', '用户管理');
         $this->assign('form_action', RC_Uri::url('weapp/platform_user/init'));
         $this->assign('action', RC_Uri::url('weapp/platform_user/subscribe_move'));
         $this->assign('label_action', RC_Uri::url('weapp/platform_user/batch'));
@@ -576,7 +576,7 @@ class platform_user extends ecjia_platform
         $this->assign('ur_here', '用户信息');
 
         ecjia_platform_screen::get_current_screen()->add_nav_here(new admin_nav_here(RC_Lang::get('wechat::wechat.user_message_record')));
-        $this->assign('action_link', array('text' => RC_Lang::get('wechat::wechat.subscribe_manage'), 'href' => RC_Uri::url('weapp/platform_user/init', array('page' => $page))));
+        $this->assign('action_link', array('text' => '用户管理', 'href' => RC_Uri::url('weapp/platform_user/init', array('page' => $page))));
 
         if (is_ecjia_error($wechat_id)) {
             $this->assign('errormsg', RC_Lang::get('wechat::wechat.add_platform_first'));
