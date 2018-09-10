@@ -14,29 +14,6 @@
 </div>
 <!-- {/if} -->
 	
-<div class="alert alert-light alert-dismissible mb-2" role="alert">
-	<button type="button" class="close" data-dismiss="alert" aria-label="Close">
-		<span aria-hidden="true">×</span>
-	</button>
-	<h4 class="alert-heading mb-2">操作提示</h4>
-	<p>标签管理，一个公众号，最多可以创建100个标签。每个公众号可以为用户打上最多20个标签。</p>
-</div>
-
-<div class="row">
-    <div class="col-12">
-        <div class="card">
-            <div class="card-header">
-                <h4 class="card-title">
-                	{lang key='wechat::wechat.user_manage_synchro'}
-                </h4>
-            </div>
-            <div class="card-body">
-				<div><button type="button" class="ajaxmenu btn btn-outline-primary" data-url='{RC_Uri::url("weapp/platform_user/get_usertag")}' data-value="get_usertag">{lang key='wechat::wechat.get_user_tag'}</button><span style="margin-left: 20px;">{lang key='wechat::wechat.get_user_tag_notice'}</span></div><br/>
-			</div>
-		</div>
-	</div>
-</div>
-
 <div class="row">
     <div class="col-12">
         <div class="card">
