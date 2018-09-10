@@ -355,6 +355,43 @@ class admin extends ecjia_admin {
 		return $this->showmessage(RC_Lang::get('weapp::weapp.deleted')."[ ".$count." ]".RC_Lang::get('weapp::weapp.record_account'), ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_SUCCESS, array('pjaxurl' => RC_Uri::url('weapp/admin/init')));
 	}
 	
+	public function autologin()
+	{
+		$id = $this->request->input('id');
+	
+		$uuid = RC_DB::table('platform_account')->where('id', $id)->pluck('uuid');
+		if (empty($uuid)) {
+			return $this->showmessage(__('该小程序不存在', 'app-weapp'), ecjia::MSGTYPE_HTML | ecjia::MSGSTAT_ERROR);
+		}
+	
+		//公众平台的超管权限同平台后台的权限
+		if (session('action_list') == all) {
+			$user = new Ecjia\System\Admins\Users\AdminUser(session('admin_id'), '\Ecjia\App\Platform\Frameworks\Users\AdminUserAllotPurview');
+			if ($user->getActionList() != 'all') {
+				$user->setActionList('all');
+			}
+		}
+	
+		$authcode_array = [
+			'uuid' => $uuid,
+			'user_id' => session('admin_id'),
+			'user_type' => 'admin',
+			'time' => RC_Time::gmtime(),
+		];
+	
+		$authcode_str = http_build_query($authcode_array);
+		$authcode = RC_Crypt::encrypt($authcode_str);
+	
+		if (defined('RC_SITE')) {
+			$index = 'sites/' . RC_SITE . '/index.php';
+		} else {
+			$index = 'index.php';
+		}
+	
+		$url = str_replace($index, "sites/platform/index.php", RC_Uri::url('platform/privilege/autologin')) . '&authcode=' . $authcode;
+		return $this->redirect($url);
+	}
+	
 	/**
 	 * 小程序用户列表
 	 */
