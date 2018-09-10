@@ -78,7 +78,7 @@ class platform_user extends ecjia_platform
 
     public function init()
     {
-        $this->admin_priv('wechat_subscribe_manage');
+        $this->admin_priv('weapp_user_manage');
 
         ecjia_platform_screen::get_current_screen()->remove_last_nav_here();
         ecjia_platform_screen::get_current_screen()->add_nav_here(new admin_nav_here(RC_Lang::get('wechat::wechat.subscribe_manage')));
@@ -300,7 +300,7 @@ class platform_user extends ecjia_platform
      */
     public function get_usertag()
     {
-        $this->admin_priv('wechat_subscribe_manage', ecjia::MSGTYPE_JSON);
+        $this->admin_priv('weapp_user_manage', ecjia::MSGTYPE_JSON);
 
         $result = $this->get_user_tags();
         if ($result === true) {
@@ -315,7 +315,7 @@ class platform_user extends ecjia_platform
      */
     public function get_userinfo()
     {
-        $this->admin_priv('wechat_subscribe_manage', ecjia::MSGTYPE_JSON);
+        $this->admin_priv('weapp_user_manage', ecjia::MSGTYPE_JSON);
 
         $uuid = $this->platformAccount->getUUID();
         $wechat_id = $this->platformAccount->getAccountID();
@@ -489,7 +489,7 @@ class platform_user extends ecjia_platform
      */
     public function get_blackuserinfo()
     {
-        $this->admin_priv('wechat_subscribe_manage', ecjia::MSGTYPE_JSON);
+        $this->admin_priv('weapp_user_manage', ecjia::MSGTYPE_JSON);
 
         $uuid = $this->platformAccount->getUUID();
         $wechat_id = $this->platformAccount->getAccountID();
@@ -1009,7 +1009,7 @@ class platform_user extends ecjia_platform
 
     public function tag()
     {
-        $this->admin_priv('wechat_subscribe_manage');
+        $this->admin_priv('weapp_user_manage');
 
         ecjia_platform_screen::get_current_screen()->remove_last_nav_here();
         ecjia_platform_screen::get_current_screen()->add_nav_here(new admin_nav_here('标签管理'));
@@ -1043,7 +1043,7 @@ class platform_user extends ecjia_platform
     //已取消关注列表
     public function cancel_list()
     {
-        $this->admin_priv('wechat_subscribe_manage');
+        $this->admin_priv('weapp_user_manage');
 
         ecjia_platform_screen::get_current_screen()->remove_last_nav_here();
         ecjia_platform_screen::get_current_screen()->add_nav_here(new admin_nav_here('取消关注'));
@@ -1100,7 +1100,7 @@ class platform_user extends ecjia_platform
 
     public function back_list()
     {
-        $this->admin_priv('wechat_subscribe_manage');
+        $this->admin_priv('weapp_user_manage');
 
         ecjia_platform_screen::get_current_screen()->remove_last_nav_here();
         ecjia_platform_screen::get_current_screen()->add_nav_here(new admin_nav_here('黑名单'));

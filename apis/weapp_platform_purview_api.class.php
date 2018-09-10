@@ -47,33 +47,16 @@
 defined('IN_ECJIA') or exit('No permission resources.');
 
 /**
- * 公众平台菜单
+ * 后台权限API
+ * @author royalwang
  */
-class weapp_platform_menu_api extends Component_Event_Api
-{
-
-    public function call(&$options)
-    {
-
-        if (ecjia_platform::$controller->getPlatformAccount()->getPlatform() != 'weapp') {
-            return null;
-        }
-
-        $navmenus = ecjia_admin::make_admin_menu('nav-header', '微信小程序', '', 100);
-
-        $usermenus = ecjia_admin::make_admin_menu('15_content', '粉丝管理', '', 101)->add_icon('icon-user')->add_submenu(
-            array(
-            	ecjia_admin::make_admin_menu('01_wechat', RC_Lang::get('wechat::wechat.user_manage'), RC_Uri::url('weapp/platform_user/init'), 1)->add_purview('weapp_user_manage'),
-            	ecjia_admin::make_admin_menu('02_wechat', '标签管理', RC_Uri::url('weapp/platform_user/tag'), 2)->add_purview('weapp_user_manage'),
-            	ecjia_admin::make_admin_menu('03_wechat', '取消关注', RC_Uri::url('weapp/platform_user/cancel_list'), 3)->add_purview('weapp_user_manage'),
-            	ecjia_admin::make_admin_menu('04_wechat', '黑名单', RC_Uri::url('weapp/platform_user/back_list'), 4)->add_purview('weapp_user_manage'),
-            )
+class wechat_platform_purview_api extends Component_Event_Api {
+    
+    public function call(&$options) {
+        $purviews = array(        		
+        	array('action_name' => RC_Lang::get('wechat::wechat.user_manage'), 'action_code' => 'weapp_user_manage', 'relevance'   => ''),
         );
-
-        return array(
-            $navmenus,
-            $usermenus,
-        );
+        return $purviews;
     }
 }
 
