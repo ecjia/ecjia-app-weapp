@@ -55,6 +55,10 @@ class weapp_platform_menu_api extends Component_Event_Api
     public function call(&$options)
     {
 
+        if (ecjia_platform::$controller->getPlatformAccount()->getPlatform() != 'weapp') {
+            return null;
+        }
+
         $navmenus = ecjia_admin::make_admin_menu('nav-header', '微信小程序', '', 100);
 
         $usermenus = ecjia_admin::make_admin_menu('15_content', '粉丝管理', '', 101)->add_icon('icon-user')->add_submenu(

@@ -55,9 +55,7 @@ class weapp_admin_menu_api extends Component_Event_Api
 
     public function call(&$options)
     {
-        if (ecjia_platform::$controller->getPlatformAccount()->getPlatform() != 'weapp') {
-            return null;
-        }
+
 
         $menus = ecjia_admin::make_admin_menu('16_weapp', RC_Lang::get('weapp::package.weapp'), '', 19);
         
