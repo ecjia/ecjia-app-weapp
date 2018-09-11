@@ -57,9 +57,8 @@ class weapp_platform_hooks
         $wechat_id = $platformAccount->getAccountID();
 
         $start_time = mktime(0, 0, 0, date('m'), date('d'), date('Y'));
-        //新取消关注用户
+        //新访客用户
         $new_cancel_user = RC_DB::table('wechat_user')
-            ->where('subscribe', 0)
             ->where('wechat_id', $wechat_id)
             ->where('subscribe_time', '>', $start_time)->count();
 
