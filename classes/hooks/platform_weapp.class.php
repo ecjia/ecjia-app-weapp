@@ -56,23 +56,13 @@ class weapp_platform_hooks
         $platformAccount = new Account(session('uuid'));
         $wechat_id = $platformAccount->getAccountID();
 
-        $m = RC_Time::local_date('m');
-        $d = RC_Time::local_date('d');
-        $y = RC_Time::local_date('y');
-        $start = RC_Time::local_mktime(0, 0, 0, $m, $d, $y);
-        $end = RC_Time::local_mktime(0, 0, 0, $m, $d + 1, $y);
-        //新消息数量
-        $new_msg = RC_DB::table('wechat_custom_message as m')
-            ->leftJoin('wechat_user as wu', RC_DB::raw('wu.uid'), '=', RC_DB::raw('m.uid'))
-            ->select('m.id')
-            ->where(RC_DB::raw('wu.subscribe'), 1)
-            ->where(RC_DB::raw('m.iswechat'), 0)
-            ->where(RC_DB::raw('wu.wechat_id'), $wechat_id)
-            ->where(RC_DB::raw('m.send_time'), '>', $start)
-            ->where(RC_DB::raw('m.send_time'), '<', $end)
-            ->count();
-
         $start_time = mktime(0, 0, 0, date('m'), date('d'), date('Y'));
+        //新取消关注用户
+        $new_cancel_user = RC_DB::table('wechat_user')
+            ->where('subscribe', 0)
+            ->where('wechat_id', $wechat_id)
+            ->where('subscribe_time', '>', $start_time)->count();
+
         //新增人数
         $new_user = RC_DB::table('wechat_user')
             ->where('subscribe', 1)
@@ -86,7 +76,7 @@ class weapp_platform_hooks
             ->count();
 
         $count = array(
-            'new_msg' => $new_msg,
+            'new_cancel_user' => $new_cancel_user,
             'new_user' => $new_user,
             'user_count' => $user_count,
         );

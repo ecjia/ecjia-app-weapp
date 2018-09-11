@@ -10,10 +10,10 @@
 			 		<svg width="20" height="20" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
 						<path d="M5.882 15.931A8.366 8.366 0 0 0 10 17c4.418 0 8-3.358 8-7.5C18 5.358 14.418 2 10 2S2 5.358 2 9.5c0 2.028.859 3.869 2.254 5.219l-.274 1.35a.5.5 0 0 0 .74.533l1.162-.67zm.074 2.26L2.664 19.48a.8.8 0 0 1-1.077-.896l.603-3.15C.82 13.807 0 11.743 0 9.5 0 4.253 4.477 0 10 0s10 4.253 10 9.5S15.523 19 10 19c-1.44 0-2.807-.289-4.044-.809z"></path>
 					</svg>
-					新消息
+					新访客用户
 				</span>
 				<em class="weui-desktop-data-overview__desc">
-					<a href="">{$count.new_msg}</a>
+					<a href="">{$count.new_cancel_user}</a>
 				</em>
 			</li>
 			<li class="weui-desktop-data-overview">
