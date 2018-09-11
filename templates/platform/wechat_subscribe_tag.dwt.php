@@ -74,14 +74,6 @@
 		        </div>
 			<!-- {/if} -->
 			
-			<!-- {if $warn} -->
-				<!-- {if $type eq 0} -->
-				<div class="alert alert-danger">
-					<strong>{lang key='wechat::wechat.label_notice'}</strong>{$type_error}
-				</div>
-				<!-- {/if} -->
-			<!-- {/if} -->
-
 			<form class="form" method="post" name="add_tag" action="{url path='weapp/platform_user/edit_tag'}">
 				<div class="card-body">
 					<div class="form-body">
@@ -121,14 +113,6 @@
 		        </div>
 			<!-- {/if} -->
 			
-			<!-- {if $warn} -->
-				<!-- {if $type eq 0} -->
-				<div class="alert alert-danger">
-					<strong>{lang key='wechat::wechat.label_notice'}</strong>{$type_error}
-				</div>
-				<!-- {/if} -->
-			<!-- {/if} -->
-
 			<form class="form" method="post" name="edit_tag" action="{url path='weapp/platform_user/edit_tag'}">
 				<div class="card-body">
 					<div class="form-body">

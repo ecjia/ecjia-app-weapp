@@ -119,13 +119,6 @@
 	        </div>
 			<!-- {/if} -->
 			
-			<!-- {if $warn} -->
-				<!-- {if $type eq 0} -->
-				<div class="alert alert-danger">
-					<strong>{lang key='wechat::wechat.label_notice'}</strong>{$type_error}
-				</div>
-				<!-- {/if} -->
-			<!-- {/if} -->
 			<form class="form" method="post" action="{$label_action}&action=set_label" name="label_form">
 				<div class="modal-body tag_popover">
 					<div class="popover_inner p_b0">
@@ -159,12 +152,6 @@
 		    <div class="alert alert-danger">
 	            <strong>{lang key='wechat::wechat.label_notice'}</strong>{$errormsg}
 	        </div>
-			<!-- {/if} -->
-			
-			<!-- {if $type neq 2} -->
-			<div class="alert alert-danger">
-				<strong>{lang key='wechat::wechat.label_notice'}</strong>{$custom_type_error}
-			</div>
 			<!-- {/if} -->
 			
 			<form class="form" method="post" action="{RC_Uri::url('wechat/platform_customer/create_session')}" name="session_form">

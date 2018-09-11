@@ -138,14 +138,6 @@
 	        </div>
 			<!-- {/if} -->
 			
-			<!-- {if $warn} -->
-				<!-- {if $type eq 0} -->
-				<div class="alert alert-danger">
-					<strong>{lang key='wechat::wechat.label_notice'}</strong>{$type_error}
-				</div>
-				<!-- {/if} -->
-			<!-- {/if} -->
-			
 			<form class="form" method="post" action="{$label_action}&action=set_user_label" name="label_form">
 				<div class="modal-body tag_popover">
 					<div class="popover_inner p_b0">
