@@ -174,7 +174,7 @@ class platform_user extends ecjia_platform
                 }
             }
 
-            //取消关注用户数量
+            //未授权用户用户数量
             $num = RC_DB::table('wechat_user')->where('wechat_id', $wechat_id)->where('subscribe', 0)->where('group_id', 0)->count();
             $this->assign('num', $num);
 
@@ -726,15 +726,15 @@ class platform_user extends ecjia_platform
         $this->display('wechat_subscribe_tag.dwt');
     }
 
-    //已取消关注列表
+    //已未授权用户列表
     public function cancel_list()
     {
         $this->admin_priv('weapp_user_manage');
 
         ecjia_platform_screen::get_current_screen()->remove_last_nav_here();
-        ecjia_platform_screen::get_current_screen()->add_nav_here(new admin_nav_here('取消关注'));
+        ecjia_platform_screen::get_current_screen()->add_nav_here(new admin_nav_here('未授权用户'));
 
-        $this->assign('ur_here', '取消关注');
+        $this->assign('ur_here', '未授权用户');
         $this->assign('form_action', RC_Uri::url('weapp/platform_user/cancel_list'));
 
         $wechat_id = $this->platformAccount->getAccountID();

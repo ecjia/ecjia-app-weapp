@@ -419,7 +419,7 @@ class admin extends ecjia_admin {
 			$tag_arr['item']= RC_DB::table('wechat_tag')->where('wechat_id', $wechat_id)->orderBy('id', 'desc')->select('id', 'tag_id', 'name', 'count')->get();
 			$this->assign('tag_arr', $tag_arr);
 			
-			//取消关注用户数量
+			//未授权用户用户数量
 			$num = RC_DB::table('wechat_user')->where('wechat_id', $wechat_id)->where('subscribe', 0)->where('group_id', 0)->count();
 			$this->assign('num', $num);
 		}
@@ -850,7 +850,7 @@ class admin extends ecjia_admin {
 			//黑名单
 		} elseif ($filter['type'] == 'blacklist') {
 			$db_wechat_user->where(RC_DB::raw('wu.group_id'), 1);
-			//取消关注
+			//未授权用户
 		} elseif ($filter['type'] == 'unsubscribe') {
 			$db_wechat_user->where(RC_DB::raw('wu.subscribe'), 0)->where(RC_DB::raw('wu.group_id'), 0);
 		}
