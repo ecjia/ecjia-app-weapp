@@ -50,11 +50,16 @@ defined('IN_ECJIA') or exit('No permission resources.');
  * 后台权限API
  * @author royalwang
  */
-class wechat_platform_purview_api extends Component_Event_Api {
-    
-    public function call(&$options) {
-        $purviews = array(        		
-        	array('action_name' => '用户管理', 'action_code' => 'weapp_user_manage', 'relevance'   => ''),
+class wechat_platform_purview_api extends Component_Event_Api
+{
+
+    public function call(&$options)
+    {
+        $purviews = array(
+            array('action_name' => '用户管理', 'action_code' => 'weapp_user_manage', 'relevance' => ''),
+            array('action_name' => '标签管理', 'action_code' => 'weapp_tag_manage', 'relevance' => ''),
+            array('action_name' => '标签更新', 'action_code' => 'weapp_tag_update', 'relevance' => ''),
+            array('action_name' => '标签删除', 'action_code' => 'weapp_tag_delete', 'relevance' => ''),
         );
         return $purviews;
     }

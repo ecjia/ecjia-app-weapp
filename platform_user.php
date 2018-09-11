@@ -187,6 +187,8 @@ class platform_user extends ecjia_platform
 
     public function edit_tag()
     {
+        $this->admin_priv('weapp_tag_update', ecjia::MSGTYPE_JSON);
+
         $uuid = $this->platformAccount->getUUID();
         $wechat = with(new Ecjia\App\Wechat\WechatUUID($uuid))->getWechatInstance();
 
@@ -254,7 +256,7 @@ class platform_user extends ecjia_platform
      */
     public function remove()
     {
-        $this->admin_priv('wechat_subscribe_delete', ecjia::MSGTYPE_JSON);
+        $this->admin_priv('weapp_tag_delete', ecjia::MSGTYPE_JSON);
 
         $tag_id = !empty($_GET['tag_id']) ? intval($_GET['tag_id']) : 0;
         $id = !empty($_GET['id']) ? intval($_GET['id']) : 0;
@@ -278,7 +280,7 @@ class platform_user extends ecjia_platform
     //用户消息记录
     public function user_info()
     {
-        $this->admin_priv('wechat_subscribe_message_manage');
+        $this->admin_priv('weapp_user_manage');
 
         $wechat_id = $this->platformAccount->getAccountID();
         $account_name = $this->platformAccount->getAccountName();
@@ -362,7 +364,7 @@ class platform_user extends ecjia_platform
     //获取信息
     public function read_message()
     {
-        $this->admin_priv('wechat_subscribe_message_manage', ecjia::MSGTYPE_JSON);
+        $this->admin_priv('weapp_user_manage', ecjia::MSGTYPE_JSON);
 
         $list = $this->get_message_list();
         $message = count($list['item']) < 10 ? RC_Lang::get('wechat::wechat.no_more_message') : RC_Lang::get('wechat::wechat.searched');
@@ -389,7 +391,7 @@ class platform_user extends ecjia_platform
     //发送信息
     public function send_message()
     {
-        $this->admin_priv('wechat_subscribe_message_add', ecjia::MSGTYPE_JSON);
+        $this->admin_priv('weapp_user_manage', ecjia::MSGTYPE_JSON);
 
         $openid = $this->request->input('openid');
         $msg = $this->request->input('message');
@@ -429,7 +431,7 @@ class platform_user extends ecjia_platform
 
     public function edit_remark()
     {
-        $this->admin_priv('wechat_subscribe_update', ecjia::MSGTYPE_JSON);
+        $this->admin_priv('weapp_tag_update', ecjia::MSGTYPE_JSON);
 
         $uuid = $this->platformAccount->getUUID();
         $wechat_id = $this->platformAccount->getAccountID();
@@ -459,7 +461,7 @@ class platform_user extends ecjia_platform
     //添加/移出黑名单
     public function black_user()
     {
-        $this->admin_priv('wechat_subscribe_update', ecjia::MSGTYPE_JSON);
+        $this->admin_priv('weapp_tag_update', ecjia::MSGTYPE_JSON);
 
         $uuid = $this->platformAccount->getUUID();
         $wechat_id = $this->platformAccount->getAccountID();
@@ -498,7 +500,7 @@ class platform_user extends ecjia_platform
 
     public function unblack_user()
     {
-        $this->admin_priv('wechat_subscribe_update', ecjia::MSGTYPE_JSON);
+        $this->admin_priv('weapp_tag_update', ecjia::MSGTYPE_JSON);
 
         $uuid = $this->platformAccount->getUUID();
         $wechat_id = $this->platformAccount->getAccountID();
@@ -570,6 +572,8 @@ class platform_user extends ecjia_platform
     //批量操作
     public function batch()
     {
+        $this->admin_priv('weapp_tag_update', ecjia::MSGTYPE_JSON);
+
         $uuid = $this->platformAccount->getUUID();
 
         $wechat_id = $this->platformAccount->getAccountID();
@@ -650,6 +654,8 @@ class platform_user extends ecjia_platform
     //获取选择用户的标签
     public function get_checked_tag()
     {
+        $this->admin_priv('weapp_tag_update', ecjia::MSGTYPE_JSON);
+        
         $wechat_id = $this->platformAccount->getAccountID();
 
         $uid = !empty($_POST['uid']) ? intval($_POST['uid']) : '';
@@ -681,7 +687,7 @@ class platform_user extends ecjia_platform
 
     public function tag()
     {
-        $this->admin_priv('weapp_user_manage');
+        $this->admin_priv('weapp_tag_manage');
 
         ecjia_platform_screen::get_current_screen()->remove_last_nav_here();
         ecjia_platform_screen::get_current_screen()->add_nav_here(new admin_nav_here('标签管理'));
@@ -712,7 +718,7 @@ class platform_user extends ecjia_platform
         $this->display('wechat_subscribe_tag.dwt');
     }
 
-    //已未授权用户列表
+    //未授权用户列表
     public function cancel_list()
     {
         $this->admin_priv('weapp_user_manage');
