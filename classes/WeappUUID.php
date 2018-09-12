@@ -92,7 +92,8 @@ class WeappUUID
             $wechat->init($config);
 
             $wechat->make('config')->set('mini_app', $config);
-            return $wechat;
+
+            return $this->getWeapp();
         }
 
         return null;

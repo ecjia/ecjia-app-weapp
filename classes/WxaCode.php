@@ -43,7 +43,7 @@ class WxaCode
             }
             
             $WeappUUID =  new WeappUUID($this->uuid);
-            $weapp = $WeappUUID->getWeapp();
+            $weapp = $WeappUUID->getWeappInstance();
             
             $qrimg = $weapp->qrcode->getAppCodeUnlimit($scene);
             
