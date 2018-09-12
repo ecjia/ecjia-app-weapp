@@ -141,6 +141,8 @@ class WeappUUID
      * @return \Royalcms\Component\WeChat\User\MiniAppUser;
      */
     public function getWeappUser() {
+        $this->getWeappInstance();
+
         return royalcms('wechat')->make('mini_app_user');
     }
 
