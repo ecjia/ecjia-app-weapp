@@ -66,15 +66,20 @@ class wxlogin_module extends api_front implements api_interface {
 	
 		/*创建用户*/
 		$WechatUserRepository = new Ecjia\App\Weapp\Repositories\WechatUserRepository($weappId);
-		$wechat_user = $WechatUserRepository->createUser($weappId, array('openid' => $data['openid'], 'session_key' => $data['session_key']));
+		$wechat_user = $WechatUserRepository->createUser($weappId, array(
+		    'openid' => $data['openid'],
+            'session_key' => $data['session_key']
+        ));
 		
 		$out = array();
 		if ($wechat_user) {
-		    $_SESSION['openid'] 	 = $data['openid'];
-		    $_SESSION['session_key'] = $data['session_key'];
-		    
+		    session([
+		        'openid' => $data['openid'],
+		        'session_key' => $data['session_key'],
+            ]);
+
 			$out = array(
-				'token' => RC_Session::session_id()
+				'token' => RC_Session::getId()
 			);
 		}
 		return $out;

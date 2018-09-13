@@ -59,9 +59,10 @@ class wxbind_module extends api_front implements api_interface {
 			return new ecjia_error('invalid_parameter', RC_Lang::get('system::system.invalid_parameter'));
 		}
 
-		$openid = $_SESSION['openid'];
-		$session_key = $_SESSION['session_key'];
-		
+		$openid = session('openid');
+		$session_key = session('session_key');
+
+
 		//获取小程序的weappid,即小程序自增id
 		$WeappUUID =  new Ecjia\App\Weapp\WeappUUID($uuid);
 		$weappId   = $WeappUUID->getWeappID();
