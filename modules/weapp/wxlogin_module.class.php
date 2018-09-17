@@ -46,7 +46,7 @@
 //
 defined('IN_ECJIA') or exit('No permission resources.');
 
-class wxlogin_module extends api_front implements api_interface {
+class weapp_wxlogin_module extends api_front implements api_interface {
 	public function handleRequest(\Royalcms\Component\HttpKernel\Request $request) {		
 		$this->authSession();
 		$uuid	      = $this->requestData('uuid');
