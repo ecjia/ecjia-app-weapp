@@ -154,7 +154,7 @@
 	        </div>
 			<!-- {/if} -->
 			
-			<form class="form" method="post" action="{RC_Uri::url('wechat/platform_customer/create_session')}" name="session_form">
+			<form class="form" method="post" action="{RC_Uri::url('weapp/platform_customer/create_session')}" name="session_form">
 				<div class="modal-body height200">
 					<div class="card-body">
 						<div class="form-group row">

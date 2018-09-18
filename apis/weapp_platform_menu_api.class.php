@@ -73,7 +73,15 @@ class weapp_platform_menu_api extends Component_Event_Api
             )
         );
 
-        return array($weapp_config_menus, $navmenus, $usermenus);
+        $kefumenus = ecjia_admin::make_admin_menu('15_content', '客服管理', '', 102)->add_icon('fa fa-headphones')->add_submenu(
+            array(
+                ecjia_admin::make_admin_menu('01_wechat', RC_Lang::get('wechat::wechat.customer'), RC_Uri::url('weapp/platform_customer/init'), 5)->add_purview('wechat_customer_manage'),
+                ecjia_admin::make_admin_menu('02_wechat', '客服会话', RC_Uri::url('weapp/platform_customer/session'), 6)->add_purview('wechat_customer_session_manage'),
+                ecjia_admin::make_admin_menu('03_wechat', RC_Lang::get('wechat::wechat.service_record'), RC_Uri::url('weapp/platform_record/init'), 7)->add_purview('wechat_record_manage')
+            )
+        );
+
+        return array($weapp_config_menus, $navmenus, $usermenus, $kefumenus);
     }
 }
 
