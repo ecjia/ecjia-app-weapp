@@ -44,37 +44,82 @@
 //
 //  ---------------------------------------------------------------------------------
 //
+
 defined('IN_ECJIA') or exit('No permission resources.');
 
 /**
- * 公众平台菜单
+ * ECJIA消息推送配置
  */
-class weapp_platform_menu_api extends Component_Event_Api
+class platform_config extends ecjia_platform
 {
-
-    public function call(&$options)
+    public function __construct()
     {
+        parent::__construct();
 
-        if (ecjia_platform::$controller->getPlatformAccount()->getPlatform() != 'weapp') {
-            return null;
+        RC_Loader::load_app_func('global');
+        Ecjia\App\Wechat\Helper::assign_adminlog_content();
+
+        RC_Loader::load_app_class('platform_account', 'platform', false);
+
+        RC_Script::enqueue_script('jquery-validate');
+        RC_Script::enqueue_script('jquery-form');
+        RC_Style::enqueue_style('bootstrap-responsive');
+
+        RC_Script::enqueue_script('platform_config', RC_App::apps_url('statics/platform-js/platform_config.js', __FILE__), array(), false, true);
+
+        ecjia_platform_screen::get_current_screen()->add_nav_here(new admin_nav_here('消息推送配置', RC_Uri::url('weapp/platform_config/init')));
+        ecjia_platform_screen::get_current_screen()->set_subject('消息推送配置');
+    }
+
+    public function init()
+    {
+        $this->admin_priv('weapp_config_manage');
+
+        ecjia_platform_screen::get_current_screen()->remove_last_nav_here();
+        ecjia_platform_screen::get_current_screen()->add_nav_here(new admin_nav_here('消息推送配置'));
+
+        $wechat_id = $this->platformAccount->getAccountID();
+
+        $this->assign('ur_here', '消息推送配置');
+        $this->assign('form_action', RC_Uri::url('weapp/platform_config/update'));
+
+        $this->display('weapp_config.dwt');
+    }
+
+    public function update()
+    {
+        $server_url = trim($_POST['server_url']);
+        $server_token = trim($_POST['server_token']);
+        $aeskey = trim($_POST['aeskey']);
+        $encryption_method = $_POST['encryption_method'];
+        $data_type = trim($_POST['data_type']);
+        
+        if (strpos($server_url, 'http://') !== 0 && strpos($server_url, 'https://') !== 0) {
+            return $this->showmessage('必须以http://或https://开头，分别支持80端口和443端口', ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_ERROR);
         }
 
-        $weapp_config_menus = ecjia_admin::make_admin_menu('01_weapp_config', '消息推送配置', RC_Uri::url('weapp/platform_config/init'), 99)
-            ->add_icon('ft-settings')->add_purview('weapp_config_manage');
+        $pattern = "/[^a-zA-Z0-9]/";
+        if (preg_match($pattern, $server_token) || strlen($server_token) > 32 || strlen($server_token) < 3) {
+            return $this->showmessage('必须为英文或数字，长度为3-32字符', ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_ERROR);
+        }
 
-        $navmenus = ecjia_admin::make_admin_menu('nav-header', '微信小程序', '', 100);
+        if (preg_match($pattern, $aeskey) || strlen($aeskey) != 43) {
+            return $this->showmessage('消息加密密钥由43位字符组成，字符范围为A-Z,a-z,0-9', ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_ERROR);
+        }
 
-        $usermenus = ecjia_admin::make_admin_menu('02_content', '用户管理', '', 101)->add_icon('icon-user')->add_submenu(
-            array(
-                ecjia_admin::make_admin_menu('02_wechat', '用户管理', RC_Uri::url('weapp/platform_user/init'), 1)->add_purview('weapp_user_manage'),
-                ecjia_admin::make_admin_menu('03_wechat', '标签管理', RC_Uri::url('weapp/platform_user/tag'), 2)->add_purview('weapp_tag_manage'),
-                ecjia_admin::make_admin_menu('04_wechat', '未授权用户', RC_Uri::url('weapp/platform_user/cancel_list'), 3)->add_purview('weapp_user_manage'),
-                ecjia_admin::make_admin_menu('05_wechat', '黑名单', RC_Uri::url('weapp/platform_user/back_list'), 4)->add_purview('weapp_user_manage'),
-            )
-        );
-
-        return array($weapp_config_menus, $navmenus, $usermenus);
+        return $this->showmessage('操作成功', ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_SUCCESS);
     }
+
+    /**
+     * 生成token
+     */
+    public function generate_aeskey()
+    {
+        $key = rc_random(38, 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789');
+        $key = 'ecjia' . $key;
+        return $this->showmessage('', ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_SUCCESS, array('val' => $key));
+    }
+
 }
 
-// end
+//end
