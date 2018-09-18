@@ -2,7 +2,6 @@
 
 namespace Ecjia\App\Weapp;
 
-use RC_Loader;
 use RC_Cache;
 use Ecjia\App\Platform\Frameworks\Platform\AccountManager;
 
