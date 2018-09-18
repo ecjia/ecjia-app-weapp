@@ -182,7 +182,7 @@ class platform_user extends ecjia_platform
             $this->assign('custom_type_error', sprintf(RC_Lang::get('wechat::wechat.notice_service_info'), RC_Lang::get('wechat::wechat.wechat_type.' . $type)));
         }
 
-        $this->display('wechat_subscribe_list.dwt');
+        $this->display('weapp_subscribe_list.dwt');
     }
 
     public function edit_tag()
@@ -358,7 +358,7 @@ class platform_user extends ecjia_platform
                 $this->assign('disabled', '1');
             }
         }
-        $this->display('wechat_subscribe_message.dwt');
+        $this->display('weapp_subscribe_message.dwt');
     }
 
     //获取信息
@@ -715,7 +715,7 @@ class platform_user extends ecjia_platform
             $this->assign('type_error', sprintf(RC_Lang::get('wechat::wechat.notice_certification_info'), RC_Lang::get('wechat::wechat.wechat_type.' . $types)));
         }
 
-        $this->display('wechat_subscribe_tag.dwt');
+        $this->display('weapp_subscribe_tag.dwt');
     }
 
     //未授权用户列表
@@ -773,7 +773,7 @@ class platform_user extends ecjia_platform
         $arr = array('item' => $list, 'page' => $page->show(5), 'desc' => $page->page_desc());
         $this->assign('list', $arr);
 
-        $this->display('wechat_unsubscribe_list.dwt');
+        $this->display('weapp_unsubscribe_list.dwt');
     }
 
     public function back_list()
@@ -829,7 +829,7 @@ class platform_user extends ecjia_platform
         $arr = array('item' => $list, 'page' => $page->show(5), 'desc' => $page->page_desc());
         $this->assign('list', $arr);
 
-        $this->display('wechat_black_list.dwt');
+        $this->display('weapp_black_list.dwt');
     }
 
 }

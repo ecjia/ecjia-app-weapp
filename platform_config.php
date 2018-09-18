@@ -91,6 +91,8 @@ class platform_config extends ecjia_platform
 
     public function update()
     {
+        $this->admin_priv('weapp_config_update', ecjia::MSGTYPE_JSON);
+
         $token = trim($_POST['token']);
         $aeskey = trim($_POST['aeskey']);
         

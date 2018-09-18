@@ -50,7 +50,7 @@ defined('IN_ECJIA') or exit('No permission resources.');
  * 后台权限API
  * @author royalwang
  */
-class wechat_platform_purview_api extends Component_Event_Api
+class weapp_platform_purview_api extends Component_Event_Api
 {
 
     public function call(&$options)
@@ -60,6 +60,15 @@ class wechat_platform_purview_api extends Component_Event_Api
             array('action_name' => '标签管理', 'action_code' => 'weapp_tag_manage', 'relevance' => ''),
             array('action_name' => '标签更新', 'action_code' => 'weapp_tag_update', 'relevance' => ''),
             array('action_name' => '标签删除', 'action_code' => 'weapp_tag_delete', 'relevance' => ''),
+
+            array('action_name' => '小程序管理', 'action_code' => 'weapp_config_manage', 'relevance' => ''),
+            array('action_name' => '小程序更新', 'action_code' => 'weapp_config_update', 'relevance' => ''),
+
+            array('action_name' => RC_Lang::get('wechat::wechat.service_record_manage'), 'action_code' => 'weapp_record_manage', 'relevance'   => ''),
+                
+            array('action_name' => '客服会话管理', 'action_code' => 'weapp_customer_session_manage', 'relevance'   => ''),
+            array('action_name' => '客服会话更新', 'action_code' => 'weapp_customer_session_update', 'relevance'   => ''),
+            array('action_name' => '客服会话删除', 'action_code' => 'weapp_customer_session_delete', 'relevance'   => ''),
         );
         return $purviews;
     }
