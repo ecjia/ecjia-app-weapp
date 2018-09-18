@@ -59,12 +59,11 @@ class platform_config extends ecjia_platform
         RC_Loader::load_app_func('global');
         Ecjia\App\Wechat\Helper::assign_adminlog_content();
 
-        RC_Loader::load_app_class('platform_account', 'platform', false);
-
         RC_Script::enqueue_script('jquery-validate');
         RC_Script::enqueue_script('jquery-form');
         RC_Style::enqueue_style('bootstrap-responsive');
-
+        
+        RC_Script::enqueue_script('clipboard', RC_App::apps_url('statics/platform-js/clipboard.min.js', __FILE__));
         RC_Script::enqueue_script('platform_config', RC_App::apps_url('statics/platform-js/platform_config.js', __FILE__), array(), false, true);
 
         ecjia_platform_screen::get_current_screen()->add_nav_here(new admin_nav_here('消息推送配置', RC_Uri::url('weapp/platform_config/init')));
@@ -79,6 +78,10 @@ class platform_config extends ecjia_platform
         ecjia_platform_screen::get_current_screen()->add_nav_here(new admin_nav_here('消息推送配置'));
 
         $wechat_id = $this->platformAccount->getAccountID();
+        $data = RC_DB::table('platform_account')->where('id', $wechat_id)->first();
+        $data['url'] = RC_Uri::home_url() . '/sites/platform/?uuid=' . $data['uuid'];
+
+        $this->assign('data', $data);
 
         $this->assign('ur_here', '消息推送配置');
         $this->assign('form_action', RC_Uri::url('weapp/platform_config/update'));
@@ -88,24 +91,24 @@ class platform_config extends ecjia_platform
 
     public function update()
     {
-        $server_url = trim($_POST['server_url']);
-        $server_token = trim($_POST['server_token']);
+        $token = trim($_POST['token']);
         $aeskey = trim($_POST['aeskey']);
-        $encryption_method = $_POST['encryption_method'];
-        $data_type = trim($_POST['data_type']);
         
-        if (strpos($server_url, 'http://') !== 0 && strpos($server_url, 'https://') !== 0) {
-            return $this->showmessage('必须以http://或https://开头，分别支持80端口和443端口', ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_ERROR);
-        }
-
         $pattern = "/[^a-zA-Z0-9]/";
-        if (preg_match($pattern, $server_token) || strlen($server_token) > 32 || strlen($server_token) < 3) {
-            return $this->showmessage('必须为英文或数字，长度为3-32字符', ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_ERROR);
+        if (preg_match($pattern, $token) || strlen($token) > 32 || strlen($token) < 3) {
+            return $this->showmessage('Token(令牌)必须为英文或数字，长度为3-32字符', ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_ERROR);
         }
 
         if (preg_match($pattern, $aeskey) || strlen($aeskey) != 43) {
             return $this->showmessage('消息加密密钥由43位字符组成，字符范围为A-Z,a-z,0-9', ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_ERROR);
         }
+        $wechat_id = $this->platformAccount->getAccountID();
+
+        $data = array(
+            'token' => $token,
+            'aeskey' => $aeskey
+        );
+        RC_DB::table('platform_account')->where('id', $wechat_id)->update($data);
 
         return $this->showmessage('操作成功', ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_SUCCESS);
     }
@@ -113,9 +116,9 @@ class platform_config extends ecjia_platform
     /**
      * 生成token
      */
-    public function generate_aeskey()
+    public function generate_token()
     {
-        $key = rc_random(38, 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789');
+        $key = rc_random(16, 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789');
         $key = 'ecjia' . $key;
         return $this->showmessage('', ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_SUCCESS, array('val' => $key));
     }
