@@ -65,7 +65,7 @@ class weapp_platform_response_api extends Component_Event_Api
             $wechat = with(new Ecjia\App\Weapp\WeappUUID($uuid))->getWechatInstance();
             
             $server = $wechat->server;
-//            $server->setMessageHandler(['\Ecjia\App\Wechat\Handlers\WechatMessageHandler', 'getMessageHandler']);
+            $server->setMessageHandler(['\Ecjia\App\Weapp\Handlers\WeappMessageHandler', 'getMessageHandler']);
                 
             return $server->serve();
             
