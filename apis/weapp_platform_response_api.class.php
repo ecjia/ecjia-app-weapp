@@ -44,116 +44,36 @@
 //
 //  ---------------------------------------------------------------------------------
 //
+use Royalcms\Component\WeChat\Server\BadRequestException;
 
-namespace Ecjia\App\Weapp;
-
-use Ecjia\App\Platform\Frameworks\Platform\Account;
-
-class WeappUUID
+/**
+ * 微信小程序对接处理
+ * @author royalwang
+ */
+class weapp_platform_response_api extends Component_Event_Api
 {
-    
-    protected $uuid;
 
-    protected $account;
-    
-    public function __construct($uuid = null, $account = null)
+    public function call(&$options)
     {
-
-        if (is_null($uuid)) {
-
-            if (royalcms('request')->input('uuid')) {
-                $this->uuid = royalcms('request')->input('uuid');
-            } else if (session('uuid')) {
-                $this->uuid = session('uuid');
-            }
-
-        } else {
-            $this->uuid = trim($uuid);
+        if (! ($options instanceof Ecjia\App\Platform\Frameworks\Platform\Account)) {
+            return new ecjia_error('ecjia_platform_account_object_not_match', '参数不是Ecjia\App\Platform\Frameworks\Platform\Account对象');
         }
-
-        if (is_null($account)) {
-            $this->account = new Account($this->uuid);
-        } else {
-            $this->account = $account;
+        
+        try {
+            
+            $uuid = $options->getUUID();
+            $wechat = with(new Ecjia\App\Weapp\WeappUUID($uuid))->getWechatInstance();
+            
+            $server = $wechat->server;
+//            $server->setMessageHandler(['\Ecjia\App\Wechat\Handlers\WechatMessageHandler', 'getMessageHandler']);
+                
+            return $server->serve();
+            
+        } catch (Royalcms\Component\WeChat\Server\BadRequestException $e) {
+            return new ecjia_error('ecjia_platform_bad_request_exception', $e->getMessage());
         }
-    }
-
-    public function getWechatInstance()
-    {
-        $platform         = $this->account->getPlatform();
-
-        if ($platform == 'weapp') {
-            $config = array(
-                'app_id'     => $this->account->getAppId(),
-                'app_secret' => $this->account->getAppSecret(),
-            );
-
-            $wechat = royalcms('wechat');
-            $wechat->init($config);
-
-            $wechat->make('config')->set('mini_app', $config);
-
-            return $wechat;
-        }
-
-        return null;
-    }
-
-    public function getAccount()
-    {
-        return $this->account;
-    }
-    
-    /**
-     * 获取公众号添加后的Weapp_Id
-     * @return integer
-     */
-    public function getWeappID()
-    {
-        return $this->account->getAccountID();
-    }
-    
-    /**
-     * 获取公众号添加后台UUID
-     * @return string
-     */
-    public function getUUID()
-    {
-        return $this->uuid;
-    }
-
-
-    /**
-     * ============================================
-     */
-
-    /**
-     * 获取公众号的AppId
-     */
-    public function getAppId()
-    {
-        return $this->account->getAppId();
-    }
-
-
-    /**
-     * 获取微信小程序用户对象
-     * @return \Royalcms\Component\WeChat\User\MiniAppUser;
-     */
-    public function getWeappUser() {
-        $wechat = $this->getWechatInstance();
-
-        return $wechat->make('mini_app_user');
-    }
-
-    /**
-     * 获取微信小程序用户对象
-     * @return \Royalcms\Component\Wechat\MiniProgram\MiniProgram;
-     */
-    public function getWeapp() {
-        $wechat = $this->getWechatInstance();
-
-        return $wechat->make('weapp');
     }
     
 }
+
+// end
