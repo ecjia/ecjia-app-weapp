@@ -59,29 +59,42 @@ class weapp_platform_menu_api extends Component_Event_Api
             return null;
         }
 
-        $weapp_config_menus = ecjia_admin::make_admin_menu('01_weapp_config', '消息推送配置', RC_Uri::url('weapp/platform_config/init'), 99)
+        $weapp_config_menus = ecjia_admin::make_admin_menu('01_weapp_config', '消息推送配置', RC_Uri::url('weapp/platform_config/init'), 1)
             ->add_icon('ft-settings')->add_purview('weapp_config_manage');
 
-        $navmenus = ecjia_admin::make_admin_menu('nav-header', '微信小程序', '', 100);
+        $navmenus = ecjia_admin::make_admin_menu('02-nav-header', '微信小程序', '', 2);
 
-        $usermenus = ecjia_admin::make_admin_menu('02_content', '用户管理', '', 101)->add_icon('icon-user')->add_submenu(
+        $usermenus = ecjia_admin::make_admin_menu('03_user_manage', '用户管理', '', 3)->add_icon('icon-user')->add_submenu(
             array(
-                ecjia_admin::make_admin_menu('02_wechat', '用户管理', RC_Uri::url('weapp/platform_user/init'), 1)->add_purview('weapp_user_manage'),
-                ecjia_admin::make_admin_menu('03_wechat', '标签管理', RC_Uri::url('weapp/platform_user/tag'), 2)->add_purview('weapp_tag_manage'),
-                ecjia_admin::make_admin_menu('04_wechat', '未授权用户', RC_Uri::url('weapp/platform_user/cancel_list'), 3)->add_purview('weapp_user_manage'),
-                ecjia_admin::make_admin_menu('05_wechat', '黑名单', RC_Uri::url('weapp/platform_user/back_list'), 4)->add_purview('weapp_user_manage'),
+                ecjia_admin::make_admin_menu('01_weapp', '用户管理', RC_Uri::url('weapp/platform_user/init'), 1)->add_purview('weapp_user_manage'),
+                ecjia_admin::make_admin_menu('02_weapp', '标签管理', RC_Uri::url('weapp/platform_user/tag'), 2)->add_purview('weapp_tag_manage'),
+                ecjia_admin::make_admin_menu('03_weapp', '未授权用户', RC_Uri::url('weapp/platform_user/cancel_list'), 3)->add_purview('weapp_user_manage'),
+                ecjia_admin::make_admin_menu('04_weapp', '黑名单', RC_Uri::url('weapp/platform_user/back_list'), 4)->add_purview('weapp_user_manage'),
             )
         );
 
-        $kefumenus = ecjia_admin::make_admin_menu('15_content', '客服管理', '', 102)->add_icon('fa fa-headphones')->add_submenu(
+        $replymenus = ecjia_admin::make_admin_menu('o4_auto_reply', '自动回复', '', 4)->add_icon('fa fa-reply')->add_submenu(
             array(
-                ecjia_admin::make_admin_menu('01_wechat', RC_Lang::get('wechat::wechat.customer'), RC_Uri::url('weapp/platform_customer/init'), 5)->add_purview('wechat_customer_manage'),
-                ecjia_admin::make_admin_menu('02_wechat', '客服会话', RC_Uri::url('weapp/platform_customer/session'), 6)->add_purview('wechat_customer_session_manage'),
-                ecjia_admin::make_admin_menu('03_wechat', RC_Lang::get('wechat::wechat.service_record'), RC_Uri::url('weapp/platform_record/init'), 7)->add_purview('wechat_record_manage')
+                ecjia_admin::make_admin_menu('01_weapp', '关键词回复', RC_Uri::url('weapp/platform_response/reply_keywords'), 1)->add_purview('weapp_response_manage'),
+                ecjia_admin::make_admin_menu('02_weapp', '收到消息回复', RC_Uri::url('weapp/platform_response/reply_msg'), 2)->add_purview('weapp_response_manage'),
             )
         );
 
-        return array($weapp_config_menus, $navmenus, $usermenus, $kefumenus);
+        $materialmenus = ecjia_admin::make_admin_menu('05_material_manage', '素材管理', '', 5)->add_icon('ft-inbox')->add_submenu(
+            array(
+                ecjia_admin::make_admin_menu('01_weapp', '临时素材', RC_Uri::url('weapp/platform_material/init', array('type' => 'image')), 1)->add_purview('weapp_material_manage'),
+            )
+        );
+
+        $kefumenus = ecjia_admin::make_admin_menu('06_customer', '客服管理', '', 6)->add_icon('fa fa-headphones')->add_submenu(
+            array(
+                ecjia_admin::make_admin_menu('01_weapp', RC_Lang::get('wechat::wechat.customer'), RC_Uri::url('weapp/platform_customer/init'), 1)->add_purview('weapp_customer_manage'),
+                ecjia_admin::make_admin_menu('02_weapp', '客服会话', RC_Uri::url('weapp/platform_customer/session'), 2)->add_purview('weapp_customer_session_manage'),
+                ecjia_admin::make_admin_menu('03_weapp', RC_Lang::get('wechat::wechat.service_record'), RC_Uri::url('weapp/platform_record/init'), 3)->add_purview('weapp_record_manage')
+            )
+        );
+
+        return array($weapp_config_menus, $navmenus, $usermenus, $replymenus, $materialmenus, $kefumenus);
     }
 }
 
