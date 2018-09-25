@@ -80,31 +80,7 @@ class WeappMessageHandler
                 return self::Image_action($message);
                 break;
                 
-                //回复语音消息
-            case 'voice':
-                return self::Voice_action($message);
-                break;
-                
-                //回复视频消息
-            case 'video':
-                return self::Video_action($message);
-                break;
-                
-            case 'music':
-                return self::Music_action($message);
-                break;
-                
-                //普通消息-地理位置
-            case 'location':
-                return self::Location_action($message);
-                break;
-                
-                //普通消息-链接
-            case 'link':
-                return self::Link_action($message);
-                break;
-                
-            case 'transfer_customer_service':
+            case 'user_enter_tempsession':
                 
                 break;
                 

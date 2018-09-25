@@ -85,41 +85,15 @@ class WeappEventHandler
                 return self::View_event($message);
                 break;
                 
-            case 'LOCATION':
-                return self::Location_event($message);
+            case 'kf_create_session':
+
+                break;
+
+            case 'kf_close_session':
+
                 break;
                 
-            case 'scancode_push':
-                return self::Scancode_Push_event($message);
-                break;
-                
-            case 'scancode_waitmsg':
-                return self::Scancode_WaitMsg_event($message);
-                break;
-                
-            case 'pic_sysphoto':
-                return self::Pic_SysPhoto_event($message);
-                break;
-                
-            case 'pic_photo_or_album':
-                return self::Pic_PhotoOrAlbum_event($message);
-                break;
-                
-            case 'pic_weixin':
-                return self::Pic_Weixin_event($message);
-                break;
-                
-            case 'location_select':
-                return self::Location_event($message);
-                break;
-                
-            case 'TEMPLATESENDJOBFINISH':
-                return self::TemplateSendJobFinish_event($message);
-                break;
-                
-            case 'MASSSENDJOBFINISH':
-                self::MassSendJobFinish_event($message);
-                break;
+
                 
             default:
                 return self::Default_event($message);
