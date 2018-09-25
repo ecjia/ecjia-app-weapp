@@ -205,7 +205,7 @@ class platform_user extends ecjia_platform
         }
         try {
             if (!empty($id)) {
-                $this->admin_priv('wechat_subscribe_update', ecjia::MSGTYPE_JSON);
+                $this->admin_priv('weapp_subscribe_update', ecjia::MSGTYPE_JSON);
 
                 $data = array('name' => $name);
                 $is_only = RC_DB::table('wechat_tag')->where('id', '!=', $id)->where('name', $name)->where('wechat_id', $wechat_id)->count();
@@ -220,7 +220,7 @@ class platform_user extends ecjia_platform
 
                 return $this->showmessage(RC_Lang::get('wechat::wechat.edit_success'), ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_SUCCESS, array('pjaxurl' => RC_Uri::url('weapp/platform_user/tag')));
             } else {
-                $this->admin_priv('wechat_subscribe_add', ecjia::MSGTYPE_JSON);
+                $this->admin_priv('weapp_subscribe_add', ecjia::MSGTYPE_JSON);
 
                 $count = RC_DB::table('wechat_tag')->where('wechat_id', $wechat_id)->count();
                 if ($count == 100) {
@@ -379,7 +379,7 @@ class platform_user extends ecjia_platform
                         $v['media_content']['img_url'] = RC_App::apps_url('statics/images/video.png', __FILE__);
                     }
                     $this->assign('media_content', $v['media_content']);
-                    $list['item'][$k]['media_content_html'] = $this->fetch('library/wechat_subscribe_message.lbi');
+                    $list['item'][$k]['media_content_html'] = $this->fetch('library/weapp_subscribe_message.lbi');
                 }
             }
             return $this->showmessage($message, ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_SUCCESS, array('msg_list' => $list['item'], 'last_id' => $list['last_id']));
