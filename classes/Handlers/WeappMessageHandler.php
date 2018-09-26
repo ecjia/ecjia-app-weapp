@@ -117,7 +117,7 @@ class WeappMessageHandler
         RC_Hook::add_filter('weapp_text_response', array(__CLASS__, 'Empty_reply'), 100, 2);
         
         $response = RC_Hook::apply_filters('weapp_text_response', null, $message);
-        
+        \RC_Wechat::log()->debug('Weapp Text_action response:', compact('response'));
         return $response;
     }
     
