@@ -114,9 +114,9 @@ class WeappMessageHandler
         
 //        RC_Hook::add_filter('wechat_text_response', array(__CLASS__, 'Command_reply'), 10, 2);
 //        RC_Hook::add_filter('wechat_text_response', array(__CLASS__, 'Keyword_reply'), 90, 2);
-        RC_Hook::add_filter('wechat_text_response', array(__CLASS__, 'Empty_reply'), 100, 2);
+//        RC_Hook::add_filter('wechat_text_response', array(__CLASS__, 'Empty_reply'), 100, 2);
         
-        $response = RC_Hook::apply_filters('wechat_text_response', null, $message);
+//        $response = RC_Hook::apply_filters('wechat_text_response', null, $message);
         
         return '';
     }
