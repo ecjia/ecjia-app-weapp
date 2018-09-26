@@ -14,12 +14,6 @@
 </div>
 <!-- {/if} -->
 
-{if $warn && $wechat_type eq 0}
-<div class="alert alert-danger">
-	<strong>{lang key='wechat::wechat.label_notice'}</strong>{lang key='wechat::wechat.notice_public_not_certified'}
-</div>
-{/if}
-
 {if $media_data.wait_upload_article eq 1}
 <div class="alert alert-info">
 	<strong>{lang key='wechat::wechat.label_notice'}</strong>该素材已修改，请点击 “发布素材” 按钮上传到微信公众平台。

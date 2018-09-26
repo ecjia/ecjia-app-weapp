@@ -14,12 +14,6 @@
 </div>
 <!-- {/if} -->
 
-{if $warn && $wechat_type eq 0}
-<div class="alert alert-danger">
-	<strong>{lang key='wechat::wechat.label_notice'}</strong>{lang key='wechat::wechat.notice_public_not_certified'}
-</div>
-{/if}
-
 <!-- {if ecjia_screen::get_current_screen()->get_help_sidebar()} -->
 <div class="alert alert-light alert-dismissible mb-2" role="alert">
 	<button type="button" class="close" data-dismiss="alert" aria-label="Close">
