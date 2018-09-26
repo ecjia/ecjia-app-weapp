@@ -151,7 +151,7 @@
 													<input class="remark w100 form-control f_l" type="text" name="remark" value="{$info.remark}" maxlength="30">
 													<a class="edit_remark_url m_l10" href="javascript:;" 
 														data-page="{$smarty.get.page}" data-remark="{$info.remark}" data-uid="{$info.uid}" 
-														data-openid="{$info.openid}" data-url="{RC_Uri::url('wechat/platform_subscribe/edit_remark')}">
+														data-openid="{$info.openid}" data-url="{RC_Uri::url('weapp/platform_user/edit_remark')}">
 														<i class="fa fa-check remark_ok"></i>
 														<i class="fa fa-times remark_cancel"></i>
 													</a>
@@ -195,12 +195,12 @@
 										<label class="col-md-5 label-control text-right"></label>
 										<div class="col-md-7 controls p_l0">
 											<!-- {if $info.group_id eq 1} -->
-											<a class="ajaxremove no-underline btn btn-outline-primary m_t14" data-toggle="ajaxremove" data-msg="{lang key='wechat::wechat.remove_blacklist_confirm'}" href='{RC_Uri::url("wechat/platform_subscribe/black_user","openid={$info.openid}&uid={$info.uid}&type=remove_out&page={$smarty.get.page}")}' title="{lang key='wechat::wechat.remove_blacklist'}">{lang key='wechat::wechat.remove_blacklist'}</a>
+											<a class="ajaxremove no-underline btn btn-outline-primary m_t14" data-toggle="ajaxremove" data-msg="{lang key='wechat::wechat.remove_blacklist_confirm'}" href='{RC_Uri::url("weapp/platform_user/black_user","openid={$info.openid}&uid={$info.uid}&type=remove_out&page={$smarty.get.page}")}' title="{lang key='wechat::wechat.remove_blacklist'}">{lang key='wechat::wechat.remove_blacklist'}</a>
 											<!-- {else} -->
 												<!-- {if $info.subscribe eq 0} -->
 												<a class="btn m_t14" disabled>{lang key='wechat::wechat.add_blacklist'}</a>
 												<!-- {else} -->
-												<a class="ajaxremove no-underline btn btn-outline-primary m_t14" data-toggle="ajaxremove" data-msg="{lang key='wechat::wechat.add_blacklist_confirm'}" href='{RC_Uri::url("wechat/platform_subscribe/black_user","openid={$info.openid}&uid={$info.uid}&page={$smarty.get.page}")}' title="{lang key='wechat::wechat.add_blacklist'}">{lang key='wechat::wechat.add_blacklist'}</a>
+												<a class="ajaxremove no-underline btn btn-outline-primary m_t14" data-toggle="ajaxremove" data-msg="{lang key='wechat::wechat.add_blacklist_confirm'}" href='{RC_Uri::url("weapp/platform_user/black_user","openid={$info.openid}&uid={$info.uid}&page={$smarty.get.page}")}' title="{lang key='wechat::wechat.add_blacklist'}">{lang key='wechat::wechat.add_blacklist'}</a>
 												<!-- {/if} -->
 											<!-- {/if} -->
 										</div>
@@ -224,7 +224,7 @@
 							<div class="js_appmsgArea">
 								<div class="tab_cont_cover create-type__list">
 									<div class="create-type__item">
-										<a href="javascript:;" class="create-type__link choose_material" data-type="" data-url="{RC_Uri::url('wechat/platform_material/choose_material')}&material=1">
+										<a href="javascript:;" class="create-type__link choose_material" data-type="" data-url="{RC_Uri::url('weapp/platform_material/choose_material')}&material=1">
 											<i class="create-type__icon file"></i>
 											<strong class="create-type__title">从素材库选择</strong>
 										</a>
