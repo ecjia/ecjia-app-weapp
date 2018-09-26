@@ -48,8 +48,8 @@ namespace Ecjia\App\Weapp\Handlers;
 
 use RC_Hook;
 //use Ecjia\App\Wechat\Models\WechatReplyModel;
-//use Ecjia\App\Wechat\WechatRecord;
-//use Ecjia\App\Wechat\WechatUUID;
+use Ecjia\App\Wechat\WeappRecord;
+use Ecjia\App\Weapp\WeappUUID;
 //use Ecjia\App\Wechat\WechatMediaReply;
 //use Ecjia\App\Wechat\WechatCommand;
 
@@ -112,7 +112,7 @@ class WeappMessageHandler
     public static function Text_action($message) 
     {
         
-        RC_Hook::add_filter('wechat_text_response', array(__CLASS__, 'Command_reply'), 10, 2);
+//        RC_Hook::add_filter('wechat_text_response', array(__CLASS__, 'Command_reply'), 10, 2);
         RC_Hook::add_filter('wechat_text_response', array(__CLASS__, 'Keyword_reply'), 90, 2);
         RC_Hook::add_filter('wechat_text_response', array(__CLASS__, 'Empty_reply'), 100, 2);
         
@@ -134,7 +134,7 @@ class WeappMessageHandler
             return $content;
         }
         
-        $wechat_id = with(new WechatUUID())->getWechatID();
+        $wechat_id = with(new WeappUUID())->getWechatID();
         
         $data = WechatReplyModel::select('reply_type', 'content', 'media_id')
                                 ->where('wechat_id', $wechat_id)->where('type', 'msg')->first();
@@ -161,7 +161,7 @@ class WeappMessageHandler
             return $content;
         }
         
-        $wechat_id = with(new WechatUUID())->getWechatID();
+        $wechat_id = with(new WeappUUID())->getWechatID();
         $rule_keywords  = $message->get('Content');
         
         //用户输入信息记录
@@ -196,7 +196,7 @@ class WeappMessageHandler
             return $content;
         }
         
-        $content = with(new WechatCommand($message, new WechatUUID()))->runCommand($message->get('Content'));
+        $content = with(new WechatCommand($message, new WeappUUID()))->runCommand($message->get('Content'));
         
         if (is_string($content)) {
             $content = WechatRecord::Text_reply($message, $content);
@@ -216,55 +216,7 @@ class WeappMessageHandler
         return $content;
     }
     
-    /**
-     * 语音请求
-     * @param \Royalcms\Component\Support\Collection $message
-     * @return \Royalcms\Component\WeChat\Message\AbstractMessage
-     */
-    public static function Voice_action($message) 
-    {
-        $content = WechatRecord::Voice_reply($message, $message->get('MediaId'));
-        return $content;
-    }
-    
-    /**
-     * 视频请求
-     * @param \Royalcms\Component\Support\Collection $message
-     * @return \Royalcms\Component\WeChat\Message\AbstractMessage
-     */
-    public static function Video_action($message) 
-    {
-        return WechatRecord::Text_reply($message, '视频消息已经收到');
-    }
-    
-    /**
-     * 音乐请求
-     * @param \Royalcms\Component\Support\Collection $message
-     * @return \Royalcms\Component\WeChat\Message\AbstractMessage
-     */
-    public static function Music_action($message) 
-    {
-        $content = WechatRecord::Music_reply($message, 'test', 'testcontent', '', '', '');
-        return $content;
-    }
-    
-    /**
-     * 普通消息-小视频
-     * @param \Royalcms\Component\Support\Collection $message
-     */
-    public static function Shortvideo_action($message)
-    {
-        return WechatRecord::Text_reply($message, '小视频消息已经收到');
-    }
-    
-    /**
-     * 普通消息-地理位置
-     * @param \Royalcms\Component\Support\Collection $message
-     */
-    public static function Location_action($message)
-    {
-        return WechatRecord::Text_reply($message, '地理位置已经收到');
-    }
+
     
     /**
      * 普通消息-链接
