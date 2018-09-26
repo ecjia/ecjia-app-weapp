@@ -135,6 +135,11 @@ class WeappMessageHandler
         }
         
         $weapp_id = with(new WeappUUID())->getWeappID();
+
+        $rule_keywords  = $message->get('Content');
+
+        //用户输入信息记录
+        WeappRecord::inputMsg($message->get('FromUserName'), $rule_keywords);
         
         $data = WechatReplyModel::select('reply_type', 'content', 'media_id')
                                 ->where('wechat_id', $weapp_id)->where('type', 'msg')->first();
