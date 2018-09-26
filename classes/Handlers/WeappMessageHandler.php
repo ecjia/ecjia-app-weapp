@@ -114,11 +114,11 @@ class WeappMessageHandler
         
 //        RC_Hook::add_filter('wechat_text_response', array(__CLASS__, 'Command_reply'), 10, 2);
 //        RC_Hook::add_filter('wechat_text_response', array(__CLASS__, 'Keyword_reply'), 90, 2);
-//        RC_Hook::add_filter('wechat_text_response', array(__CLASS__, 'Empty_reply'), 100, 2);
+        RC_Hook::add_filter('weapp_text_response', array(__CLASS__, 'Empty_reply'), 100, 2);
         
-//        $response = RC_Hook::apply_filters('wechat_text_response', null, $message);
+        $response = RC_Hook::apply_filters('weapp_text_response', null, $message);
         
-        return '';
+        return $response;
     }
     
     
@@ -134,16 +134,16 @@ class WeappMessageHandler
             return $content;
         }
         
-        $wechat_id = with(new WeappUUID())->getWechatID();
+        $weapp_id = with(new WeappUUID())->getWechatID();
         
         $data = WechatReplyModel::select('reply_type', 'content', 'media_id')
-                                ->where('wechat_id', $wechat_id)->where('type', 'msg')->first();
+                                ->where('wechat_id', $weapp_id)->where('type', 'msg')->first();
                                 
         if ( ! empty($data)) {
             if ($data->reply_type == 'text') {
                 $content = WeappRecord::Text_reply($message, $data['content']);
             } else {
-                $content = with(new WeappMediaReply($wechat_id, $data->media_id))->replyContent($message);
+                $content = with(new WeappMediaReply($weapp_id, $data->media_id))->replyContent($message);
             }
         }
         
