@@ -66,7 +66,10 @@ class platform_user extends ecjia_platform
         RC_Style::enqueue_style('bootstrap-responsive');
 
         RC_Script::enqueue_script('platform_user', RC_App::apps_url('statics/platform-js/platform_user.js', __FILE__), array(), false, true);
+        RC_Script::enqueue_script('choose_material', RC_App::apps_url('statics/platform-js/choose_material.js', __FILE__), array(), false, true);
+        
         RC_Style::enqueue_style('platform_user', RC_App::apps_url('statics/platform-css/platform_user.css', __FILE__));
+        RC_Style::enqueue_style('admin_material', RC_App::apps_url('statics/platform-css/admin_material.css', __FILE__));
         RC_Script::localize_script('platform_user', 'js_lang', RC_Lang::get('wechat::wechat.js_lang'));
 
         ecjia_platform_screen::get_current_screen()->add_nav_here(new admin_nav_here('用户管理', RC_Uri::url('weapp/platform_user/init')));
@@ -278,7 +281,7 @@ class platform_user extends ecjia_platform
     }
 
     //用户消息记录
-    public function user_info()
+    public function subscribe_message()
     {
         $this->admin_priv('weapp_user_manage');
 
@@ -287,7 +290,7 @@ class platform_user extends ecjia_platform
         $this->assign('account_name', $account_name);
 
         $page = !empty($_GET['page']) ? intval($_GET['page']) : 1;
-        $this->assign('ur_here', '用户信息');
+        $this->assign('ur_here', '消息记录');
 
         ecjia_platform_screen::get_current_screen()->add_nav_here(new admin_nav_here(RC_Lang::get('wechat::wechat.user_message_record')));
         $this->assign('action_link', array('text' => '用户管理', 'href' => RC_Uri::url('weapp/platform_user/init', array('page' => $page))));

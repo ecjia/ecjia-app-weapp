@@ -83,7 +83,7 @@
 											<a class="set-label-btn cursor_pointer" href="javascript:;" data-openid="{$val.openid}" data-uid="{$val.uid}" data-url="{$get_checked}">{lang key='wechat::wechat.set_tag'}</a>&nbsp;|&nbsp;
 										<!-- {/if} -->
 										
-										<a class="data-pjax" href='{url path="weapp/platform_user/user_info" args="uid={$val.uid}{if $smarty.get.page}&page={$smarty.get.page}{/if}"}' title="{lang key='wechat::wechat.message_record'}">用户信息</a>&nbsp;|&nbsp;
+										<a class="data-pjax" href='{url path="weapp/platform_user/subscribe_message" args="uid={$val.uid}{if $smarty.get.page}&page={$smarty.get.page}{/if}"}' title="{lang key='wechat::wechat.message_record'}">消息记录</a>&nbsp;|&nbsp;
 										
 										<a class="ajaxremove cursor_pointer" href='{RC_Uri::url("weapp/platform_user/black_user","openid={$val.openid}&from=list&page={$smarty.get.page}")}' title="{lang key='wechat::wechat.add_blacklist'}" data-toggle="ajaxremove" data-msg="{lang key='wechat::wechat.add_blacklist_confirm'}">加入黑名单</a>
 									</div>
