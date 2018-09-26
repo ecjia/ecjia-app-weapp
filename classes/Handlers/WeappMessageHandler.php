@@ -118,7 +118,7 @@ class WeappMessageHandler
         
         $response = RC_Hook::apply_filters('wechat_text_response', null, $message);
         
-        return $response;
+        return '';
     }
     
     
