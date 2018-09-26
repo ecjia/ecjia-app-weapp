@@ -47,10 +47,10 @@
 namespace Ecjia\App\Weapp\Handlers;
 
 use RC_Hook;
-//use Ecjia\App\Wechat\Models\WechatReplyModel;
-use Ecjia\App\Wechat\WeappRecord;
+use Ecjia\App\Wechat\Models\WechatReplyModel;
+use Ecjia\App\Weapp\WeappRecord;
 use Ecjia\App\Weapp\WeappUUID;
-//use Ecjia\App\Wechat\WechatMediaReply;
+use Ecjia\App\Weapp\WeappMediaReply;
 //use Ecjia\App\Wechat\WechatCommand;
 
 class WeappMessageHandler
@@ -141,9 +141,9 @@ class WeappMessageHandler
                                 
         if ( ! empty($data)) {
             if ($data->reply_type == 'text') {
-                $content = WechatRecord::Text_reply($message, $data['content']);
+                $content = WeappRecord::Text_reply($message, $data['content']);
             } else {
-                $content = with(new WechatMediaReply($wechat_id, $data->media_id))->replyContent($message);
+                $content = with(new WeappMediaReply($wechat_id, $data->media_id))->replyContent($message);
             }
         }
         
@@ -161,22 +161,22 @@ class WeappMessageHandler
             return $content;
         }
         
-        $wechat_id = with(new WeappUUID())->getWechatID();
+        $weapp_id = with(new WeappUUID())->getWeappID();
         $rule_keywords  = $message->get('Content');
         
         //用户输入信息记录
-        WechatRecord::inputMsg($message->get('FromUserName'), $rule_keywords);
+        WeappRecord::inputMsg($message->get('FromUserName'), $rule_keywords);
         
         $model = WechatReplyModel::leftJoin('wechat_rule_keywords', 'wechat_rule_keywords.rid', '=', 'wechat_reply.id')
                                     ->select('wechat_reply.content', 'wechat_reply.media_id', 'wechat_reply.reply_type')
-                                    ->where('wechat_reply.wechat_id', $wechat_id)
+                                    ->where('wechat_reply.wechat_id', $weapp_id)
                                     ->where('wechat_rule_keywords.rule_keywords', $rule_keywords)->first();
         
         if (! empty($model)) {
             if ($model->media_id) {
-                $content = with(new WechatMediaReply($wechat_id, $model->media_id))->replyContent($message);
+                $content = with(new WeappMediaReply($weapp_id, $model->media_id))->replyContent($message);
             } else {
-                $content = WechatRecord::Text_reply($message, $model->content);
+                $content = WeappRecord::Text_reply($message, $model->content);
             }
         }
         
@@ -215,7 +215,7 @@ class WeappMessageHandler
         $content = WechatRecord::Image_reply($message, $message->get('MediaId'));
         return $content;
     }
-    
+
 
     
     /**
