@@ -134,7 +134,7 @@ class WeappMessageHandler
             return $content;
         }
         
-        $weapp_id = with(new WeappUUID())->getWechatID();
+        $weapp_id = with(new WeappUUID())->getWeappID();
         
         $data = WechatReplyModel::select('reply_type', 'content', 'media_id')
                                 ->where('wechat_id', $weapp_id)->where('type', 'msg')->first();
