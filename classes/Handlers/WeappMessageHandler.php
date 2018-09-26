@@ -147,7 +147,7 @@ class WeappMessageHandler
             }
         }
         
-        return $content;
+        return '';
     }
     
     /**
