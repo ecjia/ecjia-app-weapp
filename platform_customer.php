@@ -164,7 +164,7 @@ class platform_customer extends ecjia_platform
         $wechat_id = $this->platformAccount->getAccountID();
 
         $uuid = $this->platformAccount->getUUID();
-        $wechat = with(new Ecjia\App\Wechat\WechatUUID($uuid))->getWechatInstance();
+        $wechat = with(new Ecjia\App\Weapp\WeappUUID($uuid))->getWechatInstance();
 
         //最多只能添加10个客服
         $count = RC_DB::table('wechat_customer')->where('wechat_id', $wechat_id)->count();
@@ -271,7 +271,7 @@ class platform_customer extends ecjia_platform
         $wechat_id = $this->platformAccount->getAccountID();
 
         $uuid = $this->platformAccount->getUUID();
-        $wechat = with(new Ecjia\App\Wechat\WechatUUID($uuid))->getWechatInstance();
+        $wechat = with(new Ecjia\App\Weapp\WeappUUID($uuid))->getWechatInstance();
 
         //判断客服账号是否重复
         $num = RC_DB::table('wechat_customer')->where('wechat_id', $wechat_id)->where('kf_account', $kf_account)->where('id', '!=', $id)->count();
@@ -347,7 +347,7 @@ class platform_customer extends ecjia_platform
         $this->admin_priv('weapp_customer_delete', ecjia::MSGTYPE_JSON);
 
         $uuid = $this->platformAccount->getUUID();
-        $wechat = with(new Ecjia\App\Wechat\WechatUUID($uuid))->getWechatInstance();
+        $wechat = with(new Ecjia\App\Weapp\WeappUUID($uuid))->getWechatInstance();
         $wechat_id = $this->platformAccount->getAccountID();
 
         $id = !empty($_GET['id']) ? intval($_GET['id']) : 0;
@@ -388,7 +388,7 @@ class platform_customer extends ecjia_platform
             return $this->showmessage(RC_Lang::get('wechat::wechat.add_platform_first'), ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_ERROR);
         }
         $uuid = $this->platformAccount->getUUID();
-        $wechat = with(new Ecjia\App\Wechat\WechatUUID($uuid))->getWechatInstance();
+        $wechat = with(new Ecjia\App\Weapp\WeappUUID($uuid))->getWechatInstance();
 
         $kf_account_list = RC_DB::table('wechat_customer')->where('wechat_id', $wechat_id)->lists('kf_account');
 
@@ -442,7 +442,7 @@ class platform_customer extends ecjia_platform
         $this->admin_priv('weapp_customer_update', ecjia::MSGTYPE_JSON);
 
         $uuid = $this->platformAccount->getUUID();
-        $wechat = with(new Ecjia\App\Wechat\WechatUUID($uuid))->getWechatInstance();
+        $wechat = with(new Ecjia\App\Weapp\WeappUUID($uuid))->getWechatInstance();
         $wechat_id = $this->platformAccount->getAccountID();
 
         $id = intval($_POST['id']);
@@ -480,7 +480,7 @@ class platform_customer extends ecjia_platform
         $this->admin_priv('weapp_customer_update', ecjia::MSGTYPE_JSON);
 
         $uuid = $this->platformAccount->getUUID();
-        $wechat = with(new Ecjia\App\Wechat\WechatUUID($uuid))->getWechatInstance();
+        $wechat = with(new Ecjia\App\Weapp\WeappUUID($uuid))->getWechatInstance();
 
         $data['kf_nick'] = !empty($_POST['value']) ? $_POST['value'] : '';
         $id = !empty($_POST['pk']) ? $_POST['pk'] : '';
@@ -534,7 +534,7 @@ class platform_customer extends ecjia_platform
         }
 
         $uuid = $this->platformAccount->getUUID();
-        $wechat = with(new Ecjia\App\Wechat\WechatUUID($uuid))->getWechatInstance();
+        $wechat = with(new Ecjia\App\Weapp\WeappUUID($uuid))->getWechatInstance();
 
         $data = RC_DB::table('wechat_customer')->where('kf_account', $kf_account)->where('wechat_id', $wechat_id)->first();
 
@@ -592,7 +592,7 @@ class platform_customer extends ecjia_platform
         $wechat_id = $this->platformAccount->getAccountID();
 
         $uuid = $this->platformAccount->getUUID();
-        $wechat = with(new Ecjia\App\Wechat\WechatUUID($uuid))->getWechatInstance();
+        $wechat = with(new Ecjia\App\Weapp\WeappUUID($uuid))->getWechatInstance();
 		$status = intval($_GET['status']);
 		
         try {
@@ -613,7 +613,7 @@ class platform_customer extends ecjia_platform
         $wechat_id = $this->platformAccount->getAccountID();
 
         $uuid = $this->platformAccount->getUUID();
-        $wechat = with(new Ecjia\App\Wechat\WechatUUID($uuid))->getWechatInstance();
+        $wechat = with(new Ecjia\App\Weapp\WeappUUID($uuid))->getWechatInstance();
 
         $kf_account = trim($_GET['kf_account']);
 
@@ -638,7 +638,7 @@ class platform_customer extends ecjia_platform
         $wechat_id = $this->platformAccount->getAccountID();
 
         $uuid = $this->platformAccount->getUUID();
-        $wechat = with(new Ecjia\App\Wechat\WechatUUID($uuid))->getWechatInstance();
+        $wechat = with(new Ecjia\App\Weapp\WeappUUID($uuid))->getWechatInstance();
 
         $openid = trim($_POST['openid']);
         $kf_account = trim($_POST['kf_account']);
@@ -674,7 +674,7 @@ class platform_customer extends ecjia_platform
         $wechat_id = $this->platformAccount->getAccountID();
 
         $uuid = $this->platformAccount->getUUID();
-        $wechat = with(new Ecjia\App\Wechat\WechatUUID($uuid))->getWechatInstance();
+        $wechat = with(new Ecjia\App\Weapp\WeappUUID($uuid))->getWechatInstance();
 
         $id = intval($_GET['id']);
         if (empty($id)) {
@@ -740,7 +740,7 @@ class platform_customer extends ecjia_platform
         }
 
         $uuid = $this->platformAccount->getUUID();
-        $wechat = with(new Ecjia\App\Wechat\WechatUUID($uuid))->getWechatInstance();
+        $wechat = with(new Ecjia\App\Weapp\WeappUUID($uuid))->getWechatInstance();
         $kf_account_list = RC_DB::table('wechat_customer')->where('wechat_id', $wechat_id)->lists('kf_account');
 
         try {

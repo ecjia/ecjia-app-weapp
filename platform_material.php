@@ -240,7 +240,7 @@ class platform_material extends ecjia_platform
             }
 
             $uuid = $this->platformAccount->getUUID();
-            $wechat = with(new Ecjia\App\Wechat\WechatUUID($uuid))->getWechatInstance();
+            $wechat = with(new Ecjia\App\Weapp\WeappUUID($uuid))->getWechatInstance();
 
             //conent中图片下载并上传至微信素材中
             $content = $this->uploadMassMessageContentImages($wechat, $content);
@@ -413,7 +413,7 @@ class platform_material extends ecjia_platform
 
         try {
             $uuid = $this->platformAccount->getUUID();
-            $wechat = with(new Ecjia\App\Wechat\WechatUUID($uuid))->getWechatInstance();
+            $wechat = with(new Ecjia\App\Weapp\WeappUUID($uuid))->getWechatInstance();
 
             if ($model->parent_id > 0 && $model->sort != $sort) {
                 $parent_model = WechatMediaModel::where('wechat_id', $wechat_id)->find($model->parent_id);
@@ -611,7 +611,7 @@ class platform_material extends ecjia_platform
 
         try {
             $uuid = $this->platformAccount->getUUID();
-            $wechat = with(new Ecjia\App\Wechat\WechatUUID($uuid))->getWechatInstance();
+            $wechat = with(new Ecjia\App\Weapp\WeappUUID($uuid))->getWechatInstance();
 
             $data = WechatMediaModel::where('parent_id', $id)->where('type', 'news')->orderBy('sort', 'asc')->orderBy('id', 'asc')->get();
             if (!empty($data)) {
@@ -669,7 +669,7 @@ class platform_material extends ecjia_platform
 
         try {
             $uuid = $this->platformAccount->getUUID();
-            $wechat = with(new Ecjia\App\Wechat\WechatUUID($uuid))->getWechatInstance();
+            $wechat = with(new Ecjia\App\Weapp\WeappUUID($uuid))->getWechatInstance();
 
             $rs = $wechat->material->get($model->media_id);
 
@@ -723,7 +723,7 @@ class platform_material extends ecjia_platform
             if ($model->media_id) {
 
                 $uuid = $this->platformAccount->getUUID();
-                $wechat = with(new Ecjia\App\Wechat\WechatUUID($uuid))->getWechatInstance();
+                $wechat = with(new Ecjia\App\Weapp\WeappUUID($uuid))->getWechatInstance();
 
                 //删除永久素材
                 $rs = $wechat->material->delete($model->media_id);
@@ -777,7 +777,7 @@ class platform_material extends ecjia_platform
         try {
             $wechat_id = $this->platformAccount->getAccountID();
             $uuid = $this->platformAccount->getUUID();
-            $wechat = with(new Ecjia\App\Wechat\WechatUUID($uuid))->getWechatInstance();
+            $wechat = with(new Ecjia\App\Weapp\WeappUUID($uuid))->getWechatInstance();
 
             //永久素材
             if ($material === 1) {
@@ -850,7 +850,7 @@ class platform_material extends ecjia_platform
                 if ($model->is_material == 'material' && ($model->media_id || $model->thumb)) {
 
                     $uuid = $this->platformAccount->getUUID();
-                    $wechat = with(new Ecjia\App\Wechat\WechatUUID($uuid))->getWechatInstance();
+                    $wechat = with(new Ecjia\App\Weapp\WeappUUID($uuid))->getWechatInstance();
 
                     //删除永久素材
                     $rs = $wechat->material->delete($model->media_id);
@@ -904,7 +904,7 @@ class platform_material extends ecjia_platform
         try {
             $wechat_id = $this->platformAccount->getAccountID();
             $uuid = $this->platformAccount->getUUID();
-            $wechat = with(new Ecjia\App\Wechat\WechatUUID($uuid))->getWechatInstance();
+            $wechat = with(new Ecjia\App\Weapp\WeappUUID($uuid))->getWechatInstance();
 
             //永久素材
             if ($material) {
@@ -982,7 +982,7 @@ class platform_material extends ecjia_platform
 
                 if ($model->is_material == 'material' && $model->media_id) {
                     $uuid = $this->platformAccount->getUUID();
-                    $wechat = with(new Ecjia\App\Wechat\WechatUUID($uuid))->getWechatInstance();
+                    $wechat = with(new Ecjia\App\Weapp\WeappUUID($uuid))->getWechatInstance();
 
                     //删除永久素材
                     $rs = $wechat->material->delete($model->media_id);
@@ -1033,7 +1033,7 @@ class platform_material extends ecjia_platform
         try {
             $wechat_id = $this->platformAccount->getAccountID();
             $uuid = $this->platformAccount->getUUID();
-            $wechat = with(new Ecjia\App\Wechat\WechatUUID($uuid))->getWechatInstance();
+            $wechat = with(new Ecjia\App\Weapp\WeappUUID($uuid))->getWechatInstance();
 
             //永久素材
             if ($material === 1) {
@@ -1105,7 +1105,7 @@ class platform_material extends ecjia_platform
 
                 if ($model->is_material == 'material' && $model->media_id) {
                     $uuid = $this->platformAccount->getUUID();
-                    $wechat = with(new Ecjia\App\Wechat\WechatUUID($uuid))->getWechatInstance();
+                    $wechat = with(new Ecjia\App\Weapp\WeappUUID($uuid))->getWechatInstance();
 
                     //删除永久素材
                     $rs = $wechat->material->delete($model->media_id);
@@ -1211,7 +1211,7 @@ class platform_material extends ecjia_platform
         try {
 
             $uuid = $this->platformAccount->getUUID();
-            $wechat = with(new Ecjia\App\Wechat\WechatUUID($uuid))->getWechatInstance();
+            $wechat = with(new Ecjia\App\Weapp\WeappUUID($uuid))->getWechatInstance();
 
             //永久素材
             if ($material === 1) {
@@ -1273,7 +1273,7 @@ class platform_material extends ecjia_platform
         }
 
         $uuid = $this->platformAccount->getUUID();
-        $wechat = with(new Ecjia\App\Wechat\WechatUUID($uuid))->getWechatInstance();
+        $wechat = with(new Ecjia\App\Weapp\WeappUUID($uuid))->getWechatInstance();
 
         $wechat_id = $this->platformAccount->getAccountID();
 
@@ -1325,7 +1325,7 @@ class platform_material extends ecjia_platform
 
         try {
             $uuid = $this->platformAccount->getUUID();
-            $wechat = with(new Ecjia\App\Wechat\WechatUUID($uuid))->getWechatInstance();
+            $wechat = with(new Ecjia\App\Weapp\WeappUUID($uuid))->getWechatInstance();
 
             //图文素材数据量比较大，容易超时，每次同步10条
             if ($type == 'news') {

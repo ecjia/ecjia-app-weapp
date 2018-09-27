@@ -193,7 +193,7 @@ class platform_user extends ecjia_platform
         $this->admin_priv('weapp_tag_update', ecjia::MSGTYPE_JSON);
 
         $uuid = $this->platformAccount->getUUID();
-        $wechat = with(new Ecjia\App\Wechat\WechatUUID($uuid))->getWechatInstance();
+        $wechat = with(new Ecjia\App\Weapp\WeappUUID($uuid))->getWechatInstance();
 
         $wechat_id = $this->platformAccount->getAccountID();
 
@@ -265,7 +265,7 @@ class platform_user extends ecjia_platform
         $id = !empty($_GET['id']) ? intval($_GET['id']) : 0;
 
         $uuid = $this->platformAccount->getUUID();
-        $wechat = with(new Ecjia\App\Wechat\WechatUUID($uuid))->getWechatInstance();
+        $wechat = with(new Ecjia\App\Weapp\WeappUUID($uuid))->getWechatInstance();
 
         $wechat_id = $this->platformAccount->getAccountID();
         if (is_ecjia_error($wechat_id)) {
@@ -419,7 +419,7 @@ class platform_user extends ecjia_platform
         try {
             $wechat_id = $this->platformAccount->getAccountID();
             $uuid = $this->platformAccount->getUUID();
-            $wechat = with(new Ecjia\App\Wechat\WechatUUID($uuid))->getWechatInstance();
+            $wechat = with(new Ecjia\App\Weapp\WeappUUID($uuid))->getWechatInstance();
 
             if ($media_id) {
                 with(new Ecjia\App\Wechat\Sends\SendCustomMessage($wechat, $wechat_id, $openid))->sendMediaMessage($media_id);
@@ -441,7 +441,7 @@ class platform_user extends ecjia_platform
         $uuid = $this->platformAccount->getUUID();
         $wechat_id = $this->platformAccount->getAccountID();
 
-        $wechat = with(new Ecjia\App\Wechat\WechatUUID($uuid))->getWechatInstance();
+        $wechat = with(new Ecjia\App\Weapp\WeappUUID($uuid))->getWechatInstance();
 
         if (is_ecjia_error($wechat_id)) {
             return $this->showmessage(RC_Lang::get('wechat::wechat.add_platform_first'), ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_ERROR);
@@ -474,7 +474,7 @@ class platform_user extends ecjia_platform
         if (is_ecjia_error($wechat_id)) {
             return $this->showmessage(RC_Lang::get('wechat::wechat.add_platform_first'), ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_ERROR);
         }
-        $wechat = with(new Ecjia\App\Wechat\WechatUUID($uuid))->getWechatInstance();
+        $wechat = with(new Ecjia\App\Weapp\WeappUUID($uuid))->getWechatInstance();
 
         $type = !empty($_GET['type']) ? trim($_GET['type']) : '';
         $page = !empty($_GET['page']) ? intval($_GET['page']) : 1;
@@ -513,7 +513,7 @@ class platform_user extends ecjia_platform
         if (is_ecjia_error($wechat_id)) {
             return $this->showmessage(RC_Lang::get('wechat::wechat.add_platform_first'), ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_ERROR);
         }
-        $wechat = with(new Ecjia\App\Wechat\WechatUUID($uuid))->getWechatInstance();
+        $wechat = with(new Ecjia\App\Weapp\WeappUUID($uuid))->getWechatInstance();
 
         $openid = !empty($_GET['openid']) ? trim($_GET['openid']) : '';
 
@@ -586,7 +586,7 @@ class platform_user extends ecjia_platform
         if (is_ecjia_error($wechat_id)) {
             return $this->showmessage(RC_Lang::get('wechat::wechat.add_platform_first'), ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_ERROR);
         }
-        $wechat = with(new Ecjia\App\Wechat\WechatUUID($uuid))->getWechatInstance();
+        $wechat = with(new Ecjia\App\Weapp\WeappUUID($uuid))->getWechatInstance();
 
         $action = !empty($_GET['action']) ? $_GET['action'] : '';
         $uid = !empty($_POST['uid']) ? $_POST['uid'] : '';
