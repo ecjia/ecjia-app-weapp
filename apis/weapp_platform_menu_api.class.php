@@ -77,6 +77,7 @@ class weapp_platform_menu_api extends Component_Event_Api
             array(
                 ecjia_admin::make_admin_menu('01_weapp', '关键词回复', RC_Uri::url('weapp/platform_response/reply_keywords'), 1)->add_purview('weapp_response_manage'),
                 ecjia_admin::make_admin_menu('02_weapp', '收到消息回复', RC_Uri::url('weapp/platform_response/reply_msg'), 2)->add_purview('weapp_response_manage'),
+                ecjia_admin::make_admin_menu('03_weapp', '打开客服回复 ', RC_Uri::url('weapp/platform_response/open_reply'), 3)->add_purview('weapp_response_manage'),
             )
         );
 
