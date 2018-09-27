@@ -111,7 +111,7 @@ class SendCustomMessage
 
         $result = $this->wechat->staff->message($message)->to($this->openid)->send();
 
-        WechatRecord::replyMsg($this->openid, $msg);
+        WeappRecord::replyMsg($this->openid, $msg);
 
         $content['type'] = 'text';
         return $content;
@@ -132,7 +132,7 @@ class SendCustomMessage
             $content['img_url'] = \RC_Upload::upload_url($model->file);
         }
 
-        WechatRecord::replyMsg($this->openid, '发送图片消息', 'image', $content);
+        WeappRecord::replyMsg($this->openid, '发送图片消息', 'image', $content);
 
         $content['type'] = 'image';
         return $content;
@@ -162,7 +162,7 @@ class SendCustomMessage
             ]
         ];
 
-        WechatRecord::replyMsg($this->openid, '发送图文消息（点击跳转到外链）', 'news', $content);
+        WeappRecord::replyMsg($this->openid, '发送图文消息（点击跳转到外链）', 'news', $content);
 
         $content['type'] = 'news';
 
@@ -220,7 +220,7 @@ class SendCustomMessage
             ]);
         }
 
-        WechatRecord::replyMsg($this->openid, '发送图文消息（点击跳转到图文消息页面）', 'mpnews', $content);
+        WeappRecord::replyMsg($this->openid, '发送图文消息（点击跳转到图文消息页面）', 'mpnews', $content);
 
         $content['type'] = 'mpnews';
 
