@@ -143,18 +143,11 @@
 				</button>
 			</div>
 			
-			<!-- {if $errormsg || $type neq 2} -->
+			<!-- {if $errormsg} -->
 				<div class="card-body">
-					<!-- {if $errormsg} -->
 				    <div class="alert alert-danger m_b0">
 			            <strong>{lang key='wechat::wechat.label_notice'}</strong>{$errormsg}
 			        </div>
-			        <!-- {/if} -->
-					<!-- {if $type neq 2} -->
-					<div class="alert alert-danger m_b0">
-						<strong>{lang key='wechat::wechat.label_notice'}</strong>{$type_error}
-					</div>
-					<!-- {/if} -->
 				</div>
 			<!-- {/if} -->
 			

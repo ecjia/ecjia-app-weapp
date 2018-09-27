@@ -8,18 +8,11 @@
 				</button>
 			</div>
 
-			<!-- {if $errormsg || $wechat_type eq '0'} -->
+			<!-- {if $errormsg} -->
 				<div class="card-body">
-					<!-- {if $errormsg} -->
 				    <div class="alert alert-danger m_b0">
 			            <strong>{lang key='wechat::wechat.label_notice'}</strong>{$errormsg}
 			        </div>
-			        <!-- {/if} -->
-					<!-- {if $wechat_type eq '0'} -->
-					<div class="alert alert-danger m_b0">
-						<strong>{lang key='wechat::wechat.label_notice'}</strong>{$type_error}
-					</div>
-					<!-- {/if} -->
 				</div>
 			<!-- {/if} -->
 
@@ -27,7 +20,7 @@
 			</div>
 
 			<div class="modal-footer justify-content-center">
-				<input type="button" class="btn btn-success js-btn" {if $errormsg || $wechat_type eq '0'}disabled{/if} value="{lang key='wechat::wechat.ok'}" />
+				<input type="button" class="btn btn-success js-btn" {if $errormsg}disabled{/if} value="{lang key='wechat::wechat.ok'}" />
 				<input type="button" class="btn btn-outline-primary" data-dismiss="modal" aria-label="Close" value="{lang key='wechat::wechat.cancel'}" />
 			</div>
 		</div>
