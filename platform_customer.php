@@ -452,7 +452,7 @@ class platform_customer extends ecjia_platform
         try {
             if ($val == 1) {
                 //微信端添加客服账号
-                $wechat->staff->add($info['kf_account'], $info['kf_nick']);
+                $wechat->staff->create($info['kf_account'], $info['kf_nick']);
                 $action = 'use';
             } else {
                 //微信端删除客服账号
