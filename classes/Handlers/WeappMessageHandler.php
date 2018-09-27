@@ -52,6 +52,7 @@ use Ecjia\App\Weapp\WeappRecord;
 use Ecjia\App\Weapp\WeappUUID;
 use Ecjia\App\Weapp\WeappMediaReply;
 //use Ecjia\App\Wechat\WechatCommand;
+use Ecjia\App\Weapp\Sends\SendCustomMessage;
 
 class WeappMessageHandler
 {
@@ -133,10 +134,12 @@ class WeappMessageHandler
         if (!is_null($content)) {
             return $content;
         }
-        
-        $weapp_id = with(new WeappUUID())->getWeappID();
+
+        $weapp_uuid = new WeappUUID();
+        $weapp_id = $weapp_uuid->getWeappID();
 
         $rule_keywords  = $message->get('Content');
+        $openid = $message->get('FromUserName');
 
         //用户输入信息记录
         WeappRecord::inputMsg($message->get('FromUserName'), $rule_keywords);
@@ -145,10 +148,11 @@ class WeappMessageHandler
                                 ->where('wechat_id', $weapp_id)->where('type', 'msg')->first();
                                 
         if ( ! empty($data)) {
+            $wechat = $weapp_uuid->getWechatInstance();
             if ($data->reply_type == 'text') {
-                $content = WeappRecord::Text_reply($message, $data['content']);
+                with(new SendCustomMessage($wechat, $weapp_id, $openid))->sendTextMessage($data->content);
             } else {
-                $content = with(new WeappMediaReply($weapp_id, $data->media_id))->replyContent($message);
+                with(new SendCustomMessage($wechat, $weapp_id, $openid))->sendMediaMessage($data->media_id);
             }
         }
         
