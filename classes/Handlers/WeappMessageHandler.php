@@ -114,12 +114,12 @@ class WeappMessageHandler
     {
         
 //        RC_Hook::add_filter('wechat_text_response', array(__CLASS__, 'Command_reply'), 10, 2);
-//        RC_Hook::add_filter('wechat_text_response', array(__CLASS__, 'Keyword_reply'), 90, 2);
+        RC_Hook::add_filter('wechat_text_response', array(__CLASS__, 'Keyword_reply'), 90, 2);
         RC_Hook::add_filter('weapp_text_response', array(__CLASS__, 'Empty_reply'), 100, 2);
         
-        $response = RC_Hook::apply_filters('weapp_text_response', null, $message);
+        RC_Hook::apply_filters('weapp_text_response', null, $message);
 
-        return $response;
+        return null;
     }
     
     
@@ -137,9 +137,8 @@ class WeappMessageHandler
 
         $weapp_uuid = new WeappUUID();
         $weapp_id = $weapp_uuid->getWeappID();
-
-        $rule_keywords  = $message->get('Content');
         $openid = $message->get('FromUserName');
+        $rule_keywords  = $message->get('Content');
 
         //用户输入信息记录
         WeappRecord::inputMsg($message->get('FromUserName'), $rule_keywords);
@@ -150,13 +149,13 @@ class WeappMessageHandler
         if ( ! empty($data)) {
             $wechat = $weapp_uuid->getWechatInstance();
             if ($data->reply_type == 'text') {
-                with(new SendCustomMessage($wechat, $weapp_id, $openid))->sendTextMessage($data->content);
+                $content = with(new SendCustomMessage($wechat, $weapp_id, $openid))->sendTextMessage($data->content);
             } else {
-                with(new SendCustomMessage($wechat, $weapp_id, $openid))->sendMediaMessage($data->media_id);
+                $content = with(new SendCustomMessage($wechat, $weapp_id, $openid))->sendMediaMessage($data->media_id);
             }
         }
         
-        return null;
+        return $content;
     }
     
     /**
@@ -169,8 +168,10 @@ class WeappMessageHandler
         if (!is_null($content)) {
             return $content;
         }
-        
-        $weapp_id = with(new WeappUUID())->getWeappID();
+
+        $weapp_uuid = new WeappUUID();
+        $weapp_id = $weapp_uuid->getWeappID();
+        $openid = $message->get('FromUserName');
         $rule_keywords  = $message->get('Content');
         
         //用户输入信息记录
@@ -182,10 +183,11 @@ class WeappMessageHandler
                                     ->where('wechat_rule_keywords.rule_keywords', $rule_keywords)->first();
         
         if (! empty($model)) {
+            $wechat = $weapp_uuid->getWechatInstance();
             if ($model->media_id) {
-                $content = with(new WeappMediaReply($weapp_id, $model->media_id))->replyContent($message);
+                $content = with(new SendCustomMessage($wechat, $weapp_id, $openid))->sendMediaMessage($model->media_id);
             } else {
-                $content = WeappRecord::Text_reply($message, $model->content);
+                $content = with(new SendCustomMessage($wechat, $weapp_id, $openid))->sendTextMessage($model->content);
             }
         }
         
