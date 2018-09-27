@@ -81,10 +81,6 @@ class WeappMessageHandler
                 return self::Image_action($message);
                 break;
                 
-            case 'user_enter_tempsession':
-                return self::UserEnter_action($message);
-                break;
-                
                 // ... 其它消息
             default:
                 return self::Default_action($message);
@@ -102,36 +98,6 @@ class WeappMessageHandler
     public static function Default_action($message) 
     {
         return self::Text_action($message);
-    }
-
-    /**
-     * 文本回复
-     * @param \Royalcms\Component\Support\Collection $message
-     * @return \Royalcms\Component\WeChat\Message\AbstractMessage
-     */
-    public static function UserEnter_action($message)
-    {
-        $weapp_uuid = new WeappUUID();
-        $weapp_id = $weapp_uuid->getWeappID();
-        $openid = $message->get('FromUserName');
-        $rule_keywords  = $message->get('Content');
-
-        //用户输入信息记录
-        WeappRecord::inputMsg($message->get('FromUserName'), $rule_keywords);
-
-        $data = WechatReplyModel::select('reply_type', 'content', 'media_id')
-            ->where('wechat_id', $weapp_id)->where('type', 'user_enter')->first();
-
-        if ( ! empty($data)) {
-            $wechat = $weapp_uuid->getWechatInstance();
-            if ($data->reply_type == 'text') {
-                with(new SendCustomMessage($wechat, $weapp_id, $openid))->sendTextMessage($data->content);
-            } else {
-                with(new SendCustomMessage($wechat, $weapp_id, $openid))->sendMediaMessage($data->media_id);
-            }
-        }
-
-        return null;
     }
     
     

@@ -65,24 +65,8 @@ class WeappEventHandler
     public static function getEventHandler($message)
     {
         switch ($message->Event) {
-            case 'subscribe':
-                return self::Subscribe_event($message);
-                break;
-                
-            case 'unsubscribe':
-                return self::Unsubscribe_event($message);
-                break;
-                
-            case 'SCAN':
-                return self::Scan_event($message);
-                break;
-                
-            case 'CLICK':
-                return self::Click_event($message);
-                break;
-                
-            case 'VIEW':
-                return self::View_event($message);
+            case 'user_enter_tempsession':
+                return self::UserEnter_event($message);
                 break;
                 
             case 'kf_create_session':
@@ -92,7 +76,6 @@ class WeappEventHandler
             case 'kf_close_session':
 
                 break;
-                
 
                 
             default:
@@ -111,6 +94,36 @@ class WeappEventHandler
     public static function Default_event($message) 
     {
         
+    }
+
+    /**
+     * 用户打开客服回复
+     * @param \Royalcms\Component\Support\Collection $message
+     * @return \Royalcms\Component\WeChat\Message\AbstractMessage
+     */
+    public static function UserEnter_event($message)
+    {
+        $weapp_uuid = new WeappUUID();
+        $weapp_id = $weapp_uuid->getWeappID();
+        $openid = $message->get('FromUserName');
+        $rule_keywords  = $message->get('Content');
+
+        //用户输入信息记录
+        WeappRecord::inputMsg($message->get('FromUserName'), $rule_keywords);
+
+        $data = WechatReplyModel::select('reply_type', 'content', 'media_id')
+            ->where('wechat_id', $weapp_id)->where('type', 'user_enter')->first();
+
+        if ( ! empty($data)) {
+            $wechat = $weapp_uuid->getWechatInstance();
+            if ($data->reply_type == 'text') {
+                with(new SendCustomMessage($wechat, $weapp_id, $openid))->sendTextMessage($data->content);
+            } else {
+                with(new SendCustomMessage($wechat, $weapp_id, $openid))->sendMediaMessage($data->media_id);
+            }
+        }
+
+        return null;
     }
     
     /**
