@@ -347,6 +347,8 @@ class platform_user extends ecjia_platform
                 }
             }
             $this->assign('info', $info);
+            $message = $this->get_message_list();
+            $this->assign('message', $message);
 
             //最后发送时间
             $last_send_time = RC_DB::table('wechat_custom_message')
