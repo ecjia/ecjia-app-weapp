@@ -145,6 +145,141 @@ class platform_response extends ecjia_platform
         $this->display('weapp_reply_msg.dwt');
     }
 
+    /**
+     * 打开客服回复
+     */
+    public function open_reply()
+    {
+        $this->admin_priv('weapp_response_manage');
+
+        ecjia_platform_screen::get_current_screen()->set_subject('打开客服回复');
+
+        ecjia_platform_screen::get_current_screen()->add_nav_here(new admin_nav_here('打开客服回复'));
+        $this->assign('ur_here', '自动回复');
+
+        $this->assign('form_action', RC_Uri::url('weapp/platform_response/open_reply_insert'));
+        $this->assign('add_material_action', RC_Uri::url('weapp/platform_response/add_material'));
+
+        //自动回复数据
+        $wechat_id = $this->platformAccount->getAccountID();
+
+        if (is_ecjia_error($wechat_id)) {
+            $this->assign('errormsg', RC_Lang::get('wechat::wechat.add_platform_first'));
+        } else {
+            $subscribe = RC_DB::table('wechat_reply')->where('wechat_id', $wechat_id)->where('type', 'user_enter')->first();
+            if (!empty($subscribe['media_id'])) {
+                $subscribe['media'] = RC_DB::table('wechat_media')->select('file', 'type', 'file_name')->where('wechat_id', $wechat_id)->where('id', $subscribe['media_id'])->first();
+            }
+            if ($subscribe['reply_type'] == 'news') {
+                $data = RC_DB::table('wechat_media')->where('wechat_id', $wechat_id)->where('parent_id', $subscribe['media_id'])->orderBy('id', 'asc')->get();
+                if (!empty($data)) {
+                    foreach ($data as $k => $v) {
+                        if (!empty($v['file'])) {
+                            $subscribe['child'][$k]['title'] = strip_tags(Ecjia\App\Wechat\Helper::html_out($v['title']));
+                            $subscribe['child'][$k]['file'] = RC_Upload::upload_url($v['file']);
+                            $subscribe['child'][$k]['add_time'] = RC_Time::local_date(RC_Lang::get('wechat::wechat.date_ymd'), $v['add_time']);
+                        } else {
+                            $subscribe['child'][$k]['file'] = RC_Uri::admin_url('statics/images/nopic.png');
+                        }
+                    }
+                }
+            }
+
+            if (!empty($subscribe)) {
+                foreach ($subscribe as $key => $val) {
+                    if (isset($val['type'])) {
+                        if ($val['type'] == 'image' || $val['type'] == 'news') {
+                            $subscribe['media']['file'] = RC_Upload::upload_url($val['file']);
+                        } elseif ($val['type'] == 'voice') {
+                            $subscribe['media']['file'] = RC_Uri::admin_url('statics/images/voice.png');
+                        } elseif ($val['type'] == 'video') {
+                            $subscribe['media']['file'] = RC_Uri::admin_url('statics/images/video.png');
+                        }
+                    }
+                }
+            } else {
+                $subscribe['reply_type'] = 'text';
+            }
+            $this->assign('subscribe', $subscribe);
+        }
+
+        $this->display('weapp_open_reply.dwt');
+    }
+
+    public function open_reply_insert()
+    {
+        $id = !empty($_POST['id']) ? intval($_POST['id']) : 0;
+        $media_id = !empty($_POST['media_id']) ? intval($_POST['media_id']) : 0;
+        $reply_type = $_POST['content_type'];
+
+        if ($_POST['content_type'] != 'text') {
+            $content = '';
+        } else {
+            $content = !empty($_POST['content']) ? $_POST['content'] : '';
+            $media_id = 0;
+        }
+
+        $wechat_id = $this->platformAccount->getAccountID();
+
+        $data = array(
+            'wechat_id' => $wechat_id,
+            'media_id' => $media_id,
+            'type' => 'user_enter',
+            'content' => $content,
+            'reply_type' => $reply_type,
+        );
+        if (empty($id)) {
+            $this->admin_priv('weapp_response_add', ecjia::MSGTYPE_JSON);
+            //添加
+            $id = RC_DB::table('wechat_reply')->insertGetId($data);
+
+            $media_id = RC_DB::table('wechat_reply')->where('wechat_id', $wechat_id)->where('id', $id)->pluck('media_id');
+            $info = RC_DB::table('wechat_media')->select('file', 'type')->where('wechat_id', $wechat_id)->where('id', $media_id)->first();
+
+            if (!empty($content)) {
+                ecjia_admin::admin_log($content . '，' . RC_Lang::get('wechat::wechat.reply_type_character'), 'add', 'reply_msg');
+            } else {
+                if ($info['type'] == 'image') {
+                    ecjia_admin::admin_log($info['file'] . '，' . RC_Lang::get('wechat::wechat.reply_type_picture'), 'add', 'reply_msg');
+                } elseif ($info['type'] == 'voice') {
+                    ecjia_admin::admin_log($info['file'] . '，' . RC_Lang::get('wechat::wechat.reply_type_voice'), 'add', 'reply_msg');
+                } elseif ($info['type'] == 'video') {
+                    ecjia_admin::admin_log($info['file'] . '，' . RC_Lang::get('wechat::wechat.reply_type_video'), 'add', 'reply_msg');
+                }
+            }
+            if ($id) {
+                return $this->showmessage(RC_Lang::get('wechat::wechat.add_success'), ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_SUCCESS, array('pjaxurl' => RC_Uri::url('weapp/platform_response/open_reply')));
+            } else {
+                return $this->showmessage(RC_Lang::get('wechat::wechat.add_failed'), ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_ERROR);
+            }
+        } else {
+            $this->admin_priv('weapp_response_update', ecjia::MSGTYPE_JSON);
+
+            //更新
+            RC_DB::table('wechat_reply')->where('wechat_id', $wechat_id)->where('id', $id)->update($data);
+
+            $media_id = RC_DB::table('wechat_reply')->where('wechat_id', $wechat_id)->where('id', $id)->pluck('media_id');
+            $info = RC_DB::table('wechat_media')->select('file', 'type')->where('wechat_id', $wechat_id)->where('id', $media_id)->first();
+
+            if (!empty($content)) {
+                ecjia_admin::admin_log($content . '，' . RC_Lang::get('wechat::wechat.reply_type_character'), 'edit', 'reply_msg');
+            } else {
+                if ($info['type'] == 'image') {
+                    ecjia_admin::admin_log($info['file'] . '，' . RC_Lang::get('wechat::wechat.reply_type_picture'), 'edit', 'reply_msg');
+                } elseif ($info['type'] == 'voice') {
+                    ecjia_admin::admin_log($info['file'] . '，' . RC_Lang::get('wechat::wechat.reply_type_voice'), 'edit', 'reply_msg');
+                } elseif ($info['type'] == 'video') {
+                    ecjia_admin::admin_log($info['file'] . '，' . RC_Lang::get('wechat::wechat.reply_type_video'), 'edit', 'reply_msg');
+                }
+            }
+            if ($id) {
+                return $this->showmessage(RC_Lang::get('wechat::wechat.edit_success'), ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_SUCCESS, array('pjaxurl' => RC_Uri::url('weapp/platform_response/open_reply')));
+            } else {
+                return $this->showmessage(RC_Lang::get('wechat::wechat.edit_failed'), ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_ERROR);
+            }
+        }
+    }
+
     public function reply_msg_insert()
     {
         $id = !empty($_POST['id']) ? intval($_POST['id']) : 0;

@@ -21,7 +21,7 @@
 	</button>
 	<h4 class="alert-heading mb-2">操作提示</h4>
 	<p>自动回复的类型 共分三种：消息自动回复、关键词自动回复、打开客服回复。回复内容可以设置为文字，图片。文本消息回复内容可以直接填写，长度限制1024字节（大约200字，含标点以及其他特殊字符），其他素材需要先在素材管理中添加。</p>
-	<p>二、消息自动回复：当用户输入任意消息，匹配不到系统已有关键词时或者没有在关键词自动回复里添加关键词，默认回复一条消息提示。例如：对不起！你输入的关键词不存在，建议你咨询相关客服。你也可以输入help，查看使用帮助。</p>
+	<p>三、打开客服回复：即打开客服时自动回复一条设置好的文字或图片。</p>
 </div>
 
 <div class="row">
@@ -33,7 +33,7 @@
             <div class="card-body">
             	<ul class="nav nav-tabs">
             		<li class="nav-item">
-						<a class="nav-link data-pjax active" href='{url path="weapp/platform_response/reply_msg"}'>{lang key='wechat::wechat.message_auto_reply'}</a>
+						<a class="nav-link data-pjax active" href='{url path="weapp/platform_response/open_reply"}'>打开客服回复</a>
 					</li>
 				</ul>
 				
