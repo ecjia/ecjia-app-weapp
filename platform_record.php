@@ -420,7 +420,7 @@ class platform_record extends ecjia_platform
         $this->admin_priv('weapp_record_manage', ecjia::MSGTYPE_JSON);
 
         $uuid = $this->platformAccount->getUUID();
-        $wechat = with(new Ecjia\App\Wechat\WechatUUID($uuid))->getWechatInstance();
+        $wechat = with(new Ecjia\App\Weapp\WeappUUID($uuid))->getWechatInstance();
 
         $wechat_id = $this->platformAccount->getAccountID();
 
