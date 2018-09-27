@@ -82,7 +82,7 @@ class WeappMessageHandler
                 break;
                 
             case 'user_enter_tempsession':
-                
+                return self::Enter_action($message);
                 break;
                 
                 // ... 其它消息
@@ -100,6 +100,16 @@ class WeappMessageHandler
      * @return \Royalcms\Component\WeChat\Message\AbstractMessage
      */
     public static function Default_action($message) 
+    {
+        return self::Text_action($message);
+    }
+
+    /**
+     * 文本回复
+     * @param \Royalcms\Component\Support\Collection $message
+     * @return \Royalcms\Component\WeChat\Message\AbstractMessage
+     */
+    public static function Enter_action($message)
     {
         return self::Text_action($message);
     }
