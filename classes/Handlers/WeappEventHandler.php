@@ -47,6 +47,10 @@
 namespace Ecjia\App\Weapp\Handlers;
 
 use RC_Hook;
+use Ecjia\App\Weapp\WeappRecord;
+use Ecjia\App\Weapp\WeappUUID;
+use Ecjia\App\Wechat\Models\WechatReplyModel;
+use Ecjia\App\Weapp\Sends\SendCustomMessage;
 //use Ecjia\App\Wechat\Models\WechatReplyModel;
 //use Ecjia\App\Wechat\WechatRecord;
 //use Ecjia\App\Wechat\WechatUUID;
@@ -148,25 +152,6 @@ class WeappEventHandler
      */
     public static function View_event($message) 
     {
-        
-    }
-    
-    /**
-     * 上报地理位置事件
-     * @param \Royalcms\Component\Support\Collection $message
-     */
-    public static function Location_event($message)
-    {
-        $openid = $message->get('FromUserName');
-
-        $data = [
-            'location_latitude' => $message->get('Latitude'),
-            'location_longitude' => $message->get('Longitude'),
-            'location_precision' => $message->get('Precision'),
-            'location_updatetime' => \RC_Time::gmtime(),
-        ];
-
-        WechatUserModel::where('openid', $openid)->update($data);
         
     }
     
