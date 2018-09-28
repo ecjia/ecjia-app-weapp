@@ -51,7 +51,7 @@ use Ecjia\App\Wechat\Models\WechatReplyModel;
 use Ecjia\App\Weapp\WeappRecord;
 use Ecjia\App\Weapp\WeappUUID;
 use Ecjia\App\Weapp\WeappMediaReply;
-//use Ecjia\App\Wechat\WechatCommand;
+use Ecjia\App\Weapp\WeappCommand;
 use Ecjia\App\Weapp\Sends\SendCustomMessage;
 
 class WeappMessageHandler
@@ -108,8 +108,10 @@ class WeappMessageHandler
      */
     public static function Text_action($message) 
     {
-        
-//        RC_Hook::add_filter('wechat_text_response', array(__CLASS__, 'Command_reply'), 10, 2);
+        //用户输入信息记录
+        WeappRecord::inputMsg($message->get('FromUserName'), $message->get('Content'));
+
+        RC_Hook::add_filter('wechat_text_response', array(__CLASS__, 'Command_reply'), 10, 2);
         RC_Hook::add_filter('weapp_text_response', array(__CLASS__, 'Keyword_reply'), 90, 2);
         RC_Hook::add_filter('weapp_text_response', array(__CLASS__, 'Empty_reply'), 100, 2);
         
@@ -134,11 +136,7 @@ class WeappMessageHandler
         $weapp_uuid = new WeappUUID();
         $weapp_id = $weapp_uuid->getWeappID();
         $openid = $message->get('FromUserName');
-        $rule_keywords  = $message->get('Content');
 
-        //用户输入信息记录
-        WeappRecord::inputMsg($message->get('FromUserName'), $rule_keywords);
-        
         $data = WechatReplyModel::select('reply_type', 'content', 'media_id')
                                 ->where('wechat_id', $weapp_id)->where('type', 'msg')->first();
                                 
@@ -169,10 +167,7 @@ class WeappMessageHandler
         $weapp_id = $weapp_uuid->getWeappID();
         $openid = $message->get('FromUserName');
         $rule_keywords  = $message->get('Content');
-        
-        //用户输入信息记录
-        WeappRecord::inputMsg($message->get('FromUserName'), $rule_keywords);
-        
+
         $model = WechatReplyModel::leftJoin('wechat_rule_keywords', 'wechat_rule_keywords.rid', '=', 'wechat_reply.id')
                                     ->select('wechat_reply.content', 'wechat_reply.media_id', 'wechat_reply.reply_type')
                                     ->where('wechat_reply.wechat_id', $weapp_id)
@@ -203,10 +198,10 @@ class WeappMessageHandler
             return $content;
         }
         
-        $content = with(new WechatCommand($message, new WeappUUID()))->runCommand($message->get('Content'));
+        $content = with(new WeappCommand($message, new WeappUUID()))->runCommand($message->get('Content'));
         
         if (is_string($content)) {
-            $content = WechatRecord::Text_reply($message, $content);
+            $content = WeappRecord::Text_reply($message, $content);
         }
         
         return $content;
@@ -219,7 +214,7 @@ class WeappMessageHandler
      */
     public static function Image_action($message) 
     {
-        $content = WechatRecord::Image_reply($message, $message->get('MediaId'));
+        $content = WeappRecord::Image_reply($message, $message->get('MediaId'));
         return $content;
     }
 
@@ -231,7 +226,7 @@ class WeappMessageHandler
      */
     public static function Link_action($message)
     {
-        return WechatRecord::Text_reply($message, '链接消息已经收到');
+        return WeappRecord::Text_reply($message, '链接消息已经收到');
     }
     
     

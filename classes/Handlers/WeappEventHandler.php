@@ -49,15 +49,10 @@ namespace Ecjia\App\Weapp\Handlers;
 use RC_Hook;
 use Ecjia\App\Weapp\WeappRecord;
 use Ecjia\App\Weapp\WeappUUID;
-use Ecjia\App\Wechat\Models\WechatReplyModel;
+use Ecjia\App\Weapp\WeappMediaReply;
 use Ecjia\App\Weapp\Sends\SendCustomMessage;
-//use Ecjia\App\Wechat\Models\WechatReplyModel;
-//use Ecjia\App\Wechat\WechatRecord;
-//use Ecjia\App\Wechat\WechatUUID;
-//use Ecjia\App\Wechat\WechatMediaReply;
-//use Ecjia\App\Wechat\WechatCommand;
-//use Ecjia\App\Wechat\Models\WechatMassHistoryModel;
-//use Ecjia\App\Wechat\Models\WechatUserModel;
+use Ecjia\App\Weapp\WeappCommand;
+use Ecjia\App\Wechat\Models\WechatReplyModel;
 
 class WeappEventHandler
 {
@@ -145,16 +140,6 @@ class WeappEventHandler
         return $response;
     }
     
-    /**
-     * 点击菜单跳转链接时的事件推送
-     * @param \Royalcms\Component\Support\Collection $message
-     * @return \Royalcms\Component\WeChat\Message\AbstractMessage
-     */
-    public static function View_event($message) 
-    {
-        
-    }
-    
     
     /**
      * 关键字回复
@@ -167,11 +152,11 @@ class WeappEventHandler
             return $content;
         }
         
-        $wechat_id = with(new WechatUUID())->getWechatID();
+        $wechat_id = with(new WeappUUID())->getWechatID();
         $rule_keywords  = $message->get('EventKey');
         
         //用户输入信息记录
-        WechatRecord::inputMsg($message->get('FromUserName'), $rule_keywords);
+        WeappRecord::inputMsg($message->get('FromUserName'), $rule_keywords);
         
         $model = WechatReplyModel::leftJoin('wechat_rule_keywords', 'wechat_rule_keywords.rid', '=', 'wechat_reply.id')
                                 ->select('wechat_reply.content', 'wechat_reply.media_id', 'wechat_reply.reply_type')
@@ -180,9 +165,9 @@ class WeappEventHandler
         
         if (! empty($model)) {
             if ($model->media_id) {
-                $content = with(new WechatMediaReply($wechat_id, $model->media_id))->replyContent($message);
+                $content = with(new WeappMediaReply($wechat_id, $model->media_id))->replyContent($message);
             } else {
-                $content = WechatRecord::Text_reply($message, $model->content);
+                $content = WeappRecord::Text_reply($message, $model->content);
             }
         }
         
@@ -202,127 +187,14 @@ class WeappEventHandler
             return $content;
         }
         
-        $content = with(new WechatCommand($message, new WechatUUID()))->runCommand($message->get('EventKey'));
+        $content = with(new WeappCommand($message, new WeappUUID()))->runCommand($message->get('EventKey'));
         
         if (is_string($content)) {
-            $content = WechatRecord::Text_reply($message, $content);
+            $content = WeappRecord::Text_reply($message, $content);
         }
         
         return $content;
     }
-    
-    /**
-     * 扫码推事件的事件
-     * @param \Royalcms\Component\Support\Collection $message
-     */
-    public static function Scancode_Push_event($message)
-    {
-        
-    }
-    
-    /**
-     * 扫码推事件且弹出“消息接收中”提示框的事件
-     * @param \Royalcms\Component\Support\Collection $message
-     */
-    public static function Scancode_WaitMsg_event($message)
-    {
-        
-    }
-    
-    /**
-     * 弹出系统拍照发图的事件
-     * @param \Royalcms\Component\Support\Collection $message
-     */
-    public static function Pic_SysPhoto_event($message)
-    {
-        
-    }
-    
-    /**
-     * 弹出拍照或者相册发图的事件
-     * @param \Royalcms\Component\Support\Collection $message
-     */
-    public static function Pic_PhotoOrAlbum_event($message)
-    {
-        
-    }
-    
-    /**
-     * 弹出微信相册发图器的事件
-     * @param \Royalcms\Component\Support\Collection $message
-     */
-    public static function Pic_Weixin_event($message)
-    {
-        
-    }
-    
-    /**
-     * 弹出地理位置选择器的事件
-     * @param \Royalcms\Component\Support\Collection $message
-     */
-    public static function Location_Select_event($message)
-    {
 
 
-    }
-    
-    /**
-     * 模板消息发送成功
-     * @param \Royalcms\Component\Support\Collection $message
-     */
-    public static function TemplateSendJobFinish_event($message)
-    {
-        
-    }
-    
-    /**
-     * 关注时的事件
-     * @param \Royalcms\Component\Support\Collection $message
-     */
-    public static function Subscribe_event($message)
-    {
-        return with(new WechatSubscribeHandler($message))->subscribe();
-    }
-    
-    /**
-     * 取消关注时的事件
-     * @param \Royalcms\Component\Support\Collection $message
-     */
-    public static function Unsubscribe_event($message)
-    {
-        return with(new WechatSubscribeHandler($message))->unsubscribe();
-    }
-    
-    /**
-     * 用户已关注时的事件
-     * @param \Royalcms\Component\Support\Collection $message
-     */
-    public static function Scan_event($message)
-    {
-        return with(new WechatScanHandler($message))->getScanEventHandler();
-    }
-    
-    /**
-     * 群发发送成功之后推送的事件
-     * @param \Royalcms\Component\Support\Collection $message
-     */
-    public static function MassSendJobFinish_event($message)
-    {
-        $wechatUUID = new WechatUUID();
-        $wechat_id = $wechatUUID->getWechatId();
-
-        $data = [
-            'status'                => $message->get('Status'),
-            'totalcount'            => $message->get('TotalCount'),
-            'filtercount'           => $message->get('FilterCount'),
-            'sentcount'             => $message->get('SentCount'),
-            'errorcount'            => $message->get('ErrorCount'),
-            'copyright_check_result' => serialize($message->get('CopyrightCheckResult')),
-            'check_state'            => array_get($message->get('CopyrightCheckResult'), 'CheckState'),
-        ];
-        
-        WechatMassHistoryModel::where('wechat_id', $wechat_id)->where('msg_id', $message->get('MsgID'))->update($data);
-
-        return;
-    }
 }
