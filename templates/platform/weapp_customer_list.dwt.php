@@ -79,9 +79,6 @@
 									{if $val.online_status eq 1}
 									<a class="get_session" href='{RC_Uri::url("weapp/platform_customer/get_session", "kf_account={$val.kf_account}")}' title="获取客服会话">获取客服会话</a>&nbsp;|&nbsp;
 									{/if}
-									{if $val.invite_status neq 'waiting'}
-									<a class="data-pjax" href='{RC_Uri::url("weapp/platform_customer/edit", "id={$val.id}")}' title="{lang key='system::system.edit'}">{lang key='system::system.edit'}</a>&nbsp;|&nbsp;
-									{/if}
 
 									{if $smarty.get.type eq 'deleted'}
 										<a class="ajaxremove ecjiafc-red" 
