@@ -40,21 +40,22 @@
             <div class="card-header">
                 <h4 class="card-title">
                 <!-- {if $ur_here}{$ur_here}{/if} -->
-				{if $action_link}
-					<a class="btn btn-outline-primary data-pjax float-right" href="{$action_link.href}" id="sticky_a"><i class="ft-plus"></i>{$action_link.text}</a>
-				{/if}
-					<a class="btn btn-outline-primary float-right m_r10" href="https://mpkf.weixin.qq.com/" target="__blank"><i class="ft-link"></i>去微信客服中心</a>
+				<a class="btn btn-outline-primary float-right m_r10" href="https://mpkf.weixin.qq.com/" target="__blank"><i class="ft-link"></i>去微信客服中心</a>
                 </h4>
             </div>
 			<div class="card-body">
 				<ul class="nav nav-pills float-left">
 					<li class="nav-item">
-						<a class="nav-link {if $smarty.get.type neq 'online'}active{/if} data-pjax" href='{url path="weapp/platform_customer/init"}'>{lang key='wechat::wechat.all_customer'}
+						<a class="nav-link {if !$smarty.get.type}active{/if} data-pjax" href='{url path="weapp/platform_customer/init"}'>{lang key='wechat::wechat.all_customer'}
 						<span class="badge badge-pill badge-glow badge-default badge-primary ml-1">{$list.filter.all}</span></a>
 					</li>
 					<li class="nav-item">
 						<a class="nav-link {if $smarty.get.type eq 'online'}active{/if} data-pjax" href='{url path="weapp/platform_customer/init" args="type=online"}'>{lang key='wechat::wechat.online_customer'}
 						<span class="badge badge-pill badge-glow badge-default badge-primary ml-1">{$list.filter.online}</span></a>
+					</li>
+					<li class="nav-item">
+						<a class="nav-link {if $smarty.get.type eq 'deleted'}active{/if} data-pjax" href='{url path="weapp/platform_customer/init" args="type=deleted"}'>已删客服
+						<span class="badge badge-pill badge-glow badge-default badge-primary ml-1">{$list.filter.deleted}</span></a>
 					</li>
 				</ul>
 			</div>
@@ -64,10 +65,8 @@
 						<tr>
 							<th class="w130">{lang key='wechat::wechat.kf_headimgurl'}</th>
 							<th class="w250">{lang key='wechat::wechat.kf_account'}</th>
-							<th class="w200">{lang key='wechat::wechat.bind_wx'}</th>
 							<th class="w200">{lang key='wechat::wechat.kf_nick'}</th>
 							<th class="w150">{lang key='wechat::wechat.online_status'}</th>
-							<th class="w100">{lang key='wechat::wechat.is_used'}</th>
 						</tr>
 					</thead>
 					<tbody>
@@ -83,40 +82,27 @@
 									{if $val.invite_status neq 'waiting'}
 									<a class="data-pjax" href='{RC_Uri::url("weapp/platform_customer/edit", "id={$val.id}")}' title="{lang key='system::system.edit'}">{lang key='system::system.edit'}</a>&nbsp;|&nbsp;
 									{/if}
-									<a class="ajaxremove ecjiafc-red" data-toggle="ajaxremove" data-msg="{lang key='wechat::wechat.remove_kf_confirm'}" href='{RC_Uri::url("weapp/platform_customer/remove", "id={$val.id}")}' title="{lang key='system::system.drop'}">{lang key='system::system.drop'}</a>
+
+									{if $smarty.get.type eq 'deleted'}
+										<a class="ajaxremove ecjiafc-red" 
+										data-toggle="ajaxremove" 
+										data-msg="解绑该客服后将无法还原，您确定要解绑该客服吗？" 
+										href='{RC_Uri::url("weapp/platform_customer/remove", "id={$val.id}")}' 
+										title="{lang key='system::system.drop'}">
+										{lang key='system::system.drop'}
+										</a>
+									{else}
+										<a class="ajaxremove ecjiafc-red" 
+										data-toggle="ajaxremove" 
+										data-msg="{lang key='wechat::wechat.remove_kf_confirm'}" 
+										href='{RC_Uri::url("weapp/platform_customer/edit_status", "id={$val.id}{if $smarty.get.type}&type={$smarty.get.type}{/if}")}' 
+										title="解绑">
+										解绑
+										</a>
+									{/if}
 								</div>
 							</td>
 		
-							<td>
-								{if $val.status eq 1}
-									{if $val.kf_wx}
-										{$val.kf_wx}
-									{elseif $val.invite_wx}
-										{if $val.invite_status eq 'waiting'}
-											{$val.invite_wx}<br />
-											<span class="ecjiafc-999">
-											{lang key='wechat::wechat.invite_waiting'}<a class="hint--bottom hint--rounded" data-hint="绑定邀请已发送至 {$val.invite_wx} 的微信，请去微信客户端确认后即可绑定"><i class="fontello-icon-help-circled"></i></a>
-											</span>
-										{elseif $val.invite_status eq 'rejected'}
-											<span class="ecjiafc-999">
-											{lang key='wechat::wechat.invite_rejected'}<a class="hint--bottom  hint--rounded" data-hint="{lang key='wechat::wechat.rejected_rebind_notice'}"><i class="fontello-icon-help-circled"></i></a>
-											</span><br />
-											<a class="bind_wx" data-toggle="modal" href="#bind_wx" title="{lang key='wechat::wechat.bind_wx'}" data-val="{$val.kf_account}">{lang key='wechat::wechat.rebind'}</a>
-										{elseif $val.invite_status eq 'expired'}
-											<span class="ecjiafc-999">
-												{lang key='wechat::wechat.invite_expired'}<a class="hint--bottom  hint--rounded" data-hint="{lang key='wechat::wechat.expired_rebind_notice'}"><i class="fontello-icon-help-circled"></i></a>
-											</span><br />
-											<a class="bind_wx" data-toggle="modal" href="#bind_wx" title="{lang key='wechat::wechat.bind_wx'}" data-val="{$val.kf_account}">{lang key='wechat::wechat.rebind'}</a>
-										{/if}
-									{else}
-										<a class="bind_wx" data-toggle="modal" href="#bind_wx" title="{lang key='wechat::wechat.bind_wx'}" data-val="{$val.kf_account}">绑定微信号</a>
-									{/if}
-								{else}
-									<span class="ecjiafc-999">{lang key='wechat::wechat.kf_account_disabled'}</span>
-									<br />
-									<a class="bind_wx" data-toggle="modal" href="#bind_wx" title="{lang key='wechat::wechat.bind_wx'}" data-val="{$val.kf_account}">{lang key='wechat::wechat.rebind'}</a>
-								{/if}
-							</td>
 							<td>
 								<span class="cursor_pointer" data-text="text" data-trigger="editable" data-url='{RC_Uri::url("weapp/platform_customer/edit_nick")}' data-name="{$val.kf_nick}" data-pk="{$val.id}" data-title="{lang key='wechat::wechat.edit_kf_nick'}" >{$val.kf_nick}</span>
 							</td>
@@ -127,11 +113,8 @@
 									{lang key='wechat::wechat.not_online'}
 								{/if}
 							</td>
-							<td>
-	                        	<i class="{if $val.status eq 1}fa fa-check cursor_pointer{else}fa fa-times cursor_pointer{/if}" data-trigger="toggle_CustomerState" data-url="{RC_Uri::url('weapp/platform_customer/toggle_show')}" data-id="{$val.id}" data-msg="{if $val.status}关闭客服[{$val.kf_account}]将在微信端删除该客服，{else}开启客服[{$val.kf_account}]将在微信端添加该客服，{/if}您确定要这么做吗？"></i>
-							</td>
-							</tr>
-							<!--  {foreachelse} -->
+						</tr>
+						<!--  {foreachelse} -->
 						<tr><td class="no-records" colspan="6">{lang key='system::system.no_records'}</td></tr>
 						<!-- {/foreach} -->
 					</tbody>

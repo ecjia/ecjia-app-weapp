@@ -18,21 +18,6 @@
 <div class="row">
     <div class="col-12">
         <div class="card">
-            <div class="card-header">
-                <h4 class="card-title">
-                	客服会话同步操作
-                </h4>
-            </div>
-            <div class="card-body">
-            	<div><button type="button" class="ajaxmenu btn btn-outline-primary" data-url='{RC_Uri::url("weapp/platform_customer/get_customer_session")}&status={$smarty.get.status}' data-value="get_customer_session">获取客服会话</button><span style="margin-left: 20px;">通过点击该按钮可以获取未接入会话列表。</span></div><br/>
-			</div>
-		</div>
-	</div>
-</div>
-
-<div class="row">
-    <div class="col-12">
-        <div class="card">
 			<div class="card-header">
                 <h4 class="card-title">{$ur_here}</h4>
             </div>

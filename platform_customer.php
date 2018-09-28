@@ -64,7 +64,7 @@ class platform_customer extends ecjia_platform
         RC_Script::enqueue_script('jquery-validate');
         RC_Script::enqueue_script('jquery-form');
         RC_Script::enqueue_script('bootstrap-placeholder');
-        
+
         RC_Script::enqueue_script('wechat_customer', RC_App::apps_url('statics/platform-js/platform_customer.js', __FILE__), array(), false, true);
         RC_Style::enqueue_style('admin_customer', RC_App::apps_url('statics/css/admin_customer.css', __FILE__));
         RC_Style::enqueue_style('hint.min', RC_Uri::admin_url('statics/lib/hint_css/hint.min.css'));
@@ -88,18 +88,7 @@ class platform_customer extends ecjia_platform
         ecjia_platform_screen::get_current_screen()->remove_last_nav_here();
         ecjia_platform_screen::get_current_screen()->add_nav_here(new admin_nav_here(RC_Lang::get('wechat::wechat.customer')));
         $this->assign('ur_here', RC_Lang::get('wechat::wechat.customer_list'));
-        $this->assign('action_link', array('text' => RC_Lang::get('wechat::wechat.add_customer'), 'href' => RC_Uri::url('weapp/platform_customer/add')));
 
-        ecjia_platform_screen::get_current_screen()->add_help_tab(array(
-            'id' => 'overview',
-            'title' => RC_Lang::get('wechat::wechat.overview'),
-            'content' => '<p>' . RC_Lang::get('wechat::wechat.customer_content') . '</p>',
-        ));
-
-        ecjia_platform_screen::get_current_screen()->set_help_sidebar(
-            '<p><strong>' . RC_Lang::get('wechat::wechat.more_info') . '</strong></p>' .
-            '<p>' . __('<a href="https://ecjia.com/wiki/帮助:ECJia公众平台:多客服管理#.E5.A4.9A.E5.AE.A2.E6.9C.8D" target="_blank">' . RC_Lang::get('wechat::wechat.customer_help') . '</a>') . '</p>'
-        );
         $wechat_id = $this->platformAccount->getAccountID();
 
         if (is_ecjia_error($wechat_id)) {
@@ -115,92 +104,6 @@ class platform_customer extends ecjia_platform
         }
 
         $this->display('weapp_customer_list.dwt');
-    }
-
-    public function add()
-    {
-        $this->admin_priv('weapp_customer_add');
-
-        ecjia_platform_screen::get_current_screen()->add_nav_here(new admin_nav_here(RC_Lang::get('wechat::wechat.add_customer')));
-        $this->assign('ur_here', RC_Lang::get('wechat::wechat.add_customer'));
-        $this->assign('action_link', array('href' => RC_Uri::url('weapp/platform_customer/init'), 'text' => RC_Lang::get('wechat::wechat.customer_list')));
-
-        ecjia_platform_screen::get_current_screen()->add_help_tab(array(
-            'id' => 'overview',
-            'title' => RC_Lang::get('wechat::wechat.overview'),
-            'content' => '<p>' . RC_Lang::get('wechat::wechat.add_customer_content') . '</p>',
-        ));
-
-        ecjia_platform_screen::get_current_screen()->set_help_sidebar(
-            '<p><strong>' . RC_Lang::get('wechat::wechat.more_info') . '</strong></p>' .
-            '<p>' . __('<a href="https://ecjia.com/wiki/帮助:ECJia公众平台:多客服管理#.E6.B7.BB.E5.8A.A0.E5.AE.A2.E6.9C.8D.E8.B4.A6.E5.8F.B7" target="_blank">' . RC_Lang::get('wechat::wechat.add_customer_help') . '</a>') . '</p>'
-        );
-        $wechat_id = $this->platformAccount->getAccountID();
-
-        if (is_ecjia_error($wechat_id)) {
-            $this->assign('errormsg', RC_Lang::get('wechat::wechat.add_platform_first'));
-        } else {
-            $this->assign('warn', 'warn');
-            $type = RC_DB::table('platform_account')->where('id', $wechat_id)->pluck('type');
-            $this->assign('action', 'add');
-            $this->assign('type', $type);
-            $this->assign('type_error', sprintf(RC_Lang::get('wechat::wechat.notice_service_info'), RC_Lang::get('wechat::wechat.wechat_type.' . $type)));
-
-            $this->assign('list', array('status' => 1));
-            $this->assign('form_action', RC_Uri::url('weapp/platform_customer/insert'));
-        }
-
-        $this->display('weapp_customer_edit.dwt');
-    }
-
-    public function insert()
-    {
-        $this->admin_priv('weapp_customer_add', ecjia::MSGTYPE_JSON);
-
-        $kf_account = !empty($_POST['kf_account']) ? trim($_POST['kf_account']) : '';
-        $nickname = !empty($_POST['kf_nick']) ? trim($_POST['kf_nick']) : '';
-        $status = !empty($_POST['status']) ? intval($_POST['status']) : 0;
-
-        $wechat_id = $this->platformAccount->getAccountID();
-
-        $uuid = $this->platformAccount->getUUID();
-        $wechat = with(new Ecjia\App\Weapp\WeappUUID($uuid))->getWechatInstance();
-
-        //最多只能添加10个客服
-        $count = RC_DB::table('wechat_customer')->where('wechat_id', $wechat_id)->count();
-        if ($count >= 10) {
-            return $this->showmessage(RC_Lang::get('wechat::wechat.up_customer_accounts'), ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_ERROR);
-        }
-
-        //判断客服账号是否重复
-        $num = RC_DB::table('wechat_customer')->where('wechat_id', $wechat_id)->where('kf_account', $kf_account)->count();
-        if ($num != 0) {
-            return $this->showmessage(RC_Lang::get('wechat::wechat.customer_exists'), ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_ERROR);
-        }
-        $data = array(
-            'wechat_id' => $wechat_id,
-            'kf_account' => $kf_account,
-            'kf_nick' => $nickname,
-            'status' => $status,
-        );
-
-        //如果为开启状态 则微信端添加
-        if ($status == 1) {
-            //微信端添加客服账号
-            try {
-                $wechat->staff->create($kf_account, $nickname);
-            } catch (\Royalcms\Component\WeChat\Core\Exceptions\HttpException $e) {
-                return $this->showmessage(\Ecjia\App\Wechat\WechatErrorCodes::getError($e->getCode(), $e->getMessage()), ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_ERROR);
-            }
-        }
-
-        $id = RC_DB::table('wechat_customer')->insertGetId($data);
-
-        ecjia_admin::admin_log($kf_account, 'add', 'customer');
-        $links[] = array('text' => RC_Lang::get('wechat::wechat.return_customer_list'), 'href' => RC_Uri::url('weapp/platform_customer/init'));
-        $links[] = array('text' => RC_Lang::get('wechat::wechat.continue_add_customer'), 'href' => RC_Uri::url('weapp/platform_customer/add'));
-
-        return $this->showmessage(RC_Lang::get('wechat::wechat.add_customer_success'), ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_SUCCESS, array('links' => $links, 'pjaxurl' => RC_Uri::url('weapp/platform_customer/edit', array('id' => $id))));
     }
 
     /**
@@ -475,6 +378,42 @@ class platform_customer extends ecjia_platform
         return $this->showmessage(RC_Lang::get('wechat::wechat.switch_success'), ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_SUCCESS, array('pjaxurl' => RC_Uri::url('weapp/platform_customer/init')));
     }
 
+    public function edit_status()
+    {
+        $this->admin_priv('weapp_customer_update', ecjia::MSGTYPE_JSON);
+
+        $uuid = $this->platformAccount->getUUID();
+        $wechat = with(new Ecjia\App\Weapp\WeappUUID($uuid))->getWechatInstance();
+        $wechat_id = $this->platformAccount->getAccountID();
+
+        $id = intval($_GET['id']);
+        $type = trim($_GET['type']);
+        $info = RC_DB::table('wechat_customer')->where('id', $id)->where('wechat_id', $wechat_id)->first();
+
+        try {
+            //微信端删除客服账号
+            $wechat->staff->delete($info['kf_account']);
+            $action = 'stop';
+        } catch (\Royalcms\Component\WeChat\Core\Exceptions\HttpException $e) {
+            return $this->showmessage(\Ecjia\App\Wechat\WechatErrorCodes::getError($e->getCode(), $e->getMessage()), ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_ERROR);
+        }
+
+        ecjia_admin::admin_log($info['kf_account'], $action, 'customer');
+        $data = array(
+            'status' => 0,
+            'kf_wx' => '',
+            'invite_wx' => '',
+            'invite_expire_time' => 0,
+            'invite_status' => '',
+        );
+        RC_DB::table('wechat_customer')->where('id', $id)->where('wechat_id', $wechat_id)->update($data);
+        $url = RC_Uri::url('weapp/platform_customer/init');
+        if (!empty($type)) {
+            $url = RC_Uri::url('weapp/platform_customer/init', array('type' => $type));
+        }
+        return $this->showmessage(RC_Lang::get('wechat::wechat.switch_success'), ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_SUCCESS, array('pjaxurl' => $url));
+    }
+
     public function edit_nick()
     {
         $this->admin_priv('weapp_customer_update', ecjia::MSGTYPE_JSON);
@@ -571,7 +510,7 @@ class platform_customer extends ecjia_platform
         if (is_ecjia_error($wechat_id)) {
             $this->assign('errormsg', RC_Lang::get('wechat::wechat.add_platform_first'));
         } else {
-        	$this->assign('warn', 'warn');
+            $this->assign('warn', 'warn');
             //获取公众号类型 0未认证 1订阅号 2服务号 3认证服务号 4企业号
             $types = $this->platformAccount->getType();
             $this->assign('type', $types);
@@ -582,29 +521,6 @@ class platform_customer extends ecjia_platform
         $this->assign('list', $list);
 
         $this->display('weapp_customer_session.dwt');
-    }
-
-    //获取未接入的客服会话
-    public function get_customer_session()
-    {
-        $this->admin_priv('weapp_customer_session_update', ecjia::MSGTYPE_JSON);
-
-        $wechat_id = $this->platformAccount->getAccountID();
-
-        $uuid = $this->platformAccount->getUUID();
-        $wechat = with(new Ecjia\App\Weapp\WeappUUID($uuid))->getWechatInstance();
-		$status = intval($_GET['status']);
-		
-        try {
-            $list = $wechat->staff_session->waiters()->toArray();
-
-            with(new \Ecjia\App\Wechat\Synchronizes\WaitCustomerSessionStorage($wechat_id, collect($list)))->save();
-
-            return $this->showmessage('获取成功', ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_SUCCESS, array('pjaxurl' => RC_Uri::url('weapp/platform_customer/session', array('status' => $status))));
-        } catch (\Royalcms\Component\WeChat\Core\Exceptions\HttpException $e) {
-            return $this->showmessage(\Ecjia\App\Wechat\WechatErrorCodes::getError($e->getCode(), $e->getMessage()), ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_ERROR);
-        }
-
     }
 
     //获取客服会话
@@ -700,14 +616,18 @@ class platform_customer extends ecjia_platform
     {
         $wechat_id = $this->platformAccount->getAccountID();
         $db_customer = RC_DB::table('wechat_customer')->where('wechat_id', $wechat_id);
+        $type = trim($_GET['type']);
 
-        if (isset($_GET['type'])) {
+        if ($type == 'online') {
             $db_customer->where('online_status', '!=', 0);
+        } elseif ($type == 'deleted') {
+            $db_customer->where('status', 0);
         }
         $list = $db_customer->get();
 
         $filter['all'] = RC_DB::table('wechat_customer')->where('wechat_id', $wechat_id)->count();
         $filter['online'] = RC_DB::table('wechat_customer')->where('wechat_id', $wechat_id)->where('online_status', '!=', 0)->count();
+        $filter['deleted'] = RC_DB::table('wechat_customer')->where('wechat_id', $wechat_id)->where('status', 0)->count();
 
         if (!empty($list)) {
             foreach ($list as $k => $v) {
