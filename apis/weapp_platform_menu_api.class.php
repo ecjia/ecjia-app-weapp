@@ -91,7 +91,6 @@ class weapp_platform_menu_api extends Component_Event_Api
             array(
                 ecjia_admin::make_admin_menu('01_weapp', RC_Lang::get('wechat::wechat.customer'), RC_Uri::url('weapp/platform_customer/init'), 1)->add_purview('weapp_customer_manage'),
                 ecjia_admin::make_admin_menu('02_weapp', '客服会话', RC_Uri::url('weapp/platform_customer/session'), 2)->add_purview('weapp_customer_session_manage'),
-                ecjia_admin::make_admin_menu('03_weapp', RC_Lang::get('wechat::wechat.service_record'), RC_Uri::url('weapp/platform_record/init'), 3)->add_purview('weapp_record_manage')
             )
         );
 

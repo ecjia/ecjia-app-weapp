@@ -64,8 +64,6 @@ class weapp_platform_purview_api extends Component_Event_Api
             array('action_name' => '小程序管理', 'action_code' => 'weapp_config_manage', 'relevance' => ''),
             array('action_name' => '小程序更新', 'action_code' => 'weapp_config_update', 'relevance' => ''),
 
-            array('action_name' => '客服聊天记录', 'action_code' => 'weapp_record_manage', 'relevance'   => ''),
-                
             array('action_name' => '客服会话管理', 'action_code' => 'weapp_customer_session_manage', 'relevance'   => ''),
             array('action_name' => '客服会话更新', 'action_code' => 'weapp_customer_session_update', 'relevance'   => ''),
             array('action_name' => '客服会话删除', 'action_code' => 'weapp_customer_session_delete', 'relevance'   => ''),
