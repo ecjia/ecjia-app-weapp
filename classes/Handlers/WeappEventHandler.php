@@ -131,11 +131,11 @@ class WeappEventHandler
      * @return \Royalcms\Component\WeChat\Message\AbstractMessage 
      */
     public static function Click_event($message) {
-        RC_Hook::add_filter('wechat_event_response', array(__CLASS__, 'Command_event'), 10, 2);
-        RC_Hook::add_filter('wechat_event_response', array(__CLASS__, 'Keyword_event'), 90, 2);
-        RC_Hook::add_filter('wechat_event_response', array('\Ecjia\App\Wechat\Handlers\WechatMessageHandler', 'Empty_reply'), 100, 2);
+        RC_Hook::add_filter('weapp_text_response', array(__CLASS__, 'Command_event'), 10, 2);
+        RC_Hook::add_filter('weapp_text_response', array(__CLASS__, 'Keyword_event'), 90, 2);
+        RC_Hook::add_filter('weapp_text_response', array('\Ecjia\App\Wechat\Handlers\WechatMessageHandler', 'Empty_reply'), 100, 2);
         
-        $response = RC_Hook::apply_filters('wechat_event_response', null, $message);
+        $response = RC_Hook::apply_filters('weapp_text_response', null, $message);
         
         return $response;
     }
