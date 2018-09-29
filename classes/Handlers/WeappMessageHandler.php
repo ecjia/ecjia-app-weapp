@@ -147,9 +147,11 @@ class WeappMessageHandler
             } else {
                 $content = with(new SendCustomMessage($wechat, $weapp_id, $openid))->sendMediaMessage($data->media_id);
             }
+
+            return 0;
+        } else {
+            return null;
         }
-        
-        return 0;
     }
     
     /**
@@ -180,9 +182,11 @@ class WeappMessageHandler
             } else {
                 $content = with(new SendCustomMessage($wechat, $weapp_id, $openid))->sendTextMessage($model->content);
             }
+
+            return 0;
+        } else {
+            return null;
         }
-        
-        return 0;
     }
     
     
@@ -202,9 +206,10 @@ class WeappMessageHandler
         
         if (is_string($content)) {
             $content = WeappRecord::Text_reply($message, $content);
+            return $content;
+        } else {
+            return null;
         }
-        
-        return $content;
     }
     
     /**
