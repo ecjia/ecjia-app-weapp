@@ -50,6 +50,45 @@ defined('IN_ECJIA') or exit('No permission resources.');
 
 class weapp_platform_hooks
 {
+    public static function platform_dashboard_header_messages()
+    {
+        $platformAccount = new Account(session('uuid'));
+        $wechat_id = $platformAccount->getAccountID();
+
+        $m = RC_Time::local_date('m');
+        $d = RC_Time::local_date('d');
+        $y = RC_Time::local_date('y');
+        $start = RC_Time::local_mktime(0, 0, 0, $m, $d, $y);
+        $end = RC_Time::local_mktime(0, 0, 0, $m, $d + 1, $y);
+
+        $list = RC_DB::table('wechat_custom_message as m')
+            ->leftJoin('wechat_user as wu', RC_DB::raw('wu.uid'), '=', RC_DB::raw('m.uid'))
+            ->select(RC_DB::raw('max(m.id) as id'), RC_DB::raw('wu.uid'), RC_DB::raw('wu.nickname'), RC_DB::raw('wu.headimgurl'))
+            ->where(RC_DB::raw('wu.subscribe'), 1)
+            ->where(RC_DB::raw('m.iswechat'), 0)
+            ->where(RC_DB::raw('wu.wechat_id'), $wechat_id)
+            ->where(RC_DB::raw('m.send_time'), '>', $start)
+            ->where(RC_DB::raw('m.send_time'), '<', $end)
+            ->groupBy(RC_DB::raw('m.uid'))
+            ->orderBy('id', 'desc')
+            ->take(5)
+            ->get();
+
+        if (!empty($list)) {
+            foreach ($list as $key => $val) {
+                $info = RC_DB::table('wechat_custom_message')->where('id', $val['id'])->first();
+                $list[$key]['send_time'] = RC_Time::local_date(ecjia::config('time_format'), $info['send_time']);
+                $list[$key]['msg'] = $info['msg'];
+                $list[$key]['uid'] = $info['uid'];
+            }
+        }
+        ecjia_platform::$controller->assign('list', $list);
+
+        $count = count($list);
+        ecjia_platform::$controller->assign('count', $count);
+
+        ecjia_platform::$controller->display('library/common_header_messages.lbi');
+    }
 
     public static function ecjia_platform_dashboard_stats()
     {
@@ -141,6 +180,7 @@ RC_Hook::add_action('ecjia_platform_finish_launching', function () {
 
     if (ecjia_platform::$controller->getCurrentPlatform() == 'weapp') {
 
+        RC_Hook::add_action('platform_dashboard_header_links', array('weapp_platform_hooks', 'platform_dashboard_header_messages'));
         RC_Hook::add_filter('platform_dashboard_top', array('weapp_platform_hooks', 'ecjia_platform_dashboard_stats'), 9);
         RC_Hook::add_filter('platform_dashboard_center', array('weapp_platform_hooks', 'ecjia_platform_dashboard_msg_stats'), 10);
 
