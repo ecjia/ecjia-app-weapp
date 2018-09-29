@@ -206,10 +206,9 @@ class WeappMessageHandler
         
         if (is_string($content)) {
             $content = WeappRecord::Text_reply($message, $content);
-            return $content;
-        } else {
-            return null;
         }
+
+        return $content;
     }
     
     /**
