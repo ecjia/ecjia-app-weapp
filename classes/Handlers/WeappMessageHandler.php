@@ -115,9 +115,9 @@ class WeappMessageHandler
         RC_Hook::add_filter('weapp_text_response', array(__CLASS__, 'Keyword_reply'), 90, 2);
         RC_Hook::add_filter('weapp_text_response', array(__CLASS__, 'Empty_reply'), 100, 2);
         
-        RC_Hook::apply_filters('weapp_text_response', null, $message);
+        $response = RC_Hook::apply_filters('weapp_text_response', null, $message);
 
-        return null;
+        return $response;
     }
     
     
@@ -149,7 +149,7 @@ class WeappMessageHandler
             }
         }
         
-        return $content;
+        return 0;
     }
     
     /**
@@ -182,7 +182,7 @@ class WeappMessageHandler
             }
         }
         
-        return $content;
+        return 0;
     }
     
     
