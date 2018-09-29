@@ -56,8 +56,6 @@ class platform_customer extends ecjia_platform
         parent::__construct();
 
         RC_Loader::load_app_func('global');
-        Ecjia\App\Wechat\Helper::assign_adminlog_content();
-
 
         /* 加载全局 js/css */
         RC_Script::enqueue_script('jquery-validate');

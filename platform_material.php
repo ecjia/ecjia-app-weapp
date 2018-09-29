@@ -57,9 +57,7 @@ class platform_material extends ecjia_platform
     {
         parent::__construct();
 
-
         RC_Loader::load_app_func('global');
-        Ecjia\App\Wechat\Helper::assign_adminlog_content();
 
         /* 加载所有全局 js/css */
         RC_Script::enqueue_script('bootstrap-placeholder');
@@ -1457,9 +1455,9 @@ class platform_material extends ecjia_platform
                     $item->file = RC_Upload::upload_url($item->file);
                 }
             }
-            $content = !empty($item->digest) ? strip_tags(Ecjia\App\Wechat\Helper::html_out($item->digest)) : strip_tags(Ecjia\App\Wechat\Helper::html_out($item->content));
+            $content = !empty($item->digest) ? strip_tags(Ecjia\App\Weapp\Helper::html_out($item->digest)) : strip_tags(Ecjia\App\Weapp\Helper::html_out($item->content));
             if (strlen($content) > 100) {
-                $item->content = Ecjia\App\Wechat\Helper::msubstr($content, 100);
+                $item->content = Ecjia\App\Weapp\Helper::msubstr($content, 100);
             } else {
                 $item->content = $content;
             }
@@ -1600,10 +1598,10 @@ class platform_material extends ecjia_platform
 
             }
 
-            $content = !empty($item->digest) ? strip_tags(Ecjia\App\Wechat\Helper::html_out($item->digest)) : strip_tags(Ecjia\App\Wechat\Helper::html_out($item->content));
+            $content = !empty($item->digest) ? strip_tags(Ecjia\App\Weapp\Helper::html_out($item->digest)) : strip_tags(Ecjia\App\Weapp\Helper::html_out($item->content));
 
             if (strlen($content) > 100) {
-                $item->content = Ecjia\App\Wechat\Helper::msubstr($content, 100);
+                $item->content = Ecjia\App\Weapp\Helper::msubstr($content, 100);
             } else {
                 $item->content = $content;
             }
@@ -1656,7 +1654,7 @@ class platform_material extends ecjia_platform
     private function uploadMassMessageContentImages($wechat, $content)
     {
 
-        $content = Ecjia\App\Wechat\Helper::html_out($content);
+        $content = Ecjia\App\Weapp\Helper::html_out($content);
         $pattern = "/<[img|IMG].*?src=[\'|\"](.*?(?:[\.gif|\.jpg|\.png|\.bmp|\.jpeg]))[\'|\"].*?[\/]?>/";
         preg_match_all($pattern, $content, $match);
 
