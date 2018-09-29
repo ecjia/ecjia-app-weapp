@@ -53,7 +53,7 @@
 						<!-- {foreach from=$list.item item=val} -->
 						<tr>
 							<td>{if $val.kf_account}{$val.kf_account}{else}暂无{/if}</td>
-							<td>{$val.nickname}</td>
+							<td><a href='{url path="weapp/platform_user/subscribe_message" args="uid={$val.uid}"}'>{$val.nickname}</a></td>
 							<td>
 								{if $val.status eq 1}
 								会话中

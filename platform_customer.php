@@ -756,7 +756,7 @@ class platform_customer extends ecjia_platform
 
         $count = $db_session->count();
         $page = new ecjia_platform_page($count, 15, 5);
-        $list = $db_session->select(RC_DB::raw('w.*'), RC_DB::raw('u.nickname'))->orderBy('id', 'desc')->take(15)->skip($page->start_id - 1)->get();
+        $list = $db_session->select(RC_DB::raw('w.*'), RC_DB::raw('u.nickname'), RC_DB::raw('u.uid'))->orderBy('id', 'desc')->take(15)->skip($page->start_id - 1)->get();
 
         return array('item' => $list, 'page' => $page->show(5), 'desc' => $page->page_desc(), 'count' => $total_count);
     }
