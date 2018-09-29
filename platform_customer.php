@@ -625,7 +625,7 @@ class platform_customer extends ecjia_platform
         }
         $list = $db_customer->get();
 
-        $filter['all'] = RC_DB::table('wechat_customer')->where('wechat_id', $wechat_id)->count();
+        $filter['all'] = RC_DB::table('wechat_customer')->where('wechat_id', $wechat_id)->where('status', '!=', 0)->count();
         $filter['online'] = RC_DB::table('wechat_customer')->where('wechat_id', $wechat_id)->where('online_status', '!=', 0)->count();
         $filter['deleted'] = RC_DB::table('wechat_customer')->where('wechat_id', $wechat_id)->where('status', 0)->count();
 

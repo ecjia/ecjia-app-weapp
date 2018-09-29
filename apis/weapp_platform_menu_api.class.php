@@ -59,7 +59,9 @@ class weapp_platform_menu_api extends Component_Event_Api
             return null;
         }
 
-        $weapp_config_menus = ecjia_admin::make_admin_menu('01_weapp_config', '消息推送配置', RC_Uri::url('weapp/platform_config/init'), 1)
+        $extend_menus = ecjia_admin::make_admin_menu('01_wechat_extend', RC_Lang::get('wechat::wechat.extend_manage'), RC_Uri::url('platform/platform_extend/init'), 1)->add_icon('icon-puzzle')->add_purview('platform_extend_manage');
+
+        $weapp_config_menus = ecjia_admin::make_admin_menu('02_weapp_config', '消息推送配置', RC_Uri::url('weapp/platform_config/init'), 2)
             ->add_icon('ft-settings')->add_purview('weapp_config_manage');
 
         $navmenus = ecjia_admin::make_admin_menu('nav-header', '微信小程序', '', 10);
@@ -95,6 +97,7 @@ class weapp_platform_menu_api extends Component_Event_Api
         );
 
         return array(
+            $extend_menus,
             $weapp_config_menus,
             $navmenus,
             $usermenus,
