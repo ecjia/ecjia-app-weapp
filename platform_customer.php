@@ -621,6 +621,8 @@ class platform_customer extends ecjia_platform
             $db_customer->where('online_status', '!=', 0);
         } elseif ($type == 'deleted') {
             $db_customer->where('status', 0);
+        } else {
+            $db_customer->where('status', '!=', 0);
         }
         $list = $db_customer->get();
 
