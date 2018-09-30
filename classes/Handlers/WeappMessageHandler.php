@@ -50,7 +50,6 @@ use RC_Hook;
 use Ecjia\App\Wechat\Models\WechatReplyModel;
 use Ecjia\App\Weapp\WeappRecord;
 use Ecjia\App\Weapp\WeappUUID;
-use Ecjia\App\Weapp\WeappMediaReply;
 use Ecjia\App\Weapp\WeappCommand;
 use Ecjia\App\Weapp\Sends\SendCustomMessage;
 

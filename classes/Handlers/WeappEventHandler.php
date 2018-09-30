@@ -49,9 +49,7 @@ namespace Ecjia\App\Weapp\Handlers;
 use RC_Hook;
 use Ecjia\App\Weapp\WeappRecord;
 use Ecjia\App\Weapp\WeappUUID;
-use Ecjia\App\Weapp\WeappMediaReply;
 use Ecjia\App\Weapp\Sends\SendCustomMessage;
-use Ecjia\App\Weapp\WeappCommand;
 use Ecjia\App\Wechat\Models\WechatReplyModel;
 
 class WeappEventHandler
@@ -91,7 +89,7 @@ class WeappEventHandler
      */
     public static function Default_event($message)
     {
-
+        return RC_Hook::apply_filters('weapp_default_event_handle', $message);
     }
 
     /**
