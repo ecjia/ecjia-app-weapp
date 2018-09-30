@@ -102,7 +102,7 @@ class WeappEventHandler
         $weapp_uuid = new WeappUUID();
         $weapp_id = $weapp_uuid->getWeappID();
         $openid = $message->get('FromUserName');
-        $content = '我悄悄地来了……';
+        $content = '我悄悄地来了';
 
         //用户输入信息记录
         WeappRecord::inputMsg($message->get('FromUserName'), $content);
