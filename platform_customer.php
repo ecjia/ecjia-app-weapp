@@ -92,9 +92,6 @@ class platform_customer extends ecjia_platform
             $this->assign('errormsg', RC_Lang::get('wechat::wechat.add_platform_first'));
         } else {
             $this->assign('warn', 'warn');
-            $type = RC_DB::table('platform_account')->where('id', $wechat_id)->pluck('type');
-            $this->assign('type', $type);
-
             $list = $this->get_list();
             $this->assign('list', $list);
         }
