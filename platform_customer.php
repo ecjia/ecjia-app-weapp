@@ -94,7 +94,6 @@ class platform_customer extends ecjia_platform
             $this->assign('warn', 'warn');
             $type = RC_DB::table('platform_account')->where('id', $wechat_id)->pluck('type');
             $this->assign('type', $type);
-            $this->assign('type_error', sprintf(RC_Lang::get('wechat::wechat.notice_service_info'), RC_Lang::get('wechat::wechat.wechat_type.' . $type)));
 
             $list = $this->get_list();
             $this->assign('list', $list);
@@ -132,9 +131,7 @@ class platform_customer extends ecjia_platform
             $this->assign('warn', 'warn');
         }
         $type = $this->platformAccount->getType();
-
         $this->assign('type', $type);
-        $this->assign('type_error', sprintf(RC_Lang::get('wechat::wechat.notice_service_info'), RC_Lang::get('wechat::wechat.wechat_type.' . $type)));
 
         $id = !empty($_GET['id']) ? intval($_GET['id']) : 0;
         $list = RC_DB::table('wechat_customer')->where('id', $id)->first();
@@ -452,7 +449,6 @@ class platform_customer extends ecjia_platform
 
         $type = RC_DB::table('platform_account')->where('id', $wechat_id)->pluck('type');
         $this->assign('type', $type);
-        $this->assign('type_error', sprintf(RC_Lang::get('wechat::wechat.notice_service_info'), RC_Lang::get('wechat::wechat.wechat_type.' . $type)));
 
         $this->display('weapp_customer_message.dwt');
     }
@@ -511,7 +507,6 @@ class platform_customer extends ecjia_platform
             //获取公众号类型 0未认证 1订阅号 2服务号 3认证服务号 4企业号
             $types = $this->platformAccount->getType();
             $this->assign('type', $types);
-            $this->assign('type_error', sprintf(RC_Lang::get('wechat::wechat.notice_service_info'), RC_Lang::get('wechat::wechat.wechat_type.' . $types)));
         }
 
         $list = $this->get_session_list();

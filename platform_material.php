@@ -1489,7 +1489,6 @@ class platform_material extends ecjia_platform
         }
         $wechat_type = $this->platformAccount->getType();
         $this->assign('wechat_type', $wechat_type);
-        $this->assign('type_error', sprintf(RC_Lang::get('wechat::wechat.notice_service_info'), RC_Lang::get('wechat::wechat.wechat_type.' . $wechat_type)));
 
         $list = $newData->all();
         $this->assign('list', $list);
