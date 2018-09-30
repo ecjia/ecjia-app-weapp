@@ -166,7 +166,7 @@ class weapp_platform_hooks
 
         if (!empty($arr)) {
             ecjia_platform::$controller->display(
-                RC_Package::package('app::weapp')->loadTemplate('platform/library/widget_platform_dashboard_msg_stats.lbi', true)
+                RC_Package::package('app::weapp')->loadTemplate('platform/library/widget_platform_dashboard_msg_stats.lbi', true);
             );
         }
     }
