@@ -102,10 +102,10 @@ class WeappEventHandler
         $weapp_uuid = new WeappUUID();
         $weapp_id = $weapp_uuid->getWeappID();
         $openid = $message->get('FromUserName');
-        $rule_keywords = $message->get('Content');
+        $content = '我悄悄地来了……';
 
         //用户输入信息记录
-        WeappRecord::inputMsg($message->get('FromUserName'), $rule_keywords);
+        WeappRecord::inputMsg($message->get('FromUserName'), $content);
 
         $data = WechatReplyModel::select('reply_type', 'content', 'media_id')
             ->where('wechat_id', $weapp_id)->where('type', 'user_enter')->first();
