@@ -178,8 +178,6 @@ class platform_user extends ecjia_platform
             //获取公众号类型 0未认证 1订阅号 2服务号 3认证服务号 4企业号
             $types = $this->platformAccount->getType();
             $this->assign('type', $types);
-            $this->assign('type_error', sprintf(RC_Lang::get('wechat::wechat.notice_certification_info'), RC_Lang::get('wechat::wechat.wechat_type.' . $types)));
-            $this->assign('custom_type_error', sprintf(RC_Lang::get('wechat::wechat.notice_service_info'), RC_Lang::get('wechat::wechat.wechat_type.' . $type)));
         }
 
         $this->display('weapp_subscribe_list.dwt');
@@ -300,7 +298,6 @@ class platform_user extends ecjia_platform
             //获取公众号类型 0未认证 1订阅号 2服务号 3认证服务号 4企业号
             $type = $this->platformAccount->getType();
             $this->assign('type', $type);
-            $this->assign('type_error', sprintf(RC_Lang::get('wechat::wechat.notice_certification_info'), RC_Lang::get('wechat::wechat.wechat_type.' . $type)));
 
             $tag_arr['item'] = RC_DB::table('wechat_tag')
                 ->select('id', 'tag_id', 'name', 'count')
@@ -714,7 +711,6 @@ class platform_user extends ecjia_platform
             //获取公众号类型 0未认证 1订阅号 2服务号 3认证服务号 4企业号
             $types = $this->platformAccount->getType();
             $this->assign('type', $types);
-            $this->assign('type_error', sprintf(RC_Lang::get('wechat::wechat.notice_certification_info'), RC_Lang::get('wechat::wechat.wechat_type.' . $types)));
         }
 
         $this->display('weapp_subscribe_tag.dwt');
