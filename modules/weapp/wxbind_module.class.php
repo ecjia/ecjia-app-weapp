@@ -100,7 +100,8 @@ class weapp_wxbind_module extends api_front implements api_interface {
 		);
 		
 		//绑定会员
-		$connect_user = RC_Api::api('connect', 'connect_user_bind', array('connect_code' => 'sns_wechat', 'open_id' => $data['unionid'], 'profile' => $data));
+		$connect_user = RC_Api::api('connect', 'connect_user_bind', 
+		    array('connect_code' => 'sns_wechat_weapp', 'connect_platform' => 'wechat', 'open_id' => $data['openid'], 'union_id' => $data['unionid'], 'profile' => $data));
 		if (is_ecjia_error($connect_user)) {
 			return $connect_user;
 		} 
