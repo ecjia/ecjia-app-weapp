@@ -115,6 +115,11 @@ class weapp_wxbind_module extends api_front implements api_interface
             return $connect_user;
         }
 
+        /**
+         * @debug royalwang
+         */
+        ecjia_log_debug('wxbind_module get $connect_user', (array)$connect_user);
+
         //获取会员信息
         $user_info = RC_Api::api('user', 'user_info', array('user_id' => $connect_user->getUserId()));
         if (is_ecjia_error($user_info)) {
@@ -124,7 +129,7 @@ class weapp_wxbind_module extends api_front implements api_interface
         /**
          * @debug royalwang
          */
-        ecjia_log_debug('wxbind_module获取会员信息'.json_encode($user_info));
+        ecjia_log_debug('wxbind_module获取会员信息', $user_info);
 
         //设置session,设置cookie
         ecjia_integrate::setSession($user_info['user_name']);
