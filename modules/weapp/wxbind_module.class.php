@@ -137,26 +137,20 @@ class weapp_wxbind_module extends api_front implements api_interface
 
         //同步会员信息
         RC_Loader::load_app_func('admin_user', 'user');
-        $user_info = EM_user_info($_SESSION['user_id']);
+        $user_info = EM_user_info($user_info['user_id']);
 
         update_user_info(); // 更新用户信息
         RC_Loader::load_app_func('cart', 'cart');
         recalculate_price(); // 重新计算购物车中的商品价格
 
         //修正关联设备号
-        $result = ecjia_app::validate_application('mobile');
-        if (!is_ecjia_error($result)) {
-            if (!empty($device['udid']) && !empty($device['client']) && !empty($device['code'])) {
-                $db_mobile_device = RC_Model::model('mobile/mobile_device_model');
-                $device_data      = array(
-                    'device_udid'   => $device['udid'],
-                    'device_client' => $device['client'],
-                    'device_code'   => $device['code'],
-                    'user_type'     => 'user',
-                );
-                $db_mobile_device->where($device_data)->update(array('user_id' => $_SESSION['user_id'], 'update_time' => RC_Time::gmtime()));
-            }
-        }
+        RC_Api::api('mobile', 'bind_device_user', array(
+            'device_udid'   => $device['udid'],
+            'device_client' => $device['client'],
+            'device_code'   => $device['code'],
+            'user_type'     => 'user',
+            'user_id'       => $user_info['user_id'],
+        ));
 
         //返回token及会员信息
         $out = array(
