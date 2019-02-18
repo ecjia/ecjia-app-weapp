@@ -73,8 +73,8 @@ class SendCustomMessage
     public function __construct($wechat, $wechat_id, $openid)
     {
         $this->wechat_id = $wechat_id;
-        $this->wechat = $wechat;
-        $this->openid = $openid;
+        $this->wechat    = $wechat;
+        $this->openid    = $openid;
     }
 
     /**
@@ -84,7 +84,7 @@ class SendCustomMessage
     public function sendMediaMessage($id)
     {
         $model = WechatMediaModel::where('wechat_id', $this->wechat_id)->find($id);
-        if ( ! empty($model)) {
+        if (!empty($model)) {
             switch ($model->type) {
                 case 'image':
                     return $this->sendImageMessage($model->media_id, $model);
@@ -128,7 +128,7 @@ class SendCustomMessage
 
         $result = $this->wechat->staff->message($message)->to($this->openid)->send();
 
-        if (! is_null($model)) {
+        if (!is_null($model)) {
             $content['img_url'] = \RC_Upload::upload_url($model->file);
         }
 
@@ -145,20 +145,20 @@ class SendCustomMessage
     public function sendNewsMessage($title, $description, $url, $picurl)
     {
         $message = new News([
-            'title'         => $title,
-            'description'   => $description,
-            'url'           => $url,
-            'image'         => $picurl,
+            'title'       => $title,
+            'description' => $description,
+            'url'         => $url,
+            'image'       => $picurl,
         ]);
 
         $result = $this->wechat->staff->message($message)->to($this->openid)->send();
 
         $content['articles'] = [
             [
-                'title'         => $title,
-                'description'   => $description,
-                'url'           => $url,
-                'picurl'        => $picurl,
+                'title'       => $title,
+                'description' => $description,
+                'url'         => $url,
+                'picurl'      => $picurl,
             ]
         ];
 
@@ -182,11 +182,11 @@ class SendCustomMessage
 
         $result = $this->wechat->staff->message($message)->to($this->openid)->send();
 
-        if (! is_null($model)) {
+        if (!is_null($model)) {
 
             $subNews = $model->subNews;
 
-            if ( ! $subNews->isEmpty()) {
+            if (!$subNews->isEmpty()) {
                 $newSubNews = $subNews->map(function ($item) {
                     if (empty($item->file)) {
 
@@ -199,10 +199,10 @@ class SendCustomMessage
                     }
 
                     return [
-                        'title' => $item->title,
+                        'title'       => $item->title,
                         'description' => $item->digest,
-                        'url' => $item->media_url,
-                        'picurl' => $item->file,
+                        'url'         => $item->media_url,
+                        'picurl'      => $item->file,
                     ];
                 });
 
@@ -213,10 +213,10 @@ class SendCustomMessage
 
             //将主元素插入开头
             array_unshift($content['articles'], [
-                'title' => $model->title,
+                'title'       => $model->title,
                 'description' => $model->digest,
-                'url' => $model->media_url,
-                'picurl' => \RC_Upload::upload_url($model->file),
+                'url'         => $model->media_url,
+                'picurl'      => \RC_Upload::upload_url($model->file),
             ]);
         }
 
