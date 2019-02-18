@@ -79,7 +79,7 @@
 												<div class="img_preview">
 													<img class="preview_img margin_10" src="{$data.media.file}" alt="">
 													<input type="hidden" name="media_id" value="{$subscribe.media_id}">
-													<a href="javascript:;" class="jsmsgSenderDelBt link_dele" "="">删除</a>
+													<a href="javascript:;" class="jsmsgSenderDelBt link_dele">删除</a>
 												</div>
 												{else}
 												<div class="weui-desktop-media__list-col margin_10">
