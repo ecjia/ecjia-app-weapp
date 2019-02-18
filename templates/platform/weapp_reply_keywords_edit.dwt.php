@@ -37,7 +37,7 @@
                                     <input class="form-control" type="text" class="w280" name="rule_name" maxlength="60" size="30" value="{$data.rule_name}"/>
                                     <div class="help-block">{lang key='wechat::wechat.rule_name_max'}</div>
                                 </div>
-                                <span class="input-must">{lang key='system::system.require_field'}</span>
+                                <span class="input-must">*</span>
                             </div>
 
                             <div class="form-group row">
@@ -46,7 +46,7 @@
                                     <input class="form-control" type="text" class="w280" name="rule_keywords" maxlength="60" size="30" value="{$data.rule_keywords_string}"/>
                                     <div class="help-block">{lang key='wechat::wechat.more_keywords_split'}</div>
                                 </div>
-                                <span class="input-must">{lang key='system::system.require_field'}</span>
+                                <span class="input-must">*</span>
                             </div>
 
                             <div class="form-group row">
@@ -116,7 +116,7 @@
                                 </div>
                             </div>
                         </div>
-                        <span class="input-must">{lang key='system::system.require_field'}</span>
+                        <span class="input-must">*</span>
                     </div>
             </div>
         </div>

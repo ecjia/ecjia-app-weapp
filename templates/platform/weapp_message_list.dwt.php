@@ -69,7 +69,7 @@
                         </tr>
                         <!--  {foreachelse} -->
                         <tr>
-                            <td class="no-records" colspan="2">{lang key='system::system.no_records'}</td>
+                            <td class="no-records" colspan="2">{t domain="weapp"}没有找到任何记录{/t}</td>
                         </tr>
                         <!-- {/foreach} -->
                     </tbody>

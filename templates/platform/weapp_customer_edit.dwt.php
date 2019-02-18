@@ -41,7 +41,7 @@
                                     <span class="help-block">{lang key='wechat::wechat.kf_account_help'}</span>
                                     <!-- {/if} -->
                                 </div>
-                                <span class="input-must">{lang key='system::system.require_field'}</span>
+                                <span class="input-must">*</span>
                             </div>
 
                             <div class="form-group row">
@@ -49,7 +49,7 @@
                                 <div class="col-lg-8 controls">
                                     <input class="input-xlarge form-control" name="kf_nick" type="text" value="{$list.kf_nick|escape}" maxlength="32" size="34" autocomplete="off"/>
                                 </div>
-                                <span class="input-must">{lang key='system::system.require_field'}</span>
+                                <span class="input-must">*</span>
                             </div>
 
                             <!-- {if $list.id} -->

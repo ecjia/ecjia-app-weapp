@@ -41,7 +41,7 @@
                                 </div>
                                 <a class="btn btn-outline-primary generate_token" href="javascript:;" data-url='{url path="weapp/platform_config/generate_token"}' style="height: 40px;margin-right: 15px;">生成Token</a>
                                 <a class="btn btn-outline-primary copy-token-btn" href='javascript:;' data-clipboard-action="copy" data-clipboard-target="#token" style="height: 40px;margin-right: 15px;">复制Token</a>
-                                <span class="input-must">{lang key='system::system.require_field'}</span>
+                                <span class="input-must">*</span>
                             </div>
 
                             <div class="form-group row">
@@ -50,7 +50,7 @@
                                     <input class="input-xlarge form-control" name="aeskey" type="text" value="{$data.aeskey}" autocomplete="off" maxlength="43"/>
                                     <span class="help-block">消息加密密钥由43位字符组成，字符范围为A-Z,a-z,0-9</span>
                                 </div>
-                                <span class="input-must">{lang key='system::system.require_field'}</span>
+                                <span class="input-must">*</span>
                             </div>
 
                             <div class="form-group row">

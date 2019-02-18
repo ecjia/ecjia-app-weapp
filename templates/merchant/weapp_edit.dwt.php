@@ -55,16 +55,16 @@
                                     <div class="controls col-lg-6">
                                         <input class="form-control" type="text" name="name" id="name" value="{$wxapp_info.name}"/>
                                     </div>
-                                    <span class="input-must">{lang key='system::system.require_field'}</span>
+                                    <span class="input-must">*</span>
                                 </div>
 
                                 <div class="form-group">
-                                    <label class="control-label col-lg-2">{lang key='platform::platform.lable_logo'}</label>
+                                    <label class="control-label col-lg-2">Logo：</label>
                                     <div class="col-lg-6">
                                         <div class="fileupload fileupload-{if $wxapp_info.logo}exists{else}new{/if}" data-provides="fileupload">
                                             {if $wxapp_info.logo}
                                             <div class="fileupload-{if $wxapp_info.logo}exists{else}new{/if} thumbnail" style="max-width: 60px;">
-                                                <img src="{$wxapp_info.logo}" alt="{lang key='platform::platform.look_picture'}" style="width:50px; height:50px;"/>
+                                                <img src="{$wxapp_info.logo}" alt='图片预览' style="width:50px; height:50px;"/>
                                             </div>
                                             {/if}
                                             <div class="fileupload-preview fileupload-{if $wxapp_info.logo}new{else}exists{/if} thumbnail" style="max-width: 60px;max-height: 60px;line-height: 10px;"></div>
@@ -79,11 +79,11 @@
                                 </div>
 
                                 <div class="form-group">
-                                    <label class="control-label col-lg-2">{lang key='platform::platform.lable_appid'}</label>
+                                    <label class="control-label col-lg-2">AppID：</label>
                                     <div class="controls col-lg-6">
                                         <input class="form-control" type="text" name="appid" id="appid" value="{$wxapp_info.appid}"/>
                                     </div>
-                                    <span class="input-must">{lang key='system::system.require_field'}</span>
+                                    <span class="input-must">*</span>
                                 </div>
 
                                 <div class="form-group">
@@ -91,19 +91,19 @@
                                     <div class="controls col-lg-6">
                                         <input class="form-control" type="text" name="appsecret" id="appsecret" value="{$wxapp_info.appsecret}"/>
                                     </div>
-                                    <span class="input-must">{lang key='system::system.require_field'}</span>
+                                    <span class="input-must">*</span>
                                 </div>
 
                                 <div class="form-group">
-                                    <label class="control-label col-lg-2">{lang key='platform::platform.lable_status'}</label>
+                                    <label class="control-label col-lg-2">状态：</label>
                                     <div class="col-lg-6 chk_radio">
-                                        <input type="radio" name="status" value="1" {if $wxapp_info.status eq 1}checked{/if} id="radio_1"><label for="radio_1">{lang key='platform::platform.open'}</label>
-                                        <input type="radio" name="status" value="0" {if $wxapp_info.status eq 0}checked{/if} id="radio_0"><label for="radio_0">{lang key='platform::platform.close'}</label>
+                                        <input type="radio" name="status" value="1" {if $wxapp_info.status eq 1}checked{/if} id="radio_1"><label for="radio_1">开启</label>
+                                        <input type="radio" name="status" value="0" {if $wxapp_info.status eq 0}checked{/if} id="radio_0"><label for="radio_0">关闭</label>
                                     </div>
                                 </div>
 
                                 <div class="form-group">
-                                    <label class="control-label col-lg-2">{lang key='platform::platform.lable_sort'}</label>
+                                    <label class="control-label col-lg-2">排序：</label>
                                     <div class="controls col-lg-6">
                                         <input class="form-control" type="text" name="sort" id="sort" value="{$wxapp_info.sort|default:0}"/>
                                     </div>
@@ -112,9 +112,9 @@
                                 <div class="form-group">
                                     <div class="col-lg-offset-2 col-lg-6">
                                         {if $wxapp_info.id eq ''}
-                                        <input type="submit" name="submit" value="{lang key='platform::platform.confirm'}" class="btn btn-info"/>
+                                        <input type="submit" name="submit" value='确定' class="btn btn-info"/>
                                         {else}
-                                        <input type="submit" name="submit" value="{lang key='platform::platform.update'}" class="btn btn-info"/>
+                                        <input type="submit" name="submit" value='更新' class="btn btn-info"/>
                                         {/if}
                                         <input name="id" type="hidden" value="{$wxapp_info.id}">
                                     </div>

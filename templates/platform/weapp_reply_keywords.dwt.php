@@ -134,7 +134,7 @@
                         </tr>
                         <!-- {foreachelse} -->
                         <tr>
-                            <td class="dataTables_empty" colspan="4">{lang key='system::system.no_records'}</td>
+                            <td class="dataTables_empty" colspan="4">{t domain="weapp"}没有找到任何记录{/t}</td>
                         </tr>
                         <!-- {/foreach} -->
                     </tbody>
