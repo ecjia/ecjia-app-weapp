@@ -132,7 +132,7 @@ class SendCustomMessage
             $content['img_url'] = \RC_Upload::upload_url($model->file);
         }
 
-        WeappRecord::replyMsg($this->openid, '发送图片消息', 'image', $content);
+        WeappRecord::replyMsg($this->openid, __('发送图片消息', 'weapp'), 'image', $content);
 
         $content['type'] = 'image';
         return $content;
@@ -162,7 +162,7 @@ class SendCustomMessage
             ]
         ];
 
-        WeappRecord::replyMsg($this->openid, '发送图文消息（点击跳转到外链）', 'news', $content);
+        WeappRecord::replyMsg($this->openid, __('发送图文消息（点击跳转到外链）', 'weapp'), 'news', $content);
 
         $content['type'] = 'news';
 
@@ -220,7 +220,7 @@ class SendCustomMessage
             ]);
         }
 
-        WeappRecord::replyMsg($this->openid, '发送图文消息（点击跳转到图文消息页面）', 'mpnews', $content);
+        WeappRecord::replyMsg($this->openid, __('发送图文消息（点击跳转到图文消息页面）', 'weapp'), 'mpnews', $content);
 
         $content['type'] = 'mpnews';
 

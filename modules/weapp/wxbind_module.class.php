@@ -83,7 +83,7 @@ class weapp_wxbind_module extends api_front implements api_interface
             $update               = $WechatUserRepository->updateUser($data);
 
             if (!$update) {
-                return new ecjia_error('update_userinfo_fail', '更新用户数据失败');
+                return new ecjia_error('update_userinfo_fail', __('更新用户数据失败', 'weapp'));
             }
         }
 

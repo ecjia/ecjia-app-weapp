@@ -94,9 +94,9 @@ class merchant extends ecjia_merchant
         $this->assign('search_action', RC_Uri::url('weapp/merchant/init'));
 
         if ($weapp_list['count'] == 0) {
-        	$this->assign('action_link', array('text' => '添加小程序', 'href' => RC_Uri::url('weapp/merchant/add')));
+            $this->assign('action_link', array('text' => '添加小程序', 'href' => RC_Uri::url('weapp/merchant/add')));
         }
-        
+
         $this->display('weapp_list.dwt');
     }
 
@@ -124,15 +124,15 @@ class merchant extends ecjia_merchant
     {
         $this->admin_priv('weapp_update', ecjia::MSGTYPE_JSON);
 
-        $name = !empty($_POST['name']) ? trim($_POST['name']) : '';
-        $appid = !empty($_POST['appid']) ? trim($_POST['appid']) : '';
+        $name      = !empty($_POST['name']) ? trim($_POST['name']) : '';
+        $appid     = !empty($_POST['appid']) ? trim($_POST['appid']) : '';
         $appsecret = !empty($_POST['appsecret']) ? trim($_POST['appsecret']) : '';
 
         $count = RC_DB::table('platform_account')->where('shop_id', $_SESSION['store_id'])->where('platform', 'weapp')->count();
         if ($count != 0) {
-        	return $this->showmessage('每个商家只能添加一个小程序', ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_ERROR);
+            return $this->showmessage('每个商家只能添加一个小程序', ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_ERROR);
         }
-        
+
         if (empty($name)) {
             return $this->showmessage('请输入小程序名称', ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_ERROR);
         }
@@ -147,7 +147,7 @@ class merchant extends ecjia_merchant
         $uuid = str_replace("-", "", $uuid);
 
         if ((isset($_FILES['platform_logo']['error']) && $_FILES['platform_logo']['error'] == 0) || (!isset($_FILES['platform_logo']['error']) && isset($_FILES['platform_logo']['tmp_name']) && $_FILES['platform_logo']['tmp_name'] != 'none')) {
-            $upload = RC_Upload::uploader('image', array('save_path' => 'data/platform', 'auto_sub_dirs' => false));
+            $upload     = RC_Upload::uploader('image', array('save_path' => 'data/platform', 'auto_sub_dirs' => false));
             $image_info = $upload->upload($_FILES['platform_logo']);
             if (!empty($image_info)) {
                 $platform_logo = $upload->get_position($image_info);
@@ -159,18 +159,18 @@ class merchant extends ecjia_merchant
         }
 
         $data = array(
-            'uuid' => $uuid,
-            'platform' => 'weapp',
-            'logo' => $platform_logo,
-            'name' => $name,
-            'appid' => $appid,
+            'uuid'      => $uuid,
+            'platform'  => 'weapp',
+            'logo'      => $platform_logo,
+            'name'      => $name,
+            'appid'     => $appid,
             'appsecret' => $appsecret,
-            'add_time' => RC_Time::gmtime(),
-            'sort' => intval($_POST['sort']),
-            'status' => intval($_POST['status']),
-            'shop_id' => $_SESSION['store_id'],
+            'add_time'  => RC_Time::gmtime(),
+            'sort'      => intval($_POST['sort']),
+            'status'    => intval($_POST['status']),
+            'shop_id'   => $_SESSION['store_id'],
         );
-        $id = RC_DB::table('platform_account')->insertGetId($data);
+        $id   = RC_DB::table('platform_account')->insertGetId($data);
 
         ecjia_merchant::admin_log($_POST['name'], 'add', 'weapp');
         return $this->showmessage(RC_Lang::get('platform::platform.add_pub_succeed'), ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_SUCCESS, array('pjaxurl' => RC_Uri::url('weapp/merchant/edit', array('id' => $id))));
@@ -210,9 +210,9 @@ class merchant extends ecjia_merchant
 
         $id = isset($_POST['id']) ? intval($_POST['id']) : 0;
 
-        $type = !empty($_POST['type']) ? intval($_POST['type']) : 0;
-        $name = !empty($_POST['name']) ? trim($_POST['name']) : '';
-        $appid = !empty($_POST['appid']) ? trim($_POST['appid']) : '';
+        $type      = !empty($_POST['type']) ? intval($_POST['type']) : 0;
+        $name      = !empty($_POST['name']) ? trim($_POST['name']) : '';
+        $appid     = !empty($_POST['appid']) ? trim($_POST['appid']) : '';
         $appsecret = !empty($_POST['appsecret']) ? trim($_POST['appsecret']) : '';
 
         if (empty($name)) {
@@ -229,7 +229,7 @@ class merchant extends ecjia_merchant
         $old_logo = RC_DB::table('platform_account')->where('shop_id', $_SESSION['store_id'])->where('id', $id)->pluck('logo');
 
         if ((isset($_FILES['platform_logo']['error']) && $_FILES['platform_logo']['error'] == 0) || (!isset($_FILES['platform_logo']['error']) && isset($_FILES['platform_logo']['tmp_name']) && $_FILES['platform_logo']['tmp_name'] != 'none')) {
-            $upload = RC_Upload::uploader('image', array('save_path' => 'data/platform', 'auto_sub_dirs' => false));
+            $upload     = RC_Upload::uploader('image', array('save_path' => 'data/platform', 'auto_sub_dirs' => false));
             $image_info = $upload->upload($_FILES['platform_logo']);
 
             if (!empty($image_info)) {
@@ -245,12 +245,12 @@ class merchant extends ecjia_merchant
             $platform_logo = $old_logo;
         }
         $data = array(
-            'name' => $name,
-            'logo' => $platform_logo,
-            'appid' => $appid,
+            'name'      => $name,
+            'logo'      => $platform_logo,
+            'appid'     => $appid,
             'appsecret' => $appsecret,
-            'sort' => intval($_POST['sort']),
-            'status' => intval($_POST['status']),
+            'sort'      => intval($_POST['sort']),
+            'status'    => intval($_POST['status']),
         );
         RC_DB::table('platform_account')->where('shop_id', $_SESSION['store_id'])->where('id', $id)->update($data);
 
@@ -265,7 +265,7 @@ class merchant extends ecjia_merchant
     {
         $this->admin_priv('weapp_delete', ecjia::MSGTYPE_JSON);
 
-        $id = isset($_GET['id']) ? intval($_GET['id']) : 0;
+        $id   = isset($_GET['id']) ? intval($_GET['id']) : 0;
         $info = RC_DB::table('platform_account')->where('shop_id', $_SESSION['store_id'])->where('id', $id)->select('name', 'logo')->first();
 
         if (!empty($info['logo'])) {
@@ -310,7 +310,7 @@ class merchant extends ecjia_merchant
     {
         $this->admin_priv('weapp_update', ecjia::MSGTYPE_JSON);
 
-        $id = isset($_GET['id']) ? intval($_GET['id']) : 0;
+        $id   = isset($_GET['id']) ? intval($_GET['id']) : 0;
         $info = RC_DB::table('platform_account')->where('shop_id', $_SESSION['store_id'])->where('id', $id)->select('name', 'logo')->first();
 
         if (!empty($info['logo'])) {
@@ -331,7 +331,7 @@ class merchant extends ecjia_merchant
     {
         $this->admin_priv('weapp_update', ecjia::MSGTYPE_JSON);
 
-        $id = intval($_POST['id']);
+        $id  = intval($_POST['id']);
         $val = intval($_POST['val']);
         RC_DB::table('platform_account')->where('shop_id', $_SESSION['store_id'])->where('id', $id)->update(array('status' => $val));
 
@@ -351,7 +351,7 @@ class merchant extends ecjia_merchant
     {
         $this->admin_priv('weapp_update', ecjia::MSGTYPE_JSON);
 
-        $id = intval($_POST['pk']);
+        $id   = intval($_POST['pk']);
         $sort = trim($_POST['value']);
 
         if (!empty($sort)) {
@@ -385,15 +385,15 @@ class merchant extends ecjia_merchant
         }
 
         $authcode_array = [
-            'uuid' => $uuid,
-            'user_id' => session('staff_id'),
+            'uuid'      => $uuid,
+            'user_id'   => session('staff_id'),
             'user_type' => 'merchant',
-            'time' => RC_Time::gmtime(),
+            'time'      => RC_Time::gmtime(),
         ];
 
         $authcode_str = http_build_query($authcode_array);
-        $authcode = RC_Crypt::encrypt($authcode_str);
-        $url = str_replace("sites/merchant/index.php", "sites/platform/index.php", RC_Uri::url('weapp/privilege/autologin')) . '&authcode=' . $authcode;
+        $authcode     = RC_Crypt::encrypt($authcode_str);
+        $url          = str_replace("sites/merchant/index.php", "sites/platform/index.php", RC_Uri::url('weapp/privilege/autologin')) . '&authcode=' . $authcode;
         return $this->redirect($url);
     }
 
@@ -404,7 +404,7 @@ class merchant extends ecjia_merchant
     {
         $db_platform_account = RC_DB::table('platform_account')->where('shop_id', $_SESSION['store_id']);
 
-        $filter = array();
+        $filter             = array();
         $filter['keywords'] = empty($_GET['keywords']) ? '' : trim($_GET['keywords']);
 
         if ($filter['keywords']) {
@@ -415,9 +415,9 @@ class merchant extends ecjia_merchant
         $count = $db_platform_account->count();
 
         $filter['record_count'] = $count;
-        $page = new ecjia_merchant_page($count, 10, 5);
+        $page                   = new ecjia_merchant_page($count, 10, 5);
 
-        $arr = array();
+        $arr  = array();
         $data = $db_platform_account->orderBy('sort', 'asc')->orderBy('add_time', 'desc')->take(10)->skip($page->start_id - 1)->get();
 
         if (isset($data)) {

@@ -100,12 +100,12 @@ class platform_message extends ecjia_platform
     {
         $wechat_id = $this->platformAccount->getAccountID();
 
-        $where = 'wu.subscribe = 1 and m.iswechat = 0 and wu.wechat_id = ' . $wechat_id;
+        $where            = 'wu.subscribe = 1 and m.iswechat = 0 and wu.wechat_id = ' . $wechat_id;
         $filter['status'] = !empty($_GET['status']) ? intval($_GET['status']) : 1;
 
-        $m = RC_Time::local_date('m');
-        $d = RC_Time::local_date('d');
-        $y = RC_Time::local_date('y');
+        $m      = RC_Time::local_date('m');
+        $d      = RC_Time::local_date('d');
+        $y      = RC_Time::local_date('y');
         $time_1 = RC_Time::local_mktime(0, 0, 0, $m, $d - 4, $y);
         $time_2 = RC_Time::local_mktime(0, 0, 0, $m, $d + 1, $y);
         $time_3 = RC_Time::local_mktime(0, 0, 0, $m, $d, $y);
@@ -125,42 +125,42 @@ class platform_message extends ecjia_platform
         switch ($filter['status']) {
             case '1':
                 $start_date = $time_1;
-                $end_date = $time_2;
+                $end_date   = $time_2;
                 break;
             case '2':
                 $start_date = $time_3;
-                $end_date = $time_4;
+                $end_date   = $time_4;
                 break;
             case '3':
                 $start_date = $time_5;
-                $end_date = $time_6;
+                $end_date   = $time_6;
                 break;
             case '4':
                 $start_date = $time_7;
-                $end_date = $time_8;
+                $end_date   = $time_8;
                 break;
             case '5':
                 $start_date = 0;
-                $end_date = $time_9;
+                $end_date   = $time_9;
                 break;
         }
         $where .= ' and m.send_time > ' . $start_date . ' and m.send_time < ' . $end_date;
 
-        $filter['last_five_days'] = count(
+        $filter['last_five_days']           = count(
             RC_DB::table('wechat_custom_message as m')->leftJoin('wechat_user as wu', RC_DB::raw('wu.uid'), '=', RC_DB::raw('m.uid'))
                 ->select(RC_DB::raw('max(m.id) as id'))
                 ->whereRaw($where1)
                 ->groupBy(RC_DB::raw('m.uid'))
                 ->get()
         );
-        $filter['today'] = count(
+        $filter['today']                    = count(
             RC_DB::table('wechat_custom_message as m')->leftJoin('wechat_user as wu', RC_DB::raw('wu.uid'), '=', RC_DB::raw('m.uid'))
                 ->select(RC_DB::raw('max(m.id) as id'))
                 ->whereRaw($where2)
                 ->groupBy(RC_DB::raw('m.uid'))
                 ->get()
         );
-        $filter['yesterday'] = count(
+        $filter['yesterday']                = count(
             RC_DB::table('wechat_custom_message as m')->leftJoin('wechat_user as wu', RC_DB::raw('wu.uid'), '=', RC_DB::raw('m.uid'))
                 ->select(RC_DB::raw('max(m.id) as id'))
                 ->whereRaw($where3)
@@ -174,7 +174,7 @@ class platform_message extends ecjia_platform
                 ->groupBy(RC_DB::raw('m.uid'))
                 ->get()
         );
-        $filter['earlier'] = count(
+        $filter['earlier']                  = count(
             RC_DB::table('wechat_custom_message as m')->leftJoin('wechat_user as wu', RC_DB::raw('wu.uid'), '=', RC_DB::raw('m.uid'))
                 ->select(RC_DB::raw('max(m.id) as id'))
                 ->whereRaw($where5)
@@ -189,7 +189,7 @@ class platform_message extends ecjia_platform
                 ->groupBy(RC_DB::raw('m.uid'))
                 ->get()
         );
-        $page = new ecjia_platform_page($count, 10, 5);
+        $page  = new ecjia_platform_page($count, 10, 5);
 
         $list = RC_DB::table('wechat_custom_message as m')
             ->leftJoin('wechat_user as wu', RC_DB::raw('wu.uid'), '=', RC_DB::raw('m.uid'))
@@ -203,10 +203,10 @@ class platform_message extends ecjia_platform
         $row = array();
         if (!empty($list)) {
             foreach ($list as $key => $val) {
-                $info = RC_DB::table('wechat_custom_message')->where('id', $val['id'])->first();
+                $info                    = RC_DB::table('wechat_custom_message')->where('id', $val['id'])->first();
                 $list[$key]['send_time'] = RC_Time::local_date(ecjia::config('time_format'), $info['send_time']);
-                $list[$key]['msg'] = $info['msg'];
-                $list[$key]['uid'] = $info['uid'];
+                $list[$key]['msg']       = $info['msg'];
+                $list[$key]['uid']       = $info['uid'];
             }
             $row = $this->array_sequence($list, 'send_time');
         }
@@ -218,7 +218,7 @@ class platform_message extends ecjia_platform
 
         $wechat_id = $this->platformAccount->getAccountID();
 
-        $uid = !empty($_GET['uid']) ? intval($_GET['uid']) : 0;
+        $uid  = !empty($_GET['uid']) ? intval($_GET['uid']) : 0;
         $info = RC_DB::table('wechat_user as u')
             ->leftJoin('users as us', RC_DB::raw('us.user_id'), '=', RC_DB::raw('u.ect_uid'))
             ->select(RC_DB::raw('u.*'), RC_DB::raw('us.user_name'))
@@ -228,9 +228,9 @@ class platform_message extends ecjia_platform
 
         if ($info['subscribe_time']) {
             $info['subscribe_time'] = RC_Time::local_date(ecjia::config('time_format'), $info['subscribe_time'] - 8 * 3600);
-            $tag_list = RC_DB::table('wechat_user_tag')->where('userid', $info['uid'])->lists('tagid');
-            $db_wechat_tag = RC_DB::table('wechat_user_tag');
-            $name_list = [];
+            $tag_list               = RC_DB::table('wechat_user_tag')->where('userid', $info['uid'])->lists('tagid');
+            $db_wechat_tag          = RC_DB::table('wechat_user_tag');
+            $name_list              = [];
             if (!empty($tag_list)) {
                 $name_list = $db_wechat_tag->whereIn('tag_id', $tag_list)->where('wechat_id', $wechat_id)->orderBy('tag_id', 'desc')->lists('name');
             }
@@ -254,7 +254,7 @@ class platform_message extends ecjia_platform
             }
         }
         if (!empty($array)) {
-        	array_multisort($arrSort[$field], constant($sort), $array);
+            array_multisort($arrSort[$field], constant($sort), $array);
         }
         return $array;
     }

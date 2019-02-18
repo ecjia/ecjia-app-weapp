@@ -3,7 +3,7 @@
     <div class="article">
         <div class="cover">
             <a target="__blank" href="javascript:;">
-                <img src="{$articles.file}" />
+                <img src="{$articles.file}"/>
             </a>
             <span>{$articles.title}</span>
         </div>
@@ -15,7 +15,7 @@
     <div class="article_list">
         <div class="f_l">{if $val.title}{$val.title}{else}{lang key='wechat::wechat.no_title'}{/if}</div>
         <a target="__blank" href="javascript:;">
-            <img src="{$val.file}" class="pull-right" />
+            <img src="{$val.file}" class="pull-right"/>
         </a>
     </div>
     <!-- {/foreach} -->

@@ -158,7 +158,7 @@ class weapp_platform_hooks
                 $list[$key]['uid']                = $info['uid'];
                 $list[$key]['send_time']          = RC_Time::local_date('Y-m-d', $info['send_time']);
                 $list[$key]['send_time_detail']   = RC_Time::local_date('H:i:s', $info['send_time']);
-                $list[$key]['send_time_formated'] = RC_Time::local_date('Y年m月d日', $info['send_time']);
+                $list[$key]['send_time_formated'] = RC_Time::local_date(__('Y年m月d日', 'weapp'), $info['send_time']);
             }
             foreach ($list as $k => $v) {
                 $arr[$v['send_time']][] = $v;

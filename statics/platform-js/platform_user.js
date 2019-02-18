@@ -29,7 +29,8 @@
                                     media_content: data.msg_list[i].media_content_html
                                 };
                                 app.subscribe_message.addMsgItem(options);
-                            };
+                            }
+                            ;
                             var new_last_id = data.last_id ? data.last_id : parseInt(last_id) - 10;
                             $this.attr('data-lastid', new_last_id);
                             data.msg_list.length < 10 && $this.text(data.message).attr('disabled', 'disabled');
@@ -415,7 +416,7 @@
                 var filters = {
                     'uid': uid,
                 };
-                if (openid != '' && 　openid != undefined) {
+                if (openid != '' && openid != undefined) {
                     $('input[name="openid"]').val(openid);
                     $('input[name="uid"]').val(uid);
                 } else {

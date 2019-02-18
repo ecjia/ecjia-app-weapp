@@ -50,8 +50,8 @@ defined('IN_ECJIA') or exit('No permission resources.');
  * ECJIA 应用语言包
  */
 return array(
-	'weapp' 		    => '微信小程序',
-	'weapp_desc' 		=> '微信小程序描述'
+    'weapp'      => '微信小程序',
+    'weapp_desc' => '微信小程序描述'
 );
 
 // end

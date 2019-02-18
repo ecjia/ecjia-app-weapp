@@ -51,7 +51,7 @@ class admin_weapp_hooks
 
     public static function platform_admin_menu_api($menus)
     {
-        $menu = ecjia_admin::make_admin_menu('01_weapp_manage', RC_Lang::get('weapp::weapp.weapp_manage'), RC_Uri::url('weapp/admin/init'), 1)->add_purview('weapp_manage');
+        $menu = ecjia_admin::make_admin_menu('01_weapp_manage', __('小程序管理', 'weapp'), RC_Uri::url('weapp/admin/init'), 1)->add_purview('weapp_manage');
 
         $menus->add_submenu($menu);
         return $menus;

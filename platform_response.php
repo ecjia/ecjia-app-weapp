@@ -83,10 +83,10 @@ class platform_response extends ecjia_platform
         $this->assign('ur_here', RC_Lang::get('wechat::wechat.auto_reply'));
 
         ecjia_platform_screen::get_current_screen()->add_help_tab(array(
-            'id' => 'overview',
-            'title' => RC_Lang::get('wechat::wechat.overview'),
+            'id'      => 'overview',
+            'title'   => RC_Lang::get('wechat::wechat.overview'),
             'content' =>
-            '<p>' . RC_Lang::get('wechat::wechat.message_reply_operation') . '</p>',
+                '<p>' . RC_Lang::get('wechat::wechat.message_reply_operation') . '</p>',
         ));
 
         ecjia_platform_screen::get_current_screen()->set_help_sidebar(
@@ -112,8 +112,8 @@ class platform_response extends ecjia_platform
                 if (!empty($data)) {
                     foreach ($data as $k => $v) {
                         if (!empty($v['file'])) {
-                            $subscribe['child'][$k]['title'] = strip_tags(Ecjia\App\Weapp\Helper::html_out($v['title']));
-                            $subscribe['child'][$k]['file'] = RC_Upload::upload_url($v['file']);
+                            $subscribe['child'][$k]['title']    = strip_tags(Ecjia\App\Weapp\Helper::html_out($v['title']));
+                            $subscribe['child'][$k]['file']     = RC_Upload::upload_url($v['file']);
                             $subscribe['child'][$k]['add_time'] = RC_Time::local_date(RC_Lang::get('wechat::wechat.date_ymd'), $v['add_time']);
                         } else {
                             $subscribe['child'][$k]['file'] = RC_Uri::admin_url('statics/images/nopic.png');
@@ -173,8 +173,8 @@ class platform_response extends ecjia_platform
                 if (!empty($data)) {
                     foreach ($data as $k => $v) {
                         if (!empty($v['file'])) {
-                            $subscribe['child'][$k]['title'] = strip_tags(Ecjia\App\Weapp\Helper::html_out($v['title']));
-                            $subscribe['child'][$k]['file'] = RC_Upload::upload_url($v['file']);
+                            $subscribe['child'][$k]['title']    = strip_tags(Ecjia\App\Weapp\Helper::html_out($v['title']));
+                            $subscribe['child'][$k]['file']     = RC_Upload::upload_url($v['file']);
                             $subscribe['child'][$k]['add_time'] = RC_Time::local_date(RC_Lang::get('wechat::wechat.date_ymd'), $v['add_time']);
                         } else {
                             $subscribe['child'][$k]['file'] = RC_Uri::admin_url('statics/images/nopic.png');
@@ -206,24 +206,24 @@ class platform_response extends ecjia_platform
 
     public function open_reply_insert()
     {
-        $id = !empty($_POST['id']) ? intval($_POST['id']) : 0;
-        $media_id = !empty($_POST['media_id']) ? intval($_POST['media_id']) : 0;
+        $id         = !empty($_POST['id']) ? intval($_POST['id']) : 0;
+        $media_id   = !empty($_POST['media_id']) ? intval($_POST['media_id']) : 0;
         $reply_type = $_POST['content_type'];
 
         if ($_POST['content_type'] != 'text') {
             $content = '';
         } else {
-            $content = !empty($_POST['content']) ? $_POST['content'] : '';
+            $content  = !empty($_POST['content']) ? $_POST['content'] : '';
             $media_id = 0;
         }
 
         $wechat_id = $this->platformAccount->getAccountID();
 
         $data = array(
-            'wechat_id' => $wechat_id,
-            'media_id' => $media_id,
-            'type' => 'user_enter',
-            'content' => $content,
+            'wechat_id'  => $wechat_id,
+            'media_id'   => $media_id,
+            'type'       => 'user_enter',
+            'content'    => $content,
             'reply_type' => $reply_type,
         );
         if (empty($id)) {
@@ -232,7 +232,7 @@ class platform_response extends ecjia_platform
             $id = RC_DB::table('wechat_reply')->insertGetId($data);
 
             $media_id = RC_DB::table('wechat_reply')->where('wechat_id', $wechat_id)->where('id', $id)->pluck('media_id');
-            $info = RC_DB::table('wechat_media')->select('file', 'type')->where('wechat_id', $wechat_id)->where('id', $media_id)->first();
+            $info     = RC_DB::table('wechat_media')->select('file', 'type')->where('wechat_id', $wechat_id)->where('id', $media_id)->first();
 
             if (!empty($content)) {
                 $this->admin_log($content . '，' . RC_Lang::get('wechat::wechat.reply_type_character'), 'add', 'reply_msg');
@@ -257,7 +257,7 @@ class platform_response extends ecjia_platform
             RC_DB::table('wechat_reply')->where('wechat_id', $wechat_id)->where('id', $id)->update($data);
 
             $media_id = RC_DB::table('wechat_reply')->where('wechat_id', $wechat_id)->where('id', $id)->pluck('media_id');
-            $info = RC_DB::table('wechat_media')->select('file', 'type')->where('wechat_id', $wechat_id)->where('id', $media_id)->first();
+            $info     = RC_DB::table('wechat_media')->select('file', 'type')->where('wechat_id', $wechat_id)->where('id', $media_id)->first();
 
             if (!empty($content)) {
                 $this->admin_log($content . '，' . RC_Lang::get('wechat::wechat.reply_type_character'), 'edit', 'reply_msg');
@@ -280,24 +280,24 @@ class platform_response extends ecjia_platform
 
     public function reply_msg_insert()
     {
-        $id = !empty($_POST['id']) ? intval($_POST['id']) : 0;
-        $media_id = !empty($_POST['media_id']) ? intval($_POST['media_id']) : 0;
+        $id         = !empty($_POST['id']) ? intval($_POST['id']) : 0;
+        $media_id   = !empty($_POST['media_id']) ? intval($_POST['media_id']) : 0;
         $reply_type = $_POST['content_type'];
 
         if ($_POST['content_type'] != 'text') {
             $content = '';
         } else {
-            $content = !empty($_POST['content']) ? $_POST['content'] : '';
+            $content  = !empty($_POST['content']) ? $_POST['content'] : '';
             $media_id = 0;
         }
 
         $wechat_id = $this->platformAccount->getAccountID();
 
         $data = array(
-            'wechat_id' => $wechat_id,
-            'media_id' => $media_id,
-            'type' => 'msg',
-            'content' => $content,
+            'wechat_id'  => $wechat_id,
+            'media_id'   => $media_id,
+            'type'       => 'msg',
+            'content'    => $content,
             'reply_type' => $reply_type,
         );
         if (empty($id)) {
@@ -306,7 +306,7 @@ class platform_response extends ecjia_platform
             $id = RC_DB::table('wechat_reply')->insertGetId($data);
 
             $media_id = RC_DB::table('wechat_reply')->where('wechat_id', $wechat_id)->where('id', $id)->pluck('media_id');
-            $info = RC_DB::table('wechat_media')->select('file', 'type')->where('wechat_id', $wechat_id)->where('id', $media_id)->first();
+            $info     = RC_DB::table('wechat_media')->select('file', 'type')->where('wechat_id', $wechat_id)->where('id', $media_id)->first();
 
             if (!empty($content)) {
                 $this->admin_log($content . '，' . RC_Lang::get('wechat::wechat.reply_type_character'), 'add', 'reply_msg');
@@ -331,7 +331,7 @@ class platform_response extends ecjia_platform
             RC_DB::table('wechat_reply')->where('wechat_id', $wechat_id)->where('id', $id)->update($data);
 
             $media_id = RC_DB::table('wechat_reply')->where('wechat_id', $wechat_id)->where('id', $id)->pluck('media_id');
-            $info = RC_DB::table('wechat_media')->select('file', 'type')->where('wechat_id', $wechat_id)->where('id', $media_id)->first();
+            $info     = RC_DB::table('wechat_media')->select('file', 'type')->where('wechat_id', $wechat_id)->where('id', $media_id)->first();
 
             if (!empty($content)) {
                 $this->admin_log($content . '，' . RC_Lang::get('wechat::wechat.reply_type_character'), 'edit', 'reply_msg');
@@ -365,10 +365,10 @@ class platform_response extends ecjia_platform
         ecjia_platform_screen::get_current_screen()->add_nav_here(new admin_nav_here(RC_Lang::get('wechat::wechat.reply_keyword')));
 
         ecjia_platform_screen::get_current_screen()->add_help_tab(array(
-            'id' => 'overview',
-            'title' => RC_Lang::get('wechat::wechat.overview'),
+            'id'      => 'overview',
+            'title'   => RC_Lang::get('wechat::wechat.overview'),
             'content' =>
-            '<p>' . RC_Lang::get('wechat::wechat.keyword_reply_operation') . '</p>',
+                '<p>' . RC_Lang::get('wechat::wechat.keyword_reply_operation') . '</p>',
         ));
 
         ecjia_platform_screen::get_current_screen()->set_help_sidebar(
@@ -410,10 +410,10 @@ class platform_response extends ecjia_platform
             $this->assign('ur_here', RC_Lang::get('wechat::wechat.edit_rule'));
             ecjia_platform_screen::get_current_screen()->add_nav_here(new admin_nav_here(RC_Lang::get('wechat::wechat.edit_rule')));
             ecjia_platform_screen::get_current_screen()->add_help_tab(array(
-                'id' => 'overview',
-                'title' => RC_Lang::get('wechat::wechat.overview'),
+                'id'      => 'overview',
+                'title'   => RC_Lang::get('wechat::wechat.overview'),
                 'content' =>
-                '<p>' . RC_Lang::get('wechat::wechat.edit_rule_operation') . '</p>',
+                    '<p>' . RC_Lang::get('wechat::wechat.edit_rule_operation') . '</p>',
             ));
 
             ecjia_platform_screen::get_current_screen()->set_help_sidebar(
@@ -428,10 +428,10 @@ class platform_response extends ecjia_platform
             $this->assign('ur_here', RC_Lang::get('wechat::wechat.add_rule'));
             ecjia_platform_screen::get_current_screen()->add_nav_here(new admin_nav_here(RC_Lang::get('wechat::wechat.add_rule')));
             ecjia_platform_screen::get_current_screen()->add_help_tab(array(
-                'id' => 'overview',
-                'title' => RC_Lang::get('wechat::wechat.overview'),
+                'id'      => 'overview',
+                'title'   => RC_Lang::get('wechat::wechat.overview'),
                 'content' =>
-                '<p>' . RC_Lang::get('wechat::wechat.add_rule_operation') . '</p>',
+                    '<p>' . RC_Lang::get('wechat::wechat.add_rule_operation') . '</p>',
             ));
 
             ecjia_platform_screen::get_current_screen()->set_help_sidebar(
@@ -453,13 +453,13 @@ class platform_response extends ecjia_platform
             return $this->showmessage(RC_Lang::get('wechat::wechat.add_accounts_again'), ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_ERROR);
         }
 
-        $id = isset($_POST['id']) ? intval($_POST['id']) : 0;
-        $content_type = isset($_POST['content_type']) ? $_POST['content_type'] : '';
-        $rule_keywords = isset($_POST['rule_keywords']) ? trim($_POST['rule_keywords']) : '';
-        $data['rule_name'] = isset($_POST['rule_name']) ? trim($_POST['rule_name']) : '';
-        $data['media_id'] = !empty($_POST['media_id']) ? intval($_POST['media_id']) : '';
-        $data['content'] = isset($_POST['content']) ? trim($_POST['content']) : '';
-        $data['wechat_id'] = $wechat_id;
+        $id                 = isset($_POST['id']) ? intval($_POST['id']) : 0;
+        $content_type       = isset($_POST['content_type']) ? $_POST['content_type'] : '';
+        $rule_keywords      = isset($_POST['rule_keywords']) ? trim($_POST['rule_keywords']) : '';
+        $data['rule_name']  = isset($_POST['rule_name']) ? trim($_POST['rule_name']) : '';
+        $data['media_id']   = !empty($_POST['media_id']) ? intval($_POST['media_id']) : '';
+        $data['content']    = isset($_POST['content']) ? trim($_POST['content']) : '';
+        $data['wechat_id']  = $wechat_id;
         $data['reply_type'] = $content_type;
 
         if ($content_type == 'text') {
@@ -493,7 +493,7 @@ class platform_response extends ecjia_platform
             }
         }
         // 编辑关键词
-        $rule_keywords = explode(',', $rule_keywords);
+        $rule_keywords      = explode(',', $rule_keywords);
         $rule_keywords_list = RC_DB::table('wechat_reply as wr')
             ->leftJoin('wechat_rule_keywords as wrk', RC_DB::raw('wrk.rid'), '=', RC_DB::raw('wr.id'))
             ->where(RC_DB::raw('wr.wechat_id'), $wechat_id)
@@ -528,12 +528,12 @@ class platform_response extends ecjia_platform
             $this->admin_priv('weapp_response_add', ecjia::MSGTYPE_JSON);
 
             $data['add_time'] = RC_Time::gmtime();
-            $id = RC_DB::table('wechat_reply')->insertGetId($data);
+            $id               = RC_DB::table('wechat_reply')->insertGetId($data);
 
             $this->admin_log($data['rule_name'], 'add', 'reply_keywords_rule');
         }
         foreach ($rule_keywords as $val) {
-            $kdata['rid'] = $id;
+            $kdata['rid']           = $id;
             $kdata['rule_keywords'] = $val;
             RC_DB::table('wechat_rule_keywords')->insert($kdata);
         }
@@ -563,7 +563,7 @@ class platform_response extends ecjia_platform
 
         $id = !empty($_GET['id']) ? intval($_GET['id']) : 0;
         //获取该公众号下的id数组
-        $id_list = RC_DB::table('wechat_reply')->where('wechat_id', $wechat_id)->where('type', 'keywords')->lists('id');
+        $id_list   = RC_DB::table('wechat_reply')->where('wechat_id', $wechat_id)->where('type', 'keywords')->lists('id');
         $rule_name = RC_DB::table('wechat_reply')->where('wechat_id', $wechat_id)->where('id', $id)->pluck('rule_name');
         //获取该条规则的关键词
         $rule_keywords = RC_DB::table('wechat_rule_keywords')->where('rid', $id)->lists('rule_keywords');
@@ -591,7 +591,7 @@ class platform_response extends ecjia_platform
     {
         $wechat_id = $this->platformAccount->getAccountID();
 
-        $db = RC_DB::table('wechat_reply')->where('wechat_id', $wechat_id)->where('type', 'keywords');
+        $db              = RC_DB::table('wechat_reply')->where('wechat_id', $wechat_id)->where('type', 'keywords');
         $search_keywords = isset($_GET['keywords']) ? trim($_GET['keywords']) : '';
 
         if ($search_keywords != '') {
@@ -600,8 +600,8 @@ class platform_response extends ecjia_platform
         }
 
         $count = $db->count();
-        $page = new ecjia_page($count, 10, 5);
-        $list = $db->select('id', 'rule_name', 'content', 'media_id', 'reply_type')->take(10)->skip($page->start_id - 1)->orderBy('add_time', 'desc')->get();
+        $page  = new ecjia_page($count, 10, 5);
+        $list  = $db->select('id', 'rule_name', 'content', 'media_id', 'reply_type')->take(10)->skip($page->start_id - 1)->orderBy('add_time', 'desc')->get();
 
         if (!empty($list)) {
             foreach ($list as $key => $val) {
@@ -611,10 +611,10 @@ class platform_response extends ecjia_platform
 
                     if (!empty($media)) {
                         $media['add_time'] = RC_Time::local_date(RC_Lang::get('wechat::wechat.date_nj'), $media['add_time']);
-                        $media['file'] = RC_Upload::upload_url($media['file']);
+                        $media['file']     = RC_Upload::upload_url($media['file']);
 
                         $media['content'] = empty($media['digest']) ? $media['content'] : $media['digest'];
-                        $content = strip_tags(Ecjia\App\Weapp\Helper::html_out($media['content']));
+                        $content          = strip_tags(Ecjia\App\Weapp\Helper::html_out($media['content']));
                         if (strlen($content) > 100) {
                             $media['content'] = Ecjia\App\Weapp\Helper::msubstr($content, 100);
                         } else {
@@ -630,8 +630,8 @@ class platform_response extends ecjia_platform
 
                         foreach ($info as $k => $v) {
                             if (!empty($v['file'])) {
-                                $list[$key]['medias'][$k]['title'] = strip_tags(Ecjia\App\Weapp\Helper::html_out($v['title']));
-                                $list[$key]['medias'][$k]['file'] = RC_Upload::upload_url($v['file']);
+                                $list[$key]['medias'][$k]['title']    = strip_tags(Ecjia\App\Weapp\Helper::html_out($v['title']));
+                                $list[$key]['medias'][$k]['file']     = RC_Upload::upload_url($v['file']);
                                 $list[$key]['medias'][$k]['add_time'] = RC_Time::local_date(RC_Lang::get('wechat::wechat.date_ymd'), $v['add_time']);
                             } else {
                                 $list[$key]['medias'][$k]['file'] = RC_Uri::admin_url('statics/images/nopic.png');
@@ -648,7 +648,7 @@ class platform_response extends ecjia_platform
                         $list[$key]['media'] = $media;
                     }
                 }
-                $keywords = RC_DB::table('wechat_rule_keywords')->where('rid', $val['id'])->orderBy('id', 'asc')->lists('rule_keywords');
+                $keywords                    = RC_DB::table('wechat_rule_keywords')->where('rid', $val['id'])->orderBy('id', 'asc')->lists('rule_keywords');
                 $list[$key]['rule_keywords'] = $keywords;
             }
         }
@@ -661,7 +661,7 @@ class platform_response extends ecjia_platform
     private function get_rule_info($id)
     {
         $wechat_id = $this->platformAccount->getAccountID();
-        $db = RC_DB::table('wechat_reply')->where('wechat_id', $wechat_id);
+        $db        = RC_DB::table('wechat_reply')->where('wechat_id', $wechat_id);
         if ($id) {
             $db->where('id', $id);
         }
@@ -685,8 +685,8 @@ class platform_response extends ecjia_platform
                     }
                 }
                 $media['add_time'] = RC_Time::local_date(RC_Lang::get('wechat::wechat.date_nj'), $media['add_time']);
-                $media['content'] = empty($media['digest']) ? $media['content'] : $media['digest'];
-                $content = strip_tags(Ecjia\App\Weapp\Helper::html_out($media['content']));
+                $media['content']  = empty($media['digest']) ? $media['content'] : $media['digest'];
+                $content           = strip_tags(Ecjia\App\Weapp\Helper::html_out($media['content']));
                 if (strlen($content) > 100) {
                     $media['content'] = Ecjia\App\Weapp\Helper::msubstr($content, 100);
                 } else {
@@ -701,8 +701,8 @@ class platform_response extends ecjia_platform
                 if (!empty($data)) {
                     foreach ($data as $k => $v) {
                         if (!empty($v['file'])) {
-                            $list['child'][$k]['title'] = strip_tags(Ecjia\App\Weapp\Helper::html_out($v['title']));
-                            $list['child'][$k]['file'] = RC_Upload::upload_url($v['file']);
+                            $list['child'][$k]['title']    = strip_tags(Ecjia\App\Weapp\Helper::html_out($v['title']));
+                            $list['child'][$k]['file']     = RC_Upload::upload_url($v['file']);
                             $list['child'][$k]['add_time'] = RC_Time::local_date(RC_Lang::get('wechat::wechat.date_ymd'), $v['add_time']);
                         } else {
                             $list['child'][$k]['file'] = RC_Uri::admin_url('statics/images/nopic.png');
@@ -722,7 +722,7 @@ class platform_response extends ecjia_platform
             foreach ($keywords as $k => $v) {
                 $rule_keywords[] = $v['rule_keywords'];
             }
-            $rule_keywords = implode(',', $rule_keywords);
+            $rule_keywords                = implode(',', $rule_keywords);
             $list['rule_keywords_string'] = $rule_keywords;
         }
         return $list;
@@ -739,7 +739,7 @@ class platform_response extends ecjia_platform
         if ($id) {
             $db->where('parent_id', $id)->orWhere('id', $id);
         }
-        $data = $db->orderBy('id', 'asc')->get();
+        $data          = $db->orderBy('id', 'asc')->get();
         $article['id'] = $id;
 
         if (!empty($data)) {
@@ -752,8 +752,8 @@ class platform_response extends ecjia_platform
                     $article['file'][$k]['file'] = RC_Uri::admin_url('statics/images/nopic.png');
                 }
                 $article['file'][$k]['add_time'] = RC_Time::local_date(RC_Lang::get('wechat::wechat.date_ymd'), $v['add_time']);
-                $article['file'][$k]['title'] = strip_tags(Ecjia\App\Weapp\Helper::html_out($v['title']));
-                $article['file'][$k]['id'] = $v['id'];
+                $article['file'][$k]['title']    = strip_tags(Ecjia\App\Weapp\Helper::html_out($v['title']));
+                $article['file'][$k]['id']       = $v['id'];
                 if (!empty($v['size'])) {
                     if ($v['size'] > (1024 * 1024)) {
                         $article['file'][$k]['size'] = round(($v['size'] / (1024 * 1024)), 1) . 'MB';

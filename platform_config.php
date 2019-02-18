@@ -57,11 +57,11 @@ class platform_config extends ecjia_platform
         parent::__construct();
 
         RC_Loader::load_app_func('global');
-        
+
         RC_Script::enqueue_script('jquery-validate');
         RC_Script::enqueue_script('jquery-form');
         RC_Style::enqueue_style('bootstrap-responsive');
-        
+
         RC_Script::enqueue_script('clipboard', RC_App::apps_url('statics/platform-js/clipboard.min.js', __FILE__));
         RC_Script::enqueue_script('platform_config', RC_App::apps_url('statics/platform-js/platform_config.js', __FILE__), array(), false, true);
 
@@ -76,7 +76,7 @@ class platform_config extends ecjia_platform
         ecjia_platform_screen::get_current_screen()->remove_last_nav_here();
         ecjia_platform_screen::get_current_screen()->add_nav_here(new admin_nav_here('消息推送配置'));
 
-        $data = $this->platformAccount->getAccount(true);
+        $data        = $this->platformAccount->getAccount(true);
         $data['url'] = RC_Uri::home_url() . '/sites/platform/?uuid=' . $this->platformAccount->getUUID();
 
         $this->assign('data', $data);
@@ -91,9 +91,9 @@ class platform_config extends ecjia_platform
     {
         $this->admin_priv('weapp_config_update', ecjia::MSGTYPE_JSON);
 
-        $token = trim($_POST['token']);
+        $token  = trim($_POST['token']);
         $aeskey = trim($_POST['aeskey']);
-        
+
         $pattern = "/[^a-zA-Z0-9]/";
         if (preg_match($pattern, $token) || strlen($token) > 32 || strlen($token) < 3) {
             return $this->showmessage('Token(令牌)必须为英文或数字，长度为3-32字符', ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_ERROR);
@@ -105,7 +105,7 @@ class platform_config extends ecjia_platform
         $wechat_id = $this->platformAccount->getAccountID();
 
         $data = array(
-            'token' => $token,
+            'token'  => $token,
             'aeskey' => $aeskey
         );
         RC_DB::table('platform_account')->where('id', $wechat_id)->update($data);
