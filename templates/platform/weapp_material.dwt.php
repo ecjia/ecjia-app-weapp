@@ -19,7 +19,7 @@
     <button type="button" class="close" data-dismiss="alert" aria-label="Close">
         <span aria-hidden="true">×</span>
     </button>
-    <h4 class="alert-heading mb-2">操作提示</h4>
+    <h4 class="alert-heading mb-2">{t domain="weapp"}操作提示{/t}</h4>
     <!-- {ecjia_screen::get_current_screen()->get_help_sidebar()} -->
 </div>
 <!-- {/if} -->
@@ -35,7 +35,7 @@
             <div class="card-body">
                 <div>
                     <button type="button" class="get_material btn btn-outline-primary" data-url='{$get_material_link.href}'>{$get_material_link.text}</button>
-                    <span style="margin-left: 20px;">通过点击该按钮可以获取微信公众平台素材到本地。</span>
+                    <span style="margin-left: 20px;">{t domain="weapp"}通过点击该按钮可以获取微信公众平台素材到本地。{/t}</span>
                 </div>
                 <br/>
             </div>

@@ -89,7 +89,7 @@
                             <h4 class="heading">{lang key='wechat::wechat.graphic'}{$key+1}</h4>
                             <fieldset>
                                 <div class="form-group row">
-                                    <label class="col-lg-2 label-control text-right">{lang key='wechat::wechat.label_title'}</label>
+                                    <label class="col-lg-2 label-control text-right">{t domain="weapp"}标题：{/t}</label>
                                     <div class="col-lg-9 controls">
                                         <input class='span8 form-control' type='text' name='title' value='{$list.title}'/>
                                     </div>
@@ -156,7 +156,7 @@
                                     <label class="col-lg-2 label-control text-right"></label>
                                     <div class="col-lg-9 controls">
                                         <input type="hidden" name="index"/>
-                                        <input type="submit" value="{lang key='wechat::wechat.update'}" class="btn btn-outline-primary"/>
+                                        <input type="submit" value='{t domain="weapp"}更新{/t}' class="btn btn-outline-primary"/>
                                     </div>
                                 </div>
                             </fieldset>

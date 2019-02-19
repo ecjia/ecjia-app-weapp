@@ -93,7 +93,7 @@
 
                 <div class="modal-footer justify-content-center">
                     <input type="hidden" name="openid"/>
-                    <input type="submit" class="btn btn-outline-primary" {if $errormsg}disabled{/if} value="{lang key='wechat::wechat.ok'}" />
+                    <input type="submit" class="btn btn-outline-primary" {if $errormsg}disabled{/if} value='{t domain="weapp"}确定{/t}' />
                 </div>
             </form>
 
@@ -141,7 +141,7 @@
 
                 <div class="modal-footer justify-content-center">
                     <input type="hidden" name="id"/>
-                    <input type="submit" class="btn btn-outline-primary" {if $errormsg}disabled{/if} value="{lang key='wechat::wechat.ok'}" />
+                    <input type="submit" class="btn btn-outline-primary" {if $errormsg}disabled{/if} value='{t domain="weapp"}确定{/t}' />
                 </div>
             </form>
 

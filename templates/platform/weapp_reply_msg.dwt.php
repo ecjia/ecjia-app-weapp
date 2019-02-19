@@ -113,7 +113,7 @@
             {if $errormsg}
             <input type="submit" class="btn btn-outline-primary" disabled="disabled" value="{lang key='wechat::wechat.ok'} ">
             {else}
-            <input type="submit" class="btn btn-outline-primary" value="{lang key='wechat::wechat.ok'}">
+            <input type="submit" class="btn btn-outline-primary" value='{t domain="weapp"}确定{/t}'>
             {/if}
         </div>
         </form>
