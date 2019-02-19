@@ -29,9 +29,9 @@
                 <table class="table table-hide-edit">
                     <thead>
                         <tr>
-                            <th class="w150">标签名称</th>
-                            <th class="w150">用户数</th>
-                            <th class="w100">操作</th>
+                            <th class="w150">{t domain="weapp"}标签名称{/t}</th>
+                            <th class="w150">{t domain="weapp"}用户数{/t}</th>
+                            <th class="w100">{t domain="weapp"}操作{/t}</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -44,8 +44,8 @@
                             <td>{$val.count}</td>
                             <td>
                                 {if $val['tag_id'] != 0 && $val['tag_id'] != 1 && $val['tag_id'] != 2}
-                                <a class="subscribe-icon-edit {if $val.id eq $smarty.get.id}white{/if}" title="{lang key='wechat::wechat.edit_user_tag'}" data-name="{$val.name}" value="{$val.id}"><i class="ft-edit f_s15"></i></a>
-                                <a class="ajaxremove no-underline {if $val.id eq $smarty.get.id}white{/if}" data-toggle="ajaxremove" data-msg="{lang key='wechat::wechat.remove_tag_confirm'}" href='{RC_Uri::url("weapp/platform_user/remove","id={$val.id}&tag_id={$val.tag_id}")}' title="{lang key='wechat::wechat.remove_user_tag'}"><i class="ft-trash-2 f_s15 m_l5"></i></a>
+                                <a class="subscribe-icon-edit {if $val.id eq $smarty.get.id}white{/if}" title='{t domain="weapp"}编辑用户标签{/t}' data-name="{$val.name}" value="{$val.id}"><i class="ft-edit f_s15"></i></a>
+                                <a class="ajaxremove no-underline {if $val.id eq $smarty.get.id}white{/if}" data-toggle="ajaxremove" data-msg='{t domain="weapp"}您确定要删除该标签吗？{/t}' href='{RC_Uri::url("weapp/platform_user/remove", "id={$val.id}&tag_id={$val.tag_id}")}' title='{t domain="weapp"}删除用户标签{/t}'><i class="ft-trash-2 f_s15 m_l5"></i></a>
                                 {/if}
                             </td>
                         </tr>
@@ -66,7 +66,7 @@
     <div class="modal-dialog" role="document">
         <div class="modal-content">
             <div class="modal-header">
-                <h3 class="modal-title">{lang key='wechat::wechat.add_user_tag'}</h3>
+                <h3 class="modal-title">{t domain="weapp"}添加用户标签{/t}</h3>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">×</span>
                 </button>
@@ -82,7 +82,7 @@
                 <div class="card-body">
                     <div class="form-body">
                         <div class="form-group row">
-                            <label class="col-md-3 label-control new_tag_name text-right">{lang key='wechat::wechat.label_tag_name'}</label>
+                            <label class="col-md-3 label-control new_tag_name text-right">{t domain="weapp"}标签名称：{/t}</label>
                             <div class="col-md-8 controls">
                                 <input class="form-control" type="text" name="new_tag" autocomplete="off"/>
                             </div>
@@ -105,7 +105,7 @@
     <div class="modal-dialog" role="document">
         <div class="modal-content">
             <div class="modal-header">
-                <h3 class="modal-title">{lang key='wechat::wechat.edit_user_tag'}</h3>
+                <h3 class="modal-title">{t domain="weapp"}编辑用户标签{/t}</h3>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">×</span>
                 </button>
@@ -122,14 +122,14 @@
                     <div class="form-body">
 
                         <div class="form-group row">
-                            <label class="col-md-3 label-control old_tag_name text-right">{lang key='wechat::wechat.label_old_tag_name'}</label>
+                            <label class="col-md-3 label-control old_tag_name text-right">{t domain="weapp"}原标签名：{/t}</label>
                             <div class="col-md-8">
                                 <span class="old_tag"></span>
                             </div>
                         </div>
 
                         <div class="form-group row">
-                            <label class="col-md-3 label-control text-right">{lang key='wechat::wechat.label_new_tag_name'}</label>
+                            <label class="col-md-3 label-control text-right">{t domain="weapp"}新标签名：{/t}</label>
                             <div class="col-md-8 controls">
                                 <input class="form-control" type="text" name="new_tag" autocomplete="off"/>
                             </div>
