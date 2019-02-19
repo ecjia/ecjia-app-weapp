@@ -40,9 +40,9 @@
                     appsecret: {required: true},
                 },
                 messages: {
-                    name: {required: '请输入小程序名称'},
-                    appid: {required: js_lang.appid},
-                    appsecret: {required: js_lang.appsecret},
+                    name: {required: js_lang.name_required},
+                    appid: {required: js_lang.appid_required},
+                    appsecret: {required: js_lang.appsecret_required},
                 },
                 submitHandler: function () {
                     $form.ajaxSubmit({

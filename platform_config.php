@@ -64,6 +64,7 @@ class platform_config extends ecjia_platform
 
         RC_Script::enqueue_script('clipboard', RC_App::apps_url('statics/platform-js/clipboard.min.js', __FILE__));
         RC_Script::enqueue_script('platform_config', RC_App::apps_url('statics/platform-js/platform_config.js', __FILE__), array(), false, true);
+        RC_Script::localize_script('platform_config', 'js_lang', config('app-weapp::jslang.platform_config_page'));
 
         ecjia_platform_screen::get_current_screen()->add_nav_here(new admin_nav_here('消息推送配置', RC_Uri::url('weapp/platform_config/init')));
         ecjia_platform_screen::get_current_screen()->set_subject('消息推送配置');

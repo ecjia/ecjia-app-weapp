@@ -53,13 +53,13 @@
                 },
                 messages: {
                     name: {
-                        required: "请输入小程序名称",
+                        required: js_lang.name_required,
                     },
                     appid: {
-                        required: "请输入appid",
+                        required: js_lang.appid_required,
                     },
                     appsecret: {
-                        required: "请输入appsecret",
+                        required: js_lang.appsecret_required,
                     }
                 },
                 submitHandler: function () {

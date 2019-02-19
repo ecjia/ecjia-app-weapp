@@ -166,11 +166,11 @@
                     },
                 },
                 submitHandler: function () {
-                    $form.find('.btn.btn-outline-primary').val('请求中...').prop('disabled', true);
+                    $form.find('.btn.btn-outline-primary').val(js_lang.inviting).prop('disabled', true);
                     $form.ajaxSubmit({
                         dataType: "json",
                         success: function (data) {
-                            $form.find('.btn.btn-outline-primary').val('邀请绑定').prop('disabled', false);
+                            $form.find('.btn.btn-outline-primary').val(js_lang.invite_bind).prop('disabled', false);
                             $('#bind_wx').modal('hide');
                             $(".modal-backdrop").remove();
                             ecjia.platform.showmessage(data);

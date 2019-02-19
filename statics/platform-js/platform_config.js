@@ -28,9 +28,9 @@
                     aeskey: {required: true, rangelength: [42, 44]},
                 },
                 messages: {
-                    server_url: {required: '请输入URL(服务器地址)'},
-                    server_token: {required: '请输入Token(令牌)', rangelength: '请输入一个长度介于 3 和 32 之间的字符串'},
-                    aeskey: {required: '请输入EncodingAESKey(消息加密密钥)', rangelength: '长度必须为43位字符'},
+                    server_url: {required: js_lang.server_url_required},
+                    server_token: {required: js_lang.server_token_required, rangelength: js_lang.server_token_rangelength},
+                    aeskey: {required: js_lang.aeskey_required, rangelength: js_lang.aeskey_rangelength},
                 },
                 submitHandler: function () {
                     $form.ajaxSubmit({
@@ -49,12 +49,12 @@
             $(".copy-url-btn").off('click').on('click', function (e) {
                 var url_clipboard = new ClipboardJS('.copy-url-btn');
                 url_clipboard.on('success', function (e) {
-                    ecjia.platform_ui.alert('复制成功', {ok: '确定'});
+                    ecjia.platform_ui.alert(js_lang.copy_success, {ok: js_lang.ok});
                     e.clearSelection();
                     url_clipboard.destroy();
                 });
                 url_clipboard.on('error', function (e) {
-                    ecjia.platform_ui.alert('复制失败，请手动复制', {ok: '确定'});
+                    ecjia.platform_ui.alert(js_lang.copy_failed, {ok: js_lang.ok});
                     e.clearSelection();
                     url_clipboard.destroy();
                 });
@@ -63,12 +63,12 @@
             $(".copy-token-btn").off('click').on('click', function (e) {
                 var token_clipboard = new ClipboardJS('.copy-token-btn');
                 token_clipboard.on('success', function (e) {
-                    ecjia.platform_ui.alert('复制成功', {ok: '确定'});
+                    ecjia.platform_ui.alert(js_lang.copy_success, {ok: js_lang.ok});
                     e.clearSelection();
                     token_clipboard.destroy();
                 });
                 token_clipboard.on('error', function (e) {
-                    ecjia.platform_ui.alert('复制失败，请手动复制', {ok: '确定'});
+                    ecjia.platform_ui.alert(js_lang.copy_failed, {ok: js_lang.ok});
                     e.clearSelection();
                     token_clipboard.destroy();
                 });

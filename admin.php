@@ -73,7 +73,7 @@ class admin extends ecjia_admin
         RC_Style::enqueue_style('bootstrap-editable', RC_Uri::admin_url('statics/lib/x-editable/bootstrap-editable/css/bootstrap-editable.css'));
         RC_Style::enqueue_style('admin_subscribe', RC_App::apps_url('statics/css/admin_subscribe.css', __FILE__));
         RC_Script::enqueue_script('weapp', RC_App::apps_url('statics/js/weapp.js', __FILE__), array(), false, true);
-        RC_Script::localize_script('weapp', 'js_lang', RC_Lang::get('weapp::weapp.js_lang'));
+        RC_Script::localize_script('weapp', 'js_lang', config('app-weapp::jslang.admin_page'));
 
         ecjia_screen::get_current_screen()->add_nav_here(new admin_nav_here(RC_Lang::get('weapp::weapp.weapp_list'), RC_Uri::url('weapp/admin/init')));
     }

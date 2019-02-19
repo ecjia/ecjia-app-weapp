@@ -71,7 +71,7 @@ class merchant extends ecjia_merchant
         RC_Script::enqueue_script('clipboard', RC_App::apps_url('statics/js/clipboard.min.js', __FILE__));
 
         RC_Script::enqueue_script('weapp', RC_App::apps_url('statics/js/mh_weapp.js', __FILE__), array(), false, true);
-        RC_Script::localize_script('weapp', 'js_lang', RC_Lang::get('platform::platform.js_lang'));
+        RC_Script::localize_script('mh_weapp', 'js_lang', config('app-weapp::jslang.merchant_page'));
 
         ecjia_merchant_screen::get_current_screen()->add_nav_here(new admin_nav_here('小程序列表', RC_Uri::url('weapp/merchant/init')));
         ecjia_merchant_screen::get_current_screen()->set_parentage('store', 'store/merchant.php');

@@ -156,16 +156,16 @@
 
                 $('#show_message').find('.inner_main').html('');
                 if (type == 'image') {
-                    title = '图片预览';
+                    title = js_lang.image_preview;
                     var src = $this.attr('src');
                     $('#show_message').find('.inner_main').html('<img style="width:100%;height:100%;" src="' + src + '" />');
                 } else if (type == 'voice') {
                     var src = $this.attr('data-src');
-                    title = '语音预览';
+                    title = js_lang.voice_preview;
                     $('#show_message').find('.inner_main').html('<video autoplay style="width:100%;height:100px;" src="' + src + '" controls></video')
                 } else if (type == 'video') {
                     var src = $this.attr('data-src');
-                    title = '视频预览';
+                    title = js_lang.video_preview;
                     $('#show_message').find('.inner_main').html('<video autoplay style="width:100%;height:99%;" src="' + src + '" controls></video')
                 }
                 $('#show_message').find('.modal-title').html(title);
@@ -426,7 +426,7 @@
                     });
                     if (checkboxes == '') {
                         ecjia.platform_ui.alert(js_lang.pls_select_user, {
-                            ok: '确定',
+                            ok: js_lang.ok,
                         });
                         return false;
                     } else {
@@ -495,7 +495,7 @@
                 },
                 messages: {
                     kf_account: {
-                        required: '请选择客服账号'
+                        required: js_lang.kf_account_required
                     }
                 },
                 submitHandler: function () {
