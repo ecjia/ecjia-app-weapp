@@ -10,12 +10,12 @@
 
 <!-- {if $errormsg} -->
 <div class="alert alert-danger">
-    <strong>{lang key='wechat::wechat.label_notice'}</strong>{$errormsg}
+    <strong>{t domain="weapp"}温馨提示：{/t}</strong>{$errormsg}
 </div>
 <!-- {/if} -->
 
 <div class="alert alert-info">
-    <strong>{lang key='wechat::wechat.label_notice'}</strong>{lang key='wechat::wechat.online_customer_info'}
+    <strong>{t domain="weapp"}温馨提示：{/t}</strong>{lang key='wechat::wechat.online_customer_info'}
 </div>
 
 <div class="row">
@@ -143,7 +143,7 @@
             <!-- {if $errormsg} -->
             <div class="card-body">
                 <div class="alert alert-danger m_b0">
-                    <strong>{lang key='wechat::wechat.label_notice'}</strong>{$errormsg}
+                    <strong>{t domain="weapp"}温馨提示：{/t}</strong>{$errormsg}
                 </div>
             </div>
             <!-- {/if} -->

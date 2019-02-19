@@ -8,7 +8,7 @@
     </a>
     <ul class="dropdown-menu dropdown-menu-media dropdown-menu-right">
         <li class="dropdown-menu-header">
-            <h6 class="dropdown-header m-0"><span class="grey darken-2">消息列表</span></h6>
+            <h6 class="dropdown-header m-0"><span class="grey darken-2">{t domain="weapp"}消息列表{/t}</span></h6>
             <!-- 		<span class="notification-tag badge badge-default badge-warning float-right m-0">4 New</span> -->
         </li>
         <li class="scrollable-container media-list w-100">
@@ -30,7 +30,7 @@
             <!-- {/foreach} -->
         </li>
         <li class="dropdown-menu-footer">
-            <a class="dropdown-item text-muted text-center" href="{RC_Uri::url('weapp/platform_message/init')}">全部消息</a>
+            <a class="dropdown-item text-muted text-center" href="{RC_Uri::url('weapp/platform_message/init')}">{t domain="weapp"}全部消息{/t}</a>
         </li>
     </ul>
 </li>

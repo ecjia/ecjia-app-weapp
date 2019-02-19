@@ -12,7 +12,7 @@
 
 <!-- {if $errormsg} -->
 <div class="alert alert-danger">
-    <strong>{lang key='wechat::wechat.label_notice'}</strong>{$errormsg}
+    <strong>{t domain="weapp"}温馨提示：{/t}</strong>{$errormsg}
 </div>
 <!-- {/if} -->
 
@@ -259,7 +259,7 @@
             </div>
             <!-- {if $errormsg} -->
             <div class="alert alert-danger">
-                <strong>{lang key='wechat::wechat.label_notice'}</strong>{$errormsg}
+                <strong>{t domain="weapp"}温馨提示：{/t}</strong>{$errormsg}
             </div>
             <!-- {/if} -->
 
