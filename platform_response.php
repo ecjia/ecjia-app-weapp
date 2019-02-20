@@ -71,7 +71,7 @@ class platform_response extends ecjia_platform
         RC_Script::localize_script('platform_response', 'js_lang', config('app-weapp::jslang.platform_response_page'));
         RC_Script::localize_script('choose_material', 'jslang', config('app-weapp::jslang.choose_material_page'));
 
-        ecjia_platform_screen::get_current_screen()->set_subject('自动回复');
+        ecjia_platform_screen::get_current_screen()->set_subject(__('自动回复', 'weapp'));
     }
 
     /**
@@ -81,20 +81,8 @@ class platform_response extends ecjia_platform
     {
         $this->admin_priv('weapp_response_manage');
 
-        ecjia_platform_screen::get_current_screen()->add_nav_here(new admin_nav_here(RC_Lang::get('wechat::wechat.message_auto_reply')));
-        $this->assign('ur_here', RC_Lang::get('wechat::wechat.auto_reply'));
-
-        ecjia_platform_screen::get_current_screen()->add_help_tab(array(
-            'id'      => 'overview',
-            'title'   => RC_Lang::get('wechat::wechat.overview'),
-            'content' =>
-                '<p>' . RC_Lang::get('wechat::wechat.message_reply_operation') . '</p>',
-        ));
-
-        ecjia_platform_screen::get_current_screen()->set_help_sidebar(
-            '<p><strong>' . RC_Lang::get('wechat::wechat.lable_more_info') . '</strong></p>' .
-            '<p>' . __('<a href="https://ecjia.com/wiki/帮助:ECJia公众平台:自动回复#.E6.B6.88.E6.81.AF.E8.87.AA.E5.8A.A8.E5.9B.9E.E5.A4.8D" target="_blank">' . RC_Lang::get('wechat::wechat.auto_reply_help') . '</a>') . '</p>'
-        );
+        ecjia_platform_screen::get_current_screen()->add_nav_here(new admin_nav_here(__('消息自动回复', 'weapp')));
+        $this->assign('ur_here', __('自动回复', 'weapp'));
 
         $this->assign('form_action', RC_Uri::url('weapp/platform_response/reply_msg_insert'));
         $this->assign('add_material_action', RC_Uri::url('weapp/platform_response/add_material'));
@@ -103,7 +91,7 @@ class platform_response extends ecjia_platform
         $wechat_id = $this->platformAccount->getAccountID();
 
         if (is_ecjia_error($wechat_id)) {
-            $this->assign('errormsg', RC_Lang::get('wechat::wechat.add_platform_first'));
+            $this->assign('errormsg', __('请先添加公众号，再进行后续操作', 'weapp'));
         } else {
             $subscribe = RC_DB::table('wechat_reply')->where('wechat_id', $wechat_id)->where('type', 'msg')->first();
             if (!empty($subscribe['media_id'])) {
@@ -116,7 +104,7 @@ class platform_response extends ecjia_platform
                         if (!empty($v['file'])) {
                             $subscribe['child'][$k]['title']    = strip_tags(Ecjia\App\Weapp\Helper::html_out($v['title']));
                             $subscribe['child'][$k]['file']     = RC_Upload::upload_url($v['file']);
-                            $subscribe['child'][$k]['add_time'] = RC_Time::local_date(RC_Lang::get('wechat::wechat.date_ymd'), $v['add_time']);
+                            $subscribe['child'][$k]['add_time'] = RC_Time::local_date(__('Y年m月d日', 'weapp'), $v['add_time']);
                         } else {
                             $subscribe['child'][$k]['file'] = RC_Uri::admin_url('statics/images/nopic.png');
                         }
@@ -152,10 +140,10 @@ class platform_response extends ecjia_platform
     {
         $this->admin_priv('weapp_response_manage');
 
-        ecjia_platform_screen::get_current_screen()->set_subject('打开客服回复');
+        ecjia_platform_screen::get_current_screen()->set_subject(__('打开客服回复', 'weapp'));
 
-        ecjia_platform_screen::get_current_screen()->add_nav_here(new admin_nav_here('打开客服回复'));
-        $this->assign('ur_here', '自动回复');
+        ecjia_platform_screen::get_current_screen()->add_nav_here(new admin_nav_here(__('打开客服回复', 'weapp')));
+        $this->assign('ur_here', __('自动回复', 'weapp'));
 
         $this->assign('form_action', RC_Uri::url('weapp/platform_response/open_reply_insert'));
         $this->assign('add_material_action', RC_Uri::url('weapp/platform_response/add_material'));
@@ -164,7 +152,7 @@ class platform_response extends ecjia_platform
         $wechat_id = $this->platformAccount->getAccountID();
 
         if (is_ecjia_error($wechat_id)) {
-            $this->assign('errormsg', RC_Lang::get('wechat::wechat.add_platform_first'));
+            $this->assign('errormsg', __('请先添加公众号，再进行后续操作', 'weapp'));
         } else {
             $subscribe = RC_DB::table('wechat_reply')->where('wechat_id', $wechat_id)->where('type', 'user_enter')->first();
             if (!empty($subscribe['media_id'])) {
@@ -177,7 +165,7 @@ class platform_response extends ecjia_platform
                         if (!empty($v['file'])) {
                             $subscribe['child'][$k]['title']    = strip_tags(Ecjia\App\Weapp\Helper::html_out($v['title']));
                             $subscribe['child'][$k]['file']     = RC_Upload::upload_url($v['file']);
-                            $subscribe['child'][$k]['add_time'] = RC_Time::local_date(RC_Lang::get('wechat::wechat.date_ymd'), $v['add_time']);
+                            $subscribe['child'][$k]['add_time'] = RC_Time::local_date(__('Y年m月d日', 'weapp'), $v['add_time']);
                         } else {
                             $subscribe['child'][$k]['file'] = RC_Uri::admin_url('statics/images/nopic.png');
                         }
@@ -237,20 +225,20 @@ class platform_response extends ecjia_platform
             $info     = RC_DB::table('wechat_media')->select('file', 'type')->where('wechat_id', $wechat_id)->where('id', $media_id)->first();
 
             if (!empty($content)) {
-                $this->admin_log($content . '，' . RC_Lang::get('wechat::wechat.reply_type_character'), 'add', 'reply_msg');
+                $this->admin_log(sprintf(__('%s，回复类型是 文字', 'weapp'), $content), 'add', 'reply_msg');
             } else {
                 if ($info['type'] == 'image') {
-                    $this->admin_log($info['file'] . '，' . RC_Lang::get('wechat::wechat.reply_type_picture'), 'add', 'reply_msg');
+                    $this->admin_log(sprintf(__('%s，回复类型是 图片', 'weapp'), $info['file']), 'add', 'reply_msg');
                 } elseif ($info['type'] == 'voice') {
-                    $this->admin_log($info['file'] . '，' . RC_Lang::get('wechat::wechat.reply_type_voice'), 'add', 'reply_msg');
+                    $this->admin_log(sprintf(__('%s，回复类型是 语音', 'weapp'), $info['file']), 'add', 'reply_msg');
                 } elseif ($info['type'] == 'video') {
-                    $this->admin_log($info['file'] . '，' . RC_Lang::get('wechat::wechat.reply_type_video'), 'add', 'reply_msg');
+                    $this->admin_log(sprintf(__('%s，回复类型是 视频', 'weapp'), $info['file']), 'add', 'reply_msg');
                 }
             }
             if ($id) {
-                return $this->showmessage(RC_Lang::get('wechat::wechat.add_success'), ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_SUCCESS, array('pjaxurl' => RC_Uri::url('weapp/platform_response/open_reply')));
+                return $this->showmessage(__('添加成功', 'weapp'), ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_SUCCESS, array('pjaxurl' => RC_Uri::url('weapp/platform_response/open_reply')));
             } else {
-                return $this->showmessage(RC_Lang::get('wechat::wechat.add_failed'), ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_ERROR);
+                return $this->showmessage(__('添加失败', 'weapp'), ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_ERROR);
             }
         } else {
             $this->admin_priv('weapp_response_update', ecjia::MSGTYPE_JSON);
@@ -262,20 +250,20 @@ class platform_response extends ecjia_platform
             $info     = RC_DB::table('wechat_media')->select('file', 'type')->where('wechat_id', $wechat_id)->where('id', $media_id)->first();
 
             if (!empty($content)) {
-                $this->admin_log($content . '，' . RC_Lang::get('wechat::wechat.reply_type_character'), 'edit', 'reply_msg');
+                $this->admin_log(sprintf(__('%s，回复类型是 文字', 'weapp'), $content), 'edit', 'reply_msg');
             } else {
                 if ($info['type'] == 'image') {
-                    $this->admin_log($info['file'] . '，' . RC_Lang::get('wechat::wechat.reply_type_picture'), 'edit', 'reply_msg');
+                    $this->admin_log(sprintf(__('%s，回复类型是 图片', 'weapp'), $info['file']), 'edit', 'reply_msg');
                 } elseif ($info['type'] == 'voice') {
-                    $this->admin_log($info['file'] . '，' . RC_Lang::get('wechat::wechat.reply_type_voice'), 'edit', 'reply_msg');
+                    $this->admin_log(sprintf(__('%s，回复类型是 语音', 'weapp'), $info['file']), 'edit', 'reply_msg');
                 } elseif ($info['type'] == 'video') {
-                    $this->admin_log($info['file'] . '，' . RC_Lang::get('wechat::wechat.reply_type_video'), 'edit', 'reply_msg');
+                    $this->admin_log(sprintf(__('%s，回复类型是 视频', 'weapp'), $info['file']), 'edit', 'reply_msg');
                 }
             }
             if ($id) {
-                return $this->showmessage(RC_Lang::get('wechat::wechat.edit_success'), ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_SUCCESS, array('pjaxurl' => RC_Uri::url('weapp/platform_response/open_reply')));
+                return $this->showmessage(__('编辑成功', 'weapp'), ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_SUCCESS, array('pjaxurl' => RC_Uri::url('weapp/platform_response/open_reply')));
             } else {
-                return $this->showmessage(RC_Lang::get('wechat::wechat.edit_failed'), ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_ERROR);
+                return $this->showmessage(__('编辑成功', 'weapp'), ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_ERROR);
             }
         }
     }
@@ -311,20 +299,20 @@ class platform_response extends ecjia_platform
             $info     = RC_DB::table('wechat_media')->select('file', 'type')->where('wechat_id', $wechat_id)->where('id', $media_id)->first();
 
             if (!empty($content)) {
-                $this->admin_log($content . '，' . RC_Lang::get('wechat::wechat.reply_type_character'), 'add', 'reply_msg');
+                $this->admin_log(sprintf(__('%s，回复类型是 文字', 'weapp'), $content), 'add', 'reply_msg');
             } else {
                 if ($info['type'] == 'image') {
-                    $this->admin_log($info['file'] . '，' . RC_Lang::get('wechat::wechat.reply_type_picture'), 'add', 'reply_msg');
+                    $this->admin_log(sprintf(__('%s，回复类型是 图片', 'weapp'), $info['file']), 'add', 'reply_msg');
                 } elseif ($info['type'] == 'voice') {
-                    $this->admin_log($info['file'] . '，' . RC_Lang::get('wechat::wechat.reply_type_voice'), 'add', 'reply_msg');
+                    $this->admin_log(sprintf(__('%s，回复类型是 语音', 'weapp'), $info['file']), 'add', 'reply_msg');
                 } elseif ($info['type'] == 'video') {
-                    $this->admin_log($info['file'] . '，' . RC_Lang::get('wechat::wechat.reply_type_video'), 'add', 'reply_msg');
+                    $this->admin_log(sprintf(__('%s，回复类型是 视频', 'weapp'), $info['file']), 'add', 'reply_msg');
                 }
             }
             if ($id) {
-                return $this->showmessage(RC_Lang::get('wechat::wechat.add_success'), ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_SUCCESS, array('pjaxurl' => RC_Uri::url('weapp/platform_response/reply_msg')));
+                return $this->showmessage(__('添加成功', 'weapp'), ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_SUCCESS, array('pjaxurl' => RC_Uri::url('weapp/platform_response/reply_msg')));
             } else {
-                return $this->showmessage(RC_Lang::get('wechat::wechat.add_failed'), ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_ERROR);
+                return $this->showmessage(__('添加失败', 'weapp'), ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_ERROR);
             }
         } else {
             $this->admin_priv('weapp_response_update', ecjia::MSGTYPE_JSON);
@@ -336,20 +324,20 @@ class platform_response extends ecjia_platform
             $info     = RC_DB::table('wechat_media')->select('file', 'type')->where('wechat_id', $wechat_id)->where('id', $media_id)->first();
 
             if (!empty($content)) {
-                $this->admin_log($content . '，' . RC_Lang::get('wechat::wechat.reply_type_character'), 'edit', 'reply_msg');
+                $this->admin_log(sprintf(__('%s，回复类型是 文字', 'weapp'), $content), 'edit', 'reply_msg');
             } else {
                 if ($info['type'] == 'image') {
-                    $this->admin_log($info['file'] . '，' . RC_Lang::get('wechat::wechat.reply_type_picture'), 'edit', 'reply_msg');
+                    $this->admin_log(sprintf(__('%s，回复类型是 图片', 'weapp'), $info['file']), 'edit', 'reply_msg');
                 } elseif ($info['type'] == 'voice') {
-                    $this->admin_log($info['file'] . '，' . RC_Lang::get('wechat::wechat.reply_type_voice'), 'edit', 'reply_msg');
+                    $this->admin_log(sprintf(__('%s，回复类型是 语音', 'weapp'), $info['file']), 'edit', 'reply_msg');
                 } elseif ($info['type'] == 'video') {
-                    $this->admin_log($info['file'] . '，' . RC_Lang::get('wechat::wechat.reply_type_video'), 'edit', 'reply_msg');
+                    $this->admin_log(sprintf(__('%s，回复类型是 视频', 'weapp'), $info['file']), 'edit', 'reply_msg');
                 }
             }
             if ($id) {
-                return $this->showmessage(RC_Lang::get('wechat::wechat.edit_success'), ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_SUCCESS, array('pjaxurl' => RC_Uri::url('weapp/platform_response/reply_msg')));
+                return $this->showmessage(__('编辑成功', 'weapp'), ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_SUCCESS, array('pjaxurl' => RC_Uri::url('weapp/platform_response/reply_msg')));
             } else {
-                return $this->showmessage(RC_Lang::get('wechat::wechat.edit_failed'), ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_ERROR);
+                return $this->showmessage(__('编辑失败', 'weapp'), ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_ERROR);
             }
         }
     }
@@ -359,31 +347,19 @@ class platform_response extends ecjia_platform
      */
     public function reply_keywords()
     {
-        ecjia_platform_screen::get_current_screen()->set_subject('关键词回复');
+        ecjia_platform_screen::get_current_screen()->set_subject(__('关键词回复', 'weapp'));
 
         $this->admin_priv('weapp_response_manage');
 
-        $this->assign('ur_here', RC_Lang::get('wechat::wechat.reply_keyword'));
-        ecjia_platform_screen::get_current_screen()->add_nav_here(new admin_nav_here(RC_Lang::get('wechat::wechat.reply_keyword')));
-
-        ecjia_platform_screen::get_current_screen()->add_help_tab(array(
-            'id'      => 'overview',
-            'title'   => RC_Lang::get('wechat::wechat.overview'),
-            'content' =>
-                '<p>' . RC_Lang::get('wechat::wechat.keyword_reply_operation') . '</p>',
-        ));
-
-        ecjia_platform_screen::get_current_screen()->set_help_sidebar(
-            '<p><strong>' . RC_Lang::get('wechat::wechat.more_info') . '</strong></p>' .
-            '<p>' . __('<a href="https://ecjia.com/wiki/帮助:ECJia公众平台:关键词回复#.E5.85.B3.E9.94.AE.E8.AF.8D.E5.9B.9E.E5.A4.8D" target="_blank">' . RC_Lang::get('wechat::wechat.auto_keywords_help') . '</a>') . '</p>'
-        );
+        $this->assign('ur_here', __('关键词回复', 'weapp'));
+        ecjia_platform_screen::get_current_screen()->add_nav_here(new admin_nav_here(__('关键词回复', 'weapp')));
 
         $wechat_id = $this->platformAccount->getAccountID();
         $this->assign('form_action', RC_Uri::url('weapp/platform_response/reply_keywords'));
-        $this->assign('action_link', array('text' => RC_Lang::get('wechat::wechat.add_rule'), 'href' => RC_Uri::url('weapp/platform_response/reply_keywords_add')));
+        $this->assign('action_link', array('text' => __('添加规则', 'weapp'), 'href' => RC_Uri::url('weapp/platform_response/reply_keywords_add')));
 
         if (is_ecjia_error($wechat_id)) {
-            $this->assign('errormsg', RC_Lang::get('wechat::wechat.add_platform_first'));
+            $this->assign('errormsg', __('请先添加公众号，再进行后续操作', 'weapp'));
         } else {
             $list = $this->get_rule_list();
             $this->assign('list', $list);
@@ -396,50 +372,29 @@ class platform_response extends ecjia_platform
     {
         $this->admin_priv('weapp_response_add');
 
-        ecjia_platform_screen::get_current_screen()->add_nav_here(new admin_nav_here(RC_Lang::get('wechat::wechat.reply_keyword'), RC_Uri::url('weapp/platform_response/reply_keywords')));
-        $this->assign('action_link', array('href' => RC_Uri::url('weapp/platform_response/reply_keywords'), 'text' => RC_Lang::get('wechat::wechat.reply_keyword')));
+        ecjia_platform_screen::get_current_screen()->add_nav_here(new admin_nav_here(__('关键词回复', 'weapp'), RC_Uri::url('weapp/platform_response/reply_keywords')));
+        $this->assign('action_link', array('href' => RC_Uri::url('weapp/platform_response/reply_keywords'), 'text' => __('关键词回复', 'weapp')));
 
         $this->assign('form_action', RC_Uri::url('weapp/platform_response/reply_keywords_insert'));
         $this->assign('add_material_action', RC_Uri::url('weapp/platform_response/add_material'));
 
         $wechat_id = $this->platformAccount->getAccountID();
         if (is_ecjia_error($wechat_id)) {
-            $this->assign('errormsg', RC_Lang::get('wechat::wechat.add_platform_first'));
+            $this->assign('errormsg', __('请先添加公众号，再进行后续操作', 'weapp'));
         }
 
         $id = isset($_GET['id']) ? intval($_GET['id']) : 0;
         if (!empty($id)) {
-            $this->assign('ur_here', RC_Lang::get('wechat::wechat.edit_rule'));
-            ecjia_platform_screen::get_current_screen()->add_nav_here(new admin_nav_here(RC_Lang::get('wechat::wechat.edit_rule')));
-            ecjia_platform_screen::get_current_screen()->add_help_tab(array(
-                'id'      => 'overview',
-                'title'   => RC_Lang::get('wechat::wechat.overview'),
-                'content' =>
-                    '<p>' . RC_Lang::get('wechat::wechat.edit_rule_operation') . '</p>',
-            ));
-
-            ecjia_platform_screen::get_current_screen()->set_help_sidebar(
-                '<p><strong>' . RC_Lang::get('wechat::wechat.lable_more_info') . '</strong></p>' .
-                '<p>' . __('<a href="https://ecjia.com/wiki/帮助:ECJia公众平台:关键词回复#.E7.BC.96.E8.BE.91.E8.A7.84.E5.88.99" target="_blank">' . RC_Lang::get('wechat::wechat.edit_rule_help') . '</a>') . '</p>'
-            );
+            $this->assign('ur_here', __('编辑规则', 'weapp'));
+            ecjia_platform_screen::get_current_screen()->add_nav_here(new admin_nav_here(__('编辑规则', 'weapp')));
 
             $this->assign('id', $id);
             $data = $this->get_rule_info($id);
             $this->assign('data', $data);
         } else {
-            $this->assign('ur_here', RC_Lang::get('wechat::wechat.add_rule'));
-            ecjia_platform_screen::get_current_screen()->add_nav_here(new admin_nav_here(RC_Lang::get('wechat::wechat.add_rule')));
-            ecjia_platform_screen::get_current_screen()->add_help_tab(array(
-                'id'      => 'overview',
-                'title'   => RC_Lang::get('wechat::wechat.overview'),
-                'content' =>
-                    '<p>' . RC_Lang::get('wechat::wechat.add_rule_operation') . '</p>',
-            ));
+            $this->assign('ur_here', __('添加规则', 'weapp'));
+            ecjia_platform_screen::get_current_screen()->add_nav_here(new admin_nav_here(__('添加规则', 'weapp')));
 
-            ecjia_platform_screen::get_current_screen()->set_help_sidebar(
-                '<p><strong>' . RC_Lang::get('wechat::wechat.lable_more_info') . '</strong></p>' .
-                '<p>' . __('<a href="https://ecjia.com/wiki/帮助:ECJia公众平台:关键词回复#.E6.B7.BB.E5.8A.A0.E8.A7.84.E5.88.99" target="_blank">' . RC_Lang::get('wechat::wechat.add_rule_help') . '</a>') . '</p>'
-            );
             $data['reply_type'] = 'text';
             $this->assign('data', $data);
         }
@@ -452,7 +407,7 @@ class platform_response extends ecjia_platform
         $wechat_id = $this->platformAccount->getAccountID();
 
         if (is_ecjia_error($wechat_id)) {
-            return $this->showmessage(RC_Lang::get('wechat::wechat.add_accounts_again'), ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_ERROR);
+            return $this->showmessage(__('添加失败，请先添加公众号，再进行后续操作', 'weapp'), ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_ERROR);
         }
 
         $id                 = isset($_POST['id']) ? intval($_POST['id']) : 0;
@@ -471,27 +426,27 @@ class platform_response extends ecjia_platform
         }
 
         if ($data['rule_name'] == '') {
-            return $this->showmessage(RC_Lang::get('wechat::wechat.rule_name_required'), ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_ERROR);
+            return $this->showmessage(__('请填写规则名称', 'weapp'), ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_ERROR);
         }
 
         if ($rule_keywords == '') {
-            return $this->showmessage(RC_Lang::get('wechat::wechat.rule_keywords_required'), ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_ERROR);
+            return $this->showmessage(__('请至少填写1个关键词', 'weapp'), ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_ERROR);
         }
 
         if ($data['content'] == '' && empty($data['media_id'])) {
-            return $this->showmessage(RC_Lang::get('wechat::wechat.input_select_info'), ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_ERROR);
+            return $this->showmessage(__('请填写或选择回复内容！', 'weapp'), ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_ERROR);
         }
         $data['type'] = 'keywords';
 
         if (!empty($id)) {
             $is_only = RC_DB::table('wechat_reply')->where('wechat_id', $wechat_id)->where('id', '!=', $id)->where('rule_name', $data['rule_name'])->count();
             if ($is_only != 0) {
-                return $this->showmessage(sprintf(RC_Lang::get('wechat::wechat.rule_name_exists'), $data['rule_name']), ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_ERROR);
+                return $this->showmessage(sprintf(__('规则名称 %s 已存在', 'weapp'), $data['rule_name']), ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_ERROR);
             }
         } else {
             $is_only = RC_DB::table('wechat_reply')->where('wechat_id', $wechat_id)->where('rule_name', $data['rule_name'])->count();
             if ($is_only != 0) {
-                return $this->showmessage(sprintf(RC_Lang::get('wechat::wechat.rule_name_exists'), $data['rule_name']), ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_ERROR);
+                return $this->showmessage(sprintf(__('规则名称 %s 已存在', 'weapp'), $data['rule_name']), ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_ERROR);
             }
         }
         // 编辑关键词
@@ -506,7 +461,7 @@ class platform_response extends ecjia_platform
         if (!empty($rule_keywords_list)) {
             foreach ($rule_keywords_list as $v) {
                 if (in_array($v['rule_keywords'], $rule_keywords, true)) {
-                    return $this->showmessage(sprintf(RC_Lang::get('wechat::wechat.keyword_exists'), $v['rule_keywords']), ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_ERROR);
+                    return $this->showmessage(sprintf(__('关键词 %s 已存在', 'weapp'), $v['rule_keywords']), ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_ERROR);
                 }
             }
         }
@@ -514,7 +469,7 @@ class platform_response extends ecjia_platform
         $count = array_count_values($rule_keywords);
         foreach ($count as $k => $c) {
             if ($c > 1) {
-                return $this->showmessage(sprintf(RC_Lang::get('wechat::wechat.keyword_repeat'), $k), ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_ERROR);
+                return $this->showmessage(sprintf(__('关键词 %s 重复', 'weapp'), $k), ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_ERROR);
             }
         }
         if (!empty($id)) {
@@ -542,11 +497,11 @@ class platform_response extends ecjia_platform
 
         $update = isset($update) ? $update : '';
         if ($update) {
-            return $this->showmessage('编辑成功', ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_SUCCESS, array('pjaxurl' => RC_Uri::url('weapp/platform_response/reply_keywords_add', array('id' => $id))));
+            return $this->showmessage(__('编辑成功', 'weapp'), ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_SUCCESS, array('pjaxurl' => RC_Uri::url('weapp/platform_response/reply_keywords_add', array('id' => $id))));
         } else {
-            $links[] = array('text' => RC_Lang::get('wechat::wechat.keyword_reply'), 'href' => RC_Uri::url('weapp/platform_response/reply_keywords'));
-            $links[] = array('text' => RC_Lang::get('wechat::wechat.add_keyword'), 'href' => RC_Uri::url('weapp/platform_response/reply_keywords_add'));
-            return $this->showmessage(RC_Lang::get('wechat::wechat.add_success'), ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_SUCCESS, array('links' => $links, 'pjaxurl' => RC_Uri::url('weapp/platform_response/reply_keywords_add', array('id' => $id))));
+            $links[] = array('text' => __('返回关键词回复', 'weapp'), 'href' => RC_Uri::url('weapp/platform_response/reply_keywords'));
+            $links[] = array('text' => __('继续添加规则', 'weapp'), 'href' => RC_Uri::url('weapp/platform_response/reply_keywords_add'));
+            return $this->showmessage(__('添加成功', 'weapp'), ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_SUCCESS, array('links' => $links, 'pjaxurl' => RC_Uri::url('weapp/platform_response/reply_keywords_add', array('id' => $id))));
         }
     }
 
@@ -560,7 +515,7 @@ class platform_response extends ecjia_platform
         $wechat_id = $this->platformAccount->getAccountID();
 
         if (is_ecjia_error($wechat_id)) {
-            return $this->showmessage(RC_Lang::get('wechat::wechat.del_accounts_again'), ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_ERROR);
+            return $this->showmessage(__('删除失败，请先添加公众号，再进行后续操作', 'weapp'), ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_ERROR);
         }
 
         $id = !empty($_GET['id']) ? intval($_GET['id']) : 0;
@@ -583,7 +538,7 @@ class platform_response extends ecjia_platform
         }
         $this->admin_log($rule_name, 'remove', 'reply_keywords_rule');
 
-        return $this->showmessage(RC_Lang::get('wechat::wechat.remove_success'), ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_SUCCESS);
+        return $this->showmessage(__('删除成功', 'weapp'), ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_SUCCESS);
     }
 
     /**
@@ -612,7 +567,7 @@ class platform_response extends ecjia_platform
                     $media = RC_DB::table('wechat_media')->where('wechat_id', $wechat_id)->where('id', $val['media_id'])->first();
 
                     if (!empty($media)) {
-                        $media['add_time'] = RC_Time::local_date(RC_Lang::get('wechat::wechat.date_nj'), $media['add_time']);
+                        $media['add_time'] = RC_Time::local_date(__('n月j日', 'weapp'), $media['add_time']);
                         $media['file']     = RC_Upload::upload_url($media['file']);
 
                         $media['content'] = empty($media['digest']) ? $media['content'] : $media['digest'];
@@ -634,7 +589,7 @@ class platform_response extends ecjia_platform
                             if (!empty($v['file'])) {
                                 $list[$key]['medias'][$k]['title']    = strip_tags(Ecjia\App\Weapp\Helper::html_out($v['title']));
                                 $list[$key]['medias'][$k]['file']     = RC_Upload::upload_url($v['file']);
-                                $list[$key]['medias'][$k]['add_time'] = RC_Time::local_date(RC_Lang::get('wechat::wechat.date_ymd'), $v['add_time']);
+                                $list[$key]['medias'][$k]['add_time'] = RC_Time::local_date(__('Y年m月d日', 'weapp'), $v['add_time']);
                             } else {
                                 $list[$key]['medias'][$k]['file'] = RC_Uri::admin_url('statics/images/nopic.png');
                             }
@@ -686,7 +641,7 @@ class platform_response extends ecjia_platform
                         $media['file'] = RC_Uri::admin_url('statics/images/nopic.png');
                     }
                 }
-                $media['add_time'] = RC_Time::local_date(RC_Lang::get('wechat::wechat.date_nj'), $media['add_time']);
+                $media['add_time'] = RC_Time::local_date(__('n月j日', 'weapp'), $media['add_time']);
                 $media['content']  = empty($media['digest']) ? $media['content'] : $media['digest'];
                 $content           = strip_tags(Ecjia\App\Weapp\Helper::html_out($media['content']));
                 if (strlen($content) > 100) {
@@ -705,7 +660,7 @@ class platform_response extends ecjia_platform
                         if (!empty($v['file'])) {
                             $list['child'][$k]['title']    = strip_tags(Ecjia\App\Weapp\Helper::html_out($v['title']));
                             $list['child'][$k]['file']     = RC_Upload::upload_url($v['file']);
-                            $list['child'][$k]['add_time'] = RC_Time::local_date(RC_Lang::get('wechat::wechat.date_ymd'), $v['add_time']);
+                            $list['child'][$k]['add_time'] = RC_Time::local_date(__('Y年m月d日', 'weapp'), $v['add_time']);
                         } else {
                             $list['child'][$k]['file'] = RC_Uri::admin_url('statics/images/nopic.png');
                         }
@@ -753,7 +708,7 @@ class platform_response extends ecjia_platform
                 } else {
                     $article['file'][$k]['file'] = RC_Uri::admin_url('statics/images/nopic.png');
                 }
-                $article['file'][$k]['add_time'] = RC_Time::local_date(RC_Lang::get('wechat::wechat.date_ymd'), $v['add_time']);
+                $article['file'][$k]['add_time'] = RC_Time::local_date(__('Y年m月d日', 'weapp'), $v['add_time']);
                 $article['file'][$k]['title']    = strip_tags(Ecjia\App\Weapp\Helper::html_out($v['title']));
                 $article['file'][$k]['id']       = $v['id'];
                 if (!empty($v['size'])) {

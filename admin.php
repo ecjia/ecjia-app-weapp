@@ -75,7 +75,7 @@ class admin extends ecjia_admin
         RC_Script::enqueue_script('weapp', RC_App::apps_url('statics/js/weapp.js', __FILE__), array(), false, true);
         RC_Script::localize_script('weapp', 'js_lang', config('app-weapp::jslang.admin_page'));
 
-        ecjia_screen::get_current_screen()->add_nav_here(new admin_nav_here(RC_Lang::get('weapp::weapp.weapp_list'), RC_Uri::url('weapp/admin/init')));
+        ecjia_screen::get_current_screen()->add_nav_here(new admin_nav_here(__('小程序列表', 'weapp'), RC_Uri::url('weapp/admin/init')));
     }
 
     /**
@@ -86,10 +86,10 @@ class admin extends ecjia_admin
         $this->admin_priv('weapp_manage');
 
         ecjia_screen::get_current_screen()->remove_last_nav_here();
-        ecjia_screen::get_current_screen()->add_nav_here(new admin_nav_here(RC_Lang::get('weapp::weapp.weapp_list')));
+        ecjia_screen::get_current_screen()->add_nav_here(new admin_nav_here(__('小程序列表', 'weapp')));
 
-        $this->assign('ur_here', RC_Lang::get('weapp::weapp.weapp_list'));
-        $this->assign('action_link', array('text' => RC_Lang::get('weapp::weapp.weapp_add'), 'href' => RC_Uri::url('weapp/admin/add')));
+        $this->assign('ur_here', __('小程序列表', 'weapp'));
+        $this->assign('action_link', array('text' => __('添加小程序', 'weapp'), 'href' => RC_Uri::url('weapp/admin/add')));
 
         $weapp_list = $this->weapp_list();
         $this->assign('weapp_list', $weapp_list);
@@ -105,10 +105,10 @@ class admin extends ecjia_admin
     {
         $this->admin_priv('weapp_update');
 
-        ecjia_screen::get_current_screen()->add_nav_here(new admin_nav_here(RC_Lang::get('weapp::weapp.weapp_add')));
+        ecjia_screen::get_current_screen()->add_nav_here(new admin_nav_here(__('添加小程序', 'weapp')));
 
-        $this->assign('ur_here', RC_Lang::get('weapp::weapp.weapp_add'));
-        $this->assign('action_link', array('text' => RC_Lang::get('weapp::weapp.weapp_list'), 'href' => RC_Uri::url('weapp/admin/init')));
+        $this->assign('ur_here', __('添加小程序', 'weapp'));
+        $this->assign('action_link', array('text' => __('小程序列表', 'weapp'), 'href' => RC_Uri::url('weapp/admin/init')));
         $this->assign('form_action', RC_Uri::url('weapp/admin/insert'));
 
         $this->display('weapp_edit.dwt');
@@ -151,7 +151,7 @@ class admin extends ecjia_admin
         $id = RC_DB::table('platform_account')->insertGetId($data);
 
         $this->admin_log($_POST['name'], 'add', 'weapp');
-        return $this->showmessage(RC_Lang::get('weapp::weapp.add_weapp_succeed'), ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_SUCCESS, array('pjaxurl' => RC_Uri::url('weapp/admin/edit', array('id' => $id))));
+        return $this->showmessage(__('添加小程序成功！', 'weapp'), ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_SUCCESS, array('pjaxurl' => RC_Uri::url('weapp/admin/edit', array('id' => $id))));
     }
 
     /**
@@ -161,9 +161,9 @@ class admin extends ecjia_admin
     {
         $this->admin_priv('weapp_update');
 
-        $this->assign('ur_here', RC_Lang::get('weapp::weapp.weapp_edit'));
-        $this->assign('action_link', array('text' => RC_Lang::get('weapp::weapp.weapp_list'), 'href' => RC_Uri::url('weapp/admin/init')));
-        ecjia_screen::get_current_screen()->add_nav_here(new admin_nav_here(RC_Lang::get('weapp::weapp.weapp_edit')));
+        $this->assign('ur_here', __('编辑小程序', 'weapp'));
+        $this->assign('action_link', array('text' => __('小程序列表', 'weapp'), 'href' => RC_Uri::url('weapp/admin/init')));
+        ecjia_screen::get_current_screen()->add_nav_here(new admin_nav_here(__('编辑小程序', 'weapp')));
 
         $wxapp_info = RC_DB::table('platform_account')->where('id', intval($_GET['id']))->first();
         if (!empty($wxapp_info['logo'])) {
@@ -214,7 +214,7 @@ class admin extends ecjia_admin
         RC_DB::table('platform_account')->where('id', $id)->update($data);
 
         $this->admin_log($_POST['name'], 'edit', 'weapp');
-        return $this->showmessage(RC_Lang::get('weapp::weapp.edit_weapp_succeed'), ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_SUCCESS, array('pjaxurl' => RC_Uri::url('weapp/admin/edit', array('id' => $id))));
+        return $this->showmessage(__('编辑小程序成功！', 'weapp'), ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_SUCCESS, array('pjaxurl' => RC_Uri::url('weapp/admin/edit', array('id' => $id))));
     }
 
     /**
@@ -236,9 +236,9 @@ class admin extends ecjia_admin
 
         if ($success) {
             $this->admin_log($info['name'], 'remove', 'weapp');
-            return $this->showmessage(RC_Lang::get('weapp::weapp.remove_weapp_succeed'), ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_SUCCESS, array('pjaxurl' => RC_Uri::url('weapp/admin/init')));
+            return $this->showmessage(__('删除小程序成功！', 'weapp'), ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_SUCCESS, array('pjaxurl' => RC_Uri::url('weapp/admin/init')));
         } else {
-            return $this->showmessage(RC_Lang::get('weapp::weapp.remove_weapp_failed'), ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_ERROR);
+            return $this->showmessage(__('删除小程序失败！', 'weapp'), ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_ERROR);
         }
     }
 
@@ -261,12 +261,12 @@ class admin extends ecjia_admin
 
         $update = RC_DB::table('platform_account')->where('id', $id)->update($data);
 
-        $this->admin_log(RC_Lang::get('weapp::weapp.weapp_name_is') . $info['name'], 'remove', 'weapp_logo');
+        $this->admin_log(sprintf(__('小程序名称为%s', 'weapp'), $info['name']), 'remove', 'weapp_logo');
 
         if ($update) {
-            return $this->showmessage(RC_Lang::get('weapp::weapp.remove_succeed'), ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_SUCCESS);
+            return $this->showmessage(__('删除成功', 'weapp'), ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_SUCCESS);
         } else {
-            return $this->showmessage(RC_Lang::get('weapp::weapp.remove_failed'), ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_ERROR);
+            return $this->showmessage(__('删除失败', 'weapp'), ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_ERROR);
         }
     }
 
@@ -287,7 +287,7 @@ class admin extends ecjia_admin
             $this->admin_log($name, 'stop', 'weapp');
         }
 
-        return $this->showmessage(RC_Lang::get('weapp::weapp.switch_succeed'), ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_SUCCESS, array('content' => $val, 'pjaxurl' => RC_Uri::url('weapp/admin/init')));
+        return $this->showmessage(__('切换状态成功！', 'weapp'), ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_SUCCESS, array('content' => $val, 'pjaxurl' => RC_Uri::url('weapp/admin/init')));
     }
 
     /**
@@ -300,17 +300,17 @@ class admin extends ecjia_admin
         $sort = trim($_POST['value']);
         if (!empty($sort)) {
             if (!is_numeric($sort)) {
-                return $this->showmessage(RC_Lang::get('weapp::weapp.import_num'), ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_ERROR);
+                return $this->showmessage(__('请输入数值！', 'weapp'), ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_ERROR);
             } else {
                 $update = RC_DB::table('platform_account')->where('id', $id)->update(array('sort' => $sort));
                 if ($update) {
-                    return $this->showmessage(RC_Lang::get('weapp::weapp.editsort_succeed'), ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_SUCCESS, array('pjaxurl' => RC_uri::url('weapp/admin/init')));
+                    return $this->showmessage(__('编辑排序成功！', 'weapp'), ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_SUCCESS, array('pjaxurl' => RC_uri::url('weapp/admin/init')));
                 } else {
-                    return $this->showmessage(RC_Lang::get('weapp::weapp.editsort_failed'), ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_ERROR);
+                    return $this->showmessage(__('编辑排序失败！', 'weapp'), ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_ERROR);
                 }
             }
         } else {
-            return $this->showmessage(RC_Lang::get('platform::platform.weappsort_empty'), ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_ERROR);
+            return $this->showmessage(__('小程序排序不能为空！', 'weapp'), ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_ERROR);
         }
     }
 
@@ -332,7 +332,7 @@ class admin extends ecjia_admin
         }
 
         RC_DB::table('platform_account')->whereIn('id', $idArr)->delete();
-        return $this->showmessage(RC_Lang::get('weapp::weapp.deleted') . "[ " . $count . " ]" . RC_Lang::get('weapp::weapp.record_account'), ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_SUCCESS, array('pjaxurl' => RC_Uri::url('weapp/admin/init')));
+        return $this->showmessage(sprintf(__('本次删除了[%s]条记录！', 'weapp'), $count), ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_SUCCESS, array('pjaxurl' => RC_Uri::url('weapp/admin/init')));
     }
 
     public function autologin()
@@ -341,7 +341,7 @@ class admin extends ecjia_admin
 
         $uuid = RC_DB::table('platform_account')->where('id', $id)->pluck('uuid');
         if (empty($uuid)) {
-            return $this->showmessage(__('该小程序不存在', 'app-weapp'), ecjia::MSGTYPE_HTML | ecjia::MSGSTAT_ERROR);
+            return $this->showmessage(__('该小程序不存在', 'weapp'), ecjia::MSGTYPE_HTML | ecjia::MSGSTAT_ERROR);
         }
 
         //公众平台的超管权限同平台后台的权限

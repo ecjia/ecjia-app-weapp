@@ -73,7 +73,7 @@ class merchant extends ecjia_merchant
         RC_Script::enqueue_script('weapp', RC_App::apps_url('statics/js/mh_weapp.js', __FILE__), array(), false, true);
         RC_Script::localize_script('mh_weapp', 'js_lang', config('app-weapp::jslang.merchant_page'));
 
-        ecjia_merchant_screen::get_current_screen()->add_nav_here(new admin_nav_here('小程序列表', RC_Uri::url('weapp/merchant/init')));
+        ecjia_merchant_screen::get_current_screen()->add_nav_here(new admin_nav_here(__('小程序列表', 'weapp'), RC_Uri::url('weapp/merchant/init')));
         ecjia_merchant_screen::get_current_screen()->set_parentage('store', 'store/merchant.php');
     }
 
@@ -85,16 +85,16 @@ class merchant extends ecjia_merchant
         $this->admin_priv('weapp_manage');
 
         ecjia_merchant_screen::get_current_screen()->remove_last_nav_here();
-        ecjia_merchant_screen::get_current_screen()->add_nav_here(new admin_nav_here('小程序列表'));
+        ecjia_merchant_screen::get_current_screen()->add_nav_here(new admin_nav_here(__('小程序列表', 'weapp')));
 
-        $this->assign('ur_here', '小程序列表');
+        $this->assign('ur_here', __('小程序列表', 'weapp'));
 
         $weapp_list = $this->weapp_list();
         $this->assign('weapp_list', $weapp_list);
         $this->assign('search_action', RC_Uri::url('weapp/merchant/init'));
 
         if ($weapp_list['count'] == 0) {
-            $this->assign('action_link', array('text' => '添加小程序', 'href' => RC_Uri::url('weapp/merchant/add')));
+            $this->assign('action_link', array('text' => __('添加小程序', 'weapp'), 'href' => RC_Uri::url('weapp/merchant/add')));
         }
 
         $this->display('weapp_list.dwt');
@@ -107,10 +107,10 @@ class merchant extends ecjia_merchant
     {
         $this->admin_priv('weapp_update');
 
-        ecjia_merchant_screen::get_current_screen()->add_nav_here(new admin_nav_here('小程序列表'));
+        ecjia_merchant_screen::get_current_screen()->add_nav_here(new admin_nav_here(__('小程序列表', 'weapp')));
 
-        $this->assign('ur_here', '添加小程序');
-        $this->assign('action_link', array('text' => '小程序列表', 'href' => RC_Uri::url('weapp/merchant/init')));
+        $this->assign('ur_here', __('添加小程序', 'weapp'));
+        $this->assign('action_link', array('text' => __('小程序列表', 'weapp'), 'href' => RC_Uri::url('weapp/merchant/init')));
         $this->assign('form_action', RC_Uri::url('weapp/merchant/insert'));
         $this->assign('wxapp_info', array('status' => 1));
 
@@ -130,17 +130,17 @@ class merchant extends ecjia_merchant
 
         $count = RC_DB::table('platform_account')->where('shop_id', $_SESSION['store_id'])->where('platform', 'weapp')->count();
         if ($count != 0) {
-            return $this->showmessage('每个商家只能添加一个小程序', ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_ERROR);
+            return $this->showmessage(__('每个商家只能添加一个小程序', 'weapp'), ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_ERROR);
         }
 
         if (empty($name)) {
-            return $this->showmessage('请输入小程序名称', ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_ERROR);
+            return $this->showmessage(__('请输入小程序名称', 'weapp'), ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_ERROR);
         }
         if (empty($appid)) {
-            return $this->showmessage('请输入AppID', ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_ERROR);
+            return $this->showmessage(__('请输入AppID', 'weapp'), ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_ERROR);
         }
         if (empty($appsecret)) {
-            return $this->showmessage('请输入AppSecret', ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_ERROR);
+            return $this->showmessage(__('请输入AppSecret', 'weapp'), ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_ERROR);
         }
 
         $uuid = Royalcms\Component\Uuid\Uuid::generate();
@@ -173,7 +173,7 @@ class merchant extends ecjia_merchant
         $id   = RC_DB::table('platform_account')->insertGetId($data);
 
         ecjia_merchant::admin_log($_POST['name'], 'add', 'weapp');
-        return $this->showmessage(RC_Lang::get('platform::platform.add_pub_succeed'), ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_SUCCESS, array('pjaxurl' => RC_Uri::url('weapp/merchant/edit', array('id' => $id))));
+        return $this->showmessage(__('添加公众号成功！', 'weapp'), ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_SUCCESS, array('pjaxurl' => RC_Uri::url('weapp/merchant/edit', array('id' => $id))));
     }
 
     /**
@@ -183,9 +183,9 @@ class merchant extends ecjia_merchant
     {
         $this->admin_priv('weapp_update');
 
-        $this->assign('ur_here', RC_Lang::get('platform::platform.platform_edit'));
-        $this->assign('action_link', array('text' => '小程序列表', 'href' => RC_Uri::url('weapp/merchant/init')));
-        ecjia_merchant_screen::get_current_screen()->add_nav_here(new admin_nav_here(RC_Lang::get('platform::platform.platform_edit')));
+        $this->assign('ur_here', __('编辑公众号', 'weapp'));
+        $this->assign('action_link', array('text' => __('小程序列表', 'weapp'), 'href' => RC_Uri::url('weapp/merchant/init')));
+        ecjia_merchant_screen::get_current_screen()->add_nav_here(new admin_nav_here(__('编辑公众号', 'weapp')));
 
         $wxapp_info = RC_DB::table('platform_account')->where('shop_id', $_SESSION['store_id'])->where('id', intval($_GET['id']))->first();
         if (!empty($wxapp_info['logo'])) {
@@ -216,13 +216,13 @@ class merchant extends ecjia_merchant
         $appsecret = !empty($_POST['appsecret']) ? trim($_POST['appsecret']) : '';
 
         if (empty($name)) {
-            return $this->showmessage('请输入小程序名称', ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_ERROR);
+            return $this->showmessage(__('请输入小程序名称', 'weapp'), ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_ERROR);
         }
         if (empty($appid)) {
-            return $this->showmessage('请输入AppID', ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_ERROR);
+            return $this->showmessage(__('请输入AppID', 'weapp'), ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_ERROR);
         }
         if (empty($appsecret)) {
-            return $this->showmessage('请输入AppSecret', ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_ERROR);
+            return $this->showmessage(__('请输入AppSecret', 'weapp'), ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_ERROR);
         }
 
         //获取旧的logo
@@ -255,7 +255,7 @@ class merchant extends ecjia_merchant
         RC_DB::table('platform_account')->where('shop_id', $_SESSION['store_id'])->where('id', $id)->update($data);
 
         ecjia_merchant::admin_log($_POST['name'], 'edit', 'weapp');
-        return $this->showmessage(RC_Lang::get('platform::platform.edit_pub_succeed'), ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_SUCCESS, array('pjaxurl' => RC_Uri::url('weapp/merchant/edit', array('id' => $id))));
+        return $this->showmessage(__('编辑公众号成功！', 'weapp'), ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_SUCCESS, array('pjaxurl' => RC_Uri::url('weapp/merchant/edit', array('id' => $id))));
     }
 
     /**
@@ -280,9 +280,9 @@ class merchant extends ecjia_merchant
             RC_DB::table('wechat_oauth')->where('wechat_id', $id)->delete();
 
             ecjia_merchant::admin_log($info['name'], 'remove', 'weapp');
-            return $this->showmessage(RC_Lang::get('platform::platform.remove_pub_succeed'), ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_SUCCESS, array('pjaxurl' => RC_Uri::url('weapp/merchant/init')));
+            return $this->showmessage(__('删除公众号成功！', 'weapp'), ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_SUCCESS, array('pjaxurl' => RC_Uri::url('weapp/merchant/init')));
         } else {
-            return $this->showmessage(RC_Lang::get('platform::platform.remove_pub_failed'), ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_ERROR);
+            return $this->showmessage(__('删除公众号失败！', 'weapp'), ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_ERROR);
         }
     }
 
@@ -300,7 +300,7 @@ class merchant extends ecjia_merchant
             ecjia_merchant::admin_log($v['name'], 'batch_remove', 'weapp');
         }
         RC_DB::table('platform_account')->where('shop_id', $_SESSION['store_id'])->whereIn('id', $idArr)->delete();
-        return $this->showmessage('批量删除成功', ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_SUCCESS, array('pjaxurl' => RC_Uri::url('weapp/merchant/init')));
+        return $this->showmessage(__('批量删除成功', 'weapp'), ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_SUCCESS, array('pjaxurl' => RC_Uri::url('weapp/merchant/init')));
     }
 
     /**
@@ -320,8 +320,8 @@ class merchant extends ecjia_merchant
         $data = array('logo' => '');
         RC_DB::table('platform_account')->where('shop_id', $_SESSION['store_id'])->where('id', $id)->update($data);
 
-        ecjia_merchant::admin_log(RC_Lang::get('platform::platform.public_name_is') . $info['name'], 'remove', 'platform_logo');
-        return $this->showmessage(RC_Lang::get('platform::platform.remove_succeed'), ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_SUCCESS);
+        ecjia_merchant::admin_log(sprintf(__('公众号名称为%s', 'platform'), $info['name']), 'remove', 'platform_logo');
+        return $this->showmessage(__('删除成功', 'weapp'), ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_SUCCESS);
     }
 
     /**
@@ -341,7 +341,7 @@ class merchant extends ecjia_merchant
         } else {
             ecjia_merchant::admin_log($name, 'stop', 'weapp');
         }
-        return $this->showmessage(RC_Lang::get('platform::platform.switch_succeed'), ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_SUCCESS, array('content' => $val, 'pjaxurl' => RC_Uri::url('weapp/merchant/init')));
+        return $this->showmessage(__('切换状态成功！', 'weapp'), ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_SUCCESS, array('content' => $val, 'pjaxurl' => RC_Uri::url('weapp/merchant/init')));
     }
 
     /**
@@ -356,14 +356,14 @@ class merchant extends ecjia_merchant
 
         if (!empty($sort)) {
             if (!is_numeric($sort)) {
-                return $this->showmessage(RC_Lang::get('platform::platform.import_num'), ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_ERROR);
+                return $this->showmessage(__('请输入数值！', 'weapp'), ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_ERROR);
             } else {
                 RC_DB::table('platform_account')->where('shop_id', $_SESSION['store_id'])->where('id', $id)->update(array('sort' => $sort));
 
-                return $this->showmessage(RC_Lang::get('platform::platform.editsort_succeed'), ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_SUCCESS, array('pjaxurl' => RC_uri::url('weapp/merchant/init')));
+                return $this->showmessage(__('编辑排序成功！', 'weapp'), ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_SUCCESS, array('pjaxurl' => RC_uri::url('weapp/merchant/init')));
             }
         } else {
-            return $this->showmessage(RC_Lang::get('platform::platform.pubsort_empty'), ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_ERROR);
+            return $this->showmessage(__('公众号排序不能为空！', 'weapp'), ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_ERROR);
         }
     }
 
@@ -373,7 +373,7 @@ class merchant extends ecjia_merchant
 
         $uuid = RC_DB::table('platform_account')->where('shop_id', $_SESSION['store_id'])->where('id', $id)->pluck('uuid');
         if (empty($uuid)) {
-            return $this->showmessage(__('该小程序不存在', 'app-weapp'), ecjia::MSGTYPE_HTML | ecjia::MSGSTAT_ERROR);
+            return $this->showmessage(__('该小程序不存在', 'weapp'), ecjia::MSGTYPE_HTML | ecjia::MSGSTAT_ERROR);
         }
 
         //公众平台的超管权限同商家店长的权限

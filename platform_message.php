@@ -65,9 +65,9 @@ class platform_message extends ecjia_platform
         RC_Style::enqueue_style('platform_user', RC_App::apps_url('statics/platform-css/platform_user.css', __FILE__));
 
         RC_Script::localize_script('platform_user', 'js_lang', config('app-weapp::jslang.platform_message_page'));
-        ecjia_platform_screen::get_current_screen()->add_nav_here(new admin_nav_here(RC_Lang::get('wechat::wechat.message_manage'), RC_Uri::url('weapp/platform_user/init')));
+        ecjia_platform_screen::get_current_screen()->add_nav_here(new admin_nav_here(__('消息管理', 'weapp'), RC_Uri::url('weapp/platform_user/init')));
 
-        ecjia_platform_screen::get_current_screen()->set_subject('消息管理');
+        ecjia_platform_screen::get_current_screen()->set_subject(__('消息管理', 'weapp'));
     }
 
     public function init()
@@ -75,13 +75,13 @@ class platform_message extends ecjia_platform
         $this->admin_priv('weapp_subscribe_message_manage');
 
         ecjia_platform_screen::get_current_screen()->remove_last_nav_here();
-        ecjia_platform_screen::get_current_screen()->add_nav_here(new admin_nav_here(RC_Lang::get('wechat::wechat.message_manage')));
-        $this->assign('ur_here', RC_Lang::get('wechat::wechat.message_manage'));
+        ecjia_platform_screen::get_current_screen()->add_nav_here(new admin_nav_here(__('消息管理', 'weapp')));
+        $this->assign('ur_here', __('消息管理', 'weapp'));
 
         $wechat_id = $this->platformAccount->getAccountID();
 
         if (is_ecjia_error($wechat_id)) {
-            $this->assign('errormsg', RC_Lang::get('wechat::wechat.add_platform_first'));
+            $this->assign('errormsg', __('请先添加公众号，再进行后续操作', 'weapp'));
         } else {
             $this->assign('warn', 'warn');
             $list = $this->get_message_list();
@@ -237,7 +237,7 @@ class platform_message extends ecjia_platform
             if (!empty($name_list)) {
                 $info['tag_name'] = implode('，', $name_list);
             } else {
-                $info['tag_name'] = RC_Lang::get('wechat::wechat.no_tag');
+                $info['tag_name'] = __('无标签', 'weapp');
             }
         }
 
