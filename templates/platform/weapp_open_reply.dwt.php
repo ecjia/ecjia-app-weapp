@@ -44,10 +44,10 @@
                                 <div class="col-lg-12 controls material-table">
                                     <ul class="nav nav-tabs nav-only-icon nav-top-border no-hover-bg">
                                         <li class="nav-item" data-type="text">
-                                            <a class="nav-link {if $subscribe.reply_type eq 'text'}active{/if}" data-toggle="tab" title="{lang key='wechat::wechat.text'}"><i class="fa fa-pencil"> {t domain="weapp"}文字{/t}</i></a>
+                                            <a class="nav-link {if $subscribe.reply_type eq 'text'}active{/if}" data-toggle="tab" title='{t domain="weapp"}文本{/t}'><i class="fa fa-pencil"> {t domain="weapp"}文字{/t}</i></a>
                                         </li>
                                         <li class="nav-item" data-type="image">
-                                            <a class="nav-link {if $subscribe.reply_type eq 'image'}active{/if}" data-toggle="tab" title="{lang key='wechat::wechat.image'}"><i class="fa fa-file-image-o"> {t domain="weapp"}图片{/t}</i></a>
+                                            <a class="nav-link {if $subscribe.reply_type eq 'image'}active{/if}" data-toggle="tab" title='{t domain="weapp"}图片{/t}'><i class="fa fa-file-image-o"> {t domain="weapp"}图片{/t}</i></a>
                                         </li>
                                     </ul>
                                     <div class="text m_b10">

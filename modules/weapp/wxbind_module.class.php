@@ -58,7 +58,7 @@ class weapp_wxbind_module extends api_front implements api_interface
         $token         = $this->token;
 
         if (empty($iv) || empty($encrypteddata) || empty($uuid)) {
-            return new ecjia_error('invalid_parameter', RC_Lang::get('system::system.invalid_parameter'));
+            return new ecjia_error('invalid_parameter', __('参数无效', 'weapp'));
         }
 
         $openid      = session('openid');

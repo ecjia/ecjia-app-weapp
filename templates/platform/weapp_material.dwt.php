@@ -45,7 +45,7 @@
                 <ul class="nav nav-pills float-left">
                     <li class="nav-item">
                         <a class="nav-link data-pjax {if $smarty.get.type eq 'image'}active{/if}" href='{url path="weapp/platform_material/init" args="type=image{if $smarty.get.material}&material=1{/if}"}'>
-                            {lang key='wechat::wechat.image'}<span class="badge badge-pill badge-glow badge-default badge-primary ml-1">{if $lists.filter.count.image}{$lists.filter.count.image}{else}0{/if}</span></a>
+                        {t domain="weapp"}图片内容{/t}<span class="badge badge-pill badge-glow badge-default badge-primary ml-1">{if $lists.filter.count.image}{$lists.filter.count.image}{else}0{/if}</span></a>
                     </li>
                 </ul>
                 <!-- {if $action_link} -->
