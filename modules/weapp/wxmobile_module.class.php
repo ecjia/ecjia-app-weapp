@@ -78,10 +78,26 @@ class weapp_wxmobile_module extends api_front implements api_interface
         }
 
         if ($data['countryCode'] == '86') {
-            session(['session_wechat_mobile' => $data['purePhoneNumber']]);
+
+            $mobile = $data['purePhoneNumber'];
+
+            session(['session_wechat_mobile' => $mobile]);
+
+            if (! empty($mobile)) {
+
+                $userinfo = RC_Api::api('user', 'get_local_user', array('mobile' => $mobile));
+
+                if (is_ecjia_error($userinfo)) {
+
+                    return $userinfo;
+
+                }
+
+            }
+
         }
 
-        return [];
+        return $userinfo;
     }
 
 }
