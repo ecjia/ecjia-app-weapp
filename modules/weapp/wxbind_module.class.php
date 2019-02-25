@@ -99,7 +99,7 @@ class weapp_wxbind_module extends api_front implements api_interface
         }
 
         //获取会员信息
-        $user_info = RC_Api::api('user', 'user_info', array('user_id' => $connect_user->getUserId()));
+        $user_info = RC_Api::api('user', 'get_local_user', array('user_id' => $connect_user->getUserId()));
         if (is_ecjia_error($user_info)) {
             return $user_info;
         }
