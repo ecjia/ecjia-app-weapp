@@ -72,7 +72,7 @@ class weapp_wxbind_module extends api_front implements api_interface
         //转换数据格式
         $newdata = array(
             'openid'     => $data['openid'],
-            'nickname'   => $data['nickName'],
+            'nickname'   => $data['nickname'],
             'sex'        => $data['sex'],
             'language'   => $data['language'],
             'city'       => $data['city'],
