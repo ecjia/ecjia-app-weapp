@@ -76,7 +76,7 @@ class weapp_wxbind_module extends api_front implements api_interface
         if (is_ecjia_error($data)) {
             return $data;
         }
-
+        dd($data);
         /*更新用户数据*/
         if (!empty($data)) {
             $WechatUserRepository = new Ecjia\App\Weapp\Repositories\WechatUserRepository($weappId);
