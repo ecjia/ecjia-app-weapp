@@ -95,6 +95,8 @@ class weapp_wxmobile_module extends api_front implements api_interface
 
             }
 
+        } else {
+            return new ecjia_error('mobile_phone_not_china', __('手机号不是中国地区，暂未支持。'));
         }
 
         return $userinfo;
