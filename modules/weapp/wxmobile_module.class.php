@@ -83,18 +83,30 @@ class weapp_wxmobile_module extends api_front implements api_interface
 
             if (! empty($mobile)) {
 
-                $userinfo = RC_Api::api('user', 'get_local_user', array('mobile' => $mobile));
+                $user_info = RC_Api::api('user', 'get_local_user', array('mobile' => $mobile));
 
-                if (is_ecjia_error($userinfo)) {
+                if (is_ecjia_error($user_info)) {
 
-                    return $userinfo;
+                    return $user_info;
 
                 }
+
+                //会员登录后，相关信息处理
+                (new \Ecjia\App\User\UserManager())->loginSuccessHook($user_info);
+
+                //修正关联设备号
+                RC_Api::api('mobile', 'bind_device_user', array(
+                    'device_udid'   => $this->requestDevice('udid'),
+                    'device_client' => $this->requestDevice('client'),
+                    'device_code'   => $this->requestDevice('code'),
+                    'user_type'     => 'user',
+                    'user_id'       => $user_info['user_id'],
+                ));
 
                 //如果user_info已经存在，返回user_info信息
                 $out = array(
                     'token' => RC_Session::getId(),
-                    'user' => $userinfo
+                    'user' => $user_info
                 );
 
                 return $out;
