@@ -51,14 +51,12 @@ class weapp_wxmobile_module extends api_front implements api_interface
     public function handleRequest(\Royalcms\Component\HttpKernel\Request $request)
     {
         $this->authSession();
-        $device        = $this->device;
         $iv            = trim($this->requestData('iv'));
         $encrypteddata = trim($this->requestData('encrypteddata'));
         $uuid          = trim($this->requestData('uuid'));
-        $token         = $this->token;
 
         if (empty($iv) || empty($encrypteddata) || empty($uuid)) {
-            return new ecjia_error('invalid_parameter', __('参数无效', 'weapp'));
+            return new ecjia_error('invalid_parameter', __(sprintf('%s参数无效', 'weapp/wxmobile'), 'weapp'));
         }
 
         $openid      = session('openid');
