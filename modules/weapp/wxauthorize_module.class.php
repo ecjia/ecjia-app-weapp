@@ -61,6 +61,7 @@ class weapp_wxauthorize_module extends api_front implements api_interface
         }
 
         $openid                = session('openid');
+        $unionid               = session('unionid');
         $session_key           = session('session_key');
         $session_wechat_mobile = session('session_wechat_mobile');
 
@@ -93,8 +94,8 @@ class weapp_wxauthorize_module extends api_front implements api_interface
         $connect_user = RC_Api::api('connect', 'connect_user',
             array(
                 'connect_code'     => 'sns_wechat_weapp',
-                'open_id'          => $data['openid'],
-                'union_id'         => $data['unionid'],
+                'open_id'          => $openid,
+                'union_id'         => $unionid,
             )
         );
 
