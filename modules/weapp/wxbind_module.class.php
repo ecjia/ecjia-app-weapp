@@ -61,8 +61,9 @@ class weapp_wxbind_module extends api_front implements api_interface
             return new ecjia_error('invalid_parameter', __('参数无效', 'weapp'));
         }
 
-        $openid      = session('openid');
-        $session_key = session('session_key');
+        $openid                = session('openid');
+        $session_key           = session('session_key');
+        $session_wechat_mobile = session('session_wechat_mobile');
 
 
         //获取小程序的weappid,即小程序自增id
@@ -76,7 +77,7 @@ class weapp_wxbind_module extends api_front implements api_interface
         if (is_ecjia_error($data)) {
             return $data;
         }
-        dd($data);
+
         /*更新用户数据*/
         if (!empty($data)) {
             $WechatUserRepository = new Ecjia\App\Weapp\Repositories\WechatUserRepository($weappId);
@@ -108,9 +109,11 @@ class weapp_wxbind_module extends api_front implements api_interface
                 'connect_platform' => 'wechat',
                 'open_id'          => $data['openid'],
                 'union_id'         => $data['unionid'],
-                'profile'          => $data
+                'profile'          => $data,
+                'mobile'           => $session_wechat_mobile,
             )
         );
+        
         if (is_ecjia_error($connect_user)) {
             return $connect_user;
         }
