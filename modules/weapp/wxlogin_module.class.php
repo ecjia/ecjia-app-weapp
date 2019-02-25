@@ -75,10 +75,13 @@ class weapp_wxlogin_module extends api_front implements api_interface
 
         $out = array();
         if ($wechat_user) {
-            session([
-                'openid'      => $data['openid'],
-                'session_key' => $data['session_key'],
-            ]);
+//            session([
+//                'openid'      => $data['openid'],
+//                'session_key' => $data['session_key'],
+//            ]);
+
+            session('openid', $data['openid']);
+            session('session_key', $data['session_key']);
 
             $out = array(
                 'token' => RC_Session::getId()
