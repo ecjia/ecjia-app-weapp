@@ -60,6 +60,7 @@ class weapp_wxmobile_module extends api_front implements api_interface
         }
 
         $openid      = session('openid');
+        $unionid      = session('unionid');
         $session_key = session('session_key');
 
 
@@ -90,6 +91,36 @@ class weapp_wxmobile_module extends api_front implements api_interface
                     return $user_info;
 
                 }
+
+                //如果已经有用户了，则自动绑定已有用户
+                $WechatUserRepository = new Ecjia\App\Weapp\Repositories\WechatUserRepository($weappId);
+                $data = $WechatUserRepository->findUser($openid);
+
+                //转换数据格式
+                $newdata = array(
+                    'openid'     => $data['openid'],
+                    'nickname'   => $data['nickname'],
+                    'sex'        => $data['sex'],
+                    'language'   => $data['language'],
+                    'city'       => $data['city'],
+                    'province'   => $data['province'],
+                    'country'    => $data['country'],
+                    'headimgurl' => $data['headimgurl'],
+                    'privilege'  => '',
+                    'unionid'    => $data['unionid'],
+                );
+
+                //绑定会员
+                $connect_user = RC_Api::api('connect', 'connect_user_bind',
+                    array(
+                        'connect_code'     => 'sns_wechat_weapp',
+                        'connect_platform' => 'wechat',
+                        'open_id'          => $newdata['openid'],
+                        'union_id'         => $newdata['unionid'],
+                        'profile'          => $newdata,
+                        'mobile'           => $mobile,
+                    )
+                );
 
                 //会员登录后，相关信息处理
                 (new \Ecjia\App\User\UserManager())->loginSuccessHook($user_info);
