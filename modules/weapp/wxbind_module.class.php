@@ -58,7 +58,7 @@ class weapp_wxbind_module extends api_front implements api_interface
 
         }
 
-        $uuid          = trim($this->requestData('uuid'));
+        $uuid                  = trim($this->requestData('uuid'));
         $openid                = session('openid');
         $session_wechat_mobile = session('session_wechat_mobile');
 
