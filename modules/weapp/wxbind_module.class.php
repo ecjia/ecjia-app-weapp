@@ -68,7 +68,6 @@ class weapp_wxbind_module extends api_front implements api_interface
 
         $WechatUserRepository = new Ecjia\App\Weapp\Repositories\WechatUserRepository($weappId);
         $data = $WechatUserRepository->findUser($openid);
-        dd($data);
 
         //转换数据格式
         $newdata = array(
