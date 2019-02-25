@@ -91,6 +91,7 @@ class weapp_wxbind_module extends api_front implements api_interface
                 'open_id'          => $newdata['openid'],
                 'union_id'         => $newdata['unionid'],
                 'profile'          => $newdata,
+                'mobile'           => $session_wechat_mobile,
             )
         );
 
