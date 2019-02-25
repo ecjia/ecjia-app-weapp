@@ -78,7 +78,7 @@ class weapp_wxmobile_module extends api_front implements api_interface
         }
 
         if ($data['countryCode'] == '86') {
-            session(['session_wechat_mobile' => $data['phoneNumber']]);
+            session(['session_wechat_mobile' => $data['purePhoneNumber']]);
         }
 
         return [];
