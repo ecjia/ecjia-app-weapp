@@ -75,12 +75,14 @@ class WechatUserRepository extends AbstractRepository
     public function createUser($weapp_id, array $data)
     {
         $openid      = array_get($data, 'openid');
+        $unionid     = array_get($data, 'unionid');
         $session_key = array_get($data, 'session_key');
 
         if (!($user = $this->findBy('openid', $openid))) {
             $attributes = [
                 'wechat_id' => $weapp_id,
                 'openid'    => $openid,
+                'unionid'   => $unionid,
                 'privilege' => $session_key
             ];
             $user       = $this->create($attributes);

@@ -70,6 +70,7 @@ class weapp_wxlogin_module extends api_front implements api_interface
         $WechatUserRepository = new Ecjia\App\Weapp\Repositories\WechatUserRepository($weappId);
         $wechat_user          = $WechatUserRepository->createUser($weappId, array(
             'openid'      => $data['openid'],
+            'unionid'     => $data['unionid'],
             'session_key' => $data['session_key']
         ));
 
@@ -77,14 +78,57 @@ class weapp_wxlogin_module extends api_front implements api_interface
         if ($wechat_user) {
             session([
                 'openid'      => $data['openid'],
+                'unionid'     => $data['unionid'],
                 'session_key' => $data['session_key'],
             ]);
 
-            $out = array(
-                'token' => RC_Session::getId()
+
+            //绑定会员
+            $connect_user = RC_Api::api('connect', 'connect_user',
+                array(
+                    'connect_code'     => 'sns_wechat_weapp',
+                    'open_id'          => $data['openid'],
+                    'union_id'         => $data['unionid'],
+                )
             );
+
+            if (is_ecjia_error($connect_user)) {
+                return $connect_user;
+            }
+
+            //获取会员信息
+            $user_info = RC_Api::api('user', 'user_info', array('user_id' => $connect_user->getUserId()));
+            if (is_ecjia_error($user_info)) {
+                $out = array(
+                    'token' => RC_Session::getId()
+                );
+
+            } else {
+
+                //会员登录后，相关信息处理
+                (new \Ecjia\App\User\UserManager())->loginSuccessHook($user_info);
+
+                //修正关联设备号
+                RC_Api::api('mobile', 'bind_device_user', array(
+                    'device_udid'   => $this->requestDevice('udid'),
+                    'device_client' => $this->requestDevice('client'),
+                    'device_code'   => $this->requestDevice('code'),
+                    'user_type'     => 'user',
+                    'user_id'       => $user_info['user_id'],
+                ));
+
+                //如果user_info已经存在，返回user_info信息
+                $out = array(
+                    'token' => RC_Session::getId(),
+                    'user' => $user_info
+                );
+
+            }
+
+            return $out;
         }
-        return $out;
+
+        return new ecjia_error('create_wechat_user_failed', __('创建微信用户失败', 'weapp'));
     }
 }
 // end

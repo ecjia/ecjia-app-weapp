@@ -46,97 +46,16 @@
 //
 defined('IN_ECJIA') or exit('No permission resources.');
 
-class weapp_wxbind_module extends api_front implements api_interface
+class weapp_wxauthorize_module extends api_front implements api_interface
 {
     public function handleRequest(\Royalcms\Component\HttpKernel\Request $request)
     {
         $this->authSession();
-
-        if (version_compare($this->api_version, '1.27', '<')) {
-
-            return $this->versionLessThan_0127();
-
-        }
-
-        $uuid          = trim($this->requestData('uuid'));
-        $openid                = session('openid');
-        $session_wechat_mobile = session('session_wechat_mobile');
-
-        //获取小程序的weappid,即小程序自增id
-        $WeappUUID = new Ecjia\App\Weapp\WeappUUID($uuid);
-        $weappId   = $WeappUUID->getWeappID();
-
-        $WechatUserRepository = new Ecjia\App\Weapp\Repositories\WechatUserRepository($weappId);
-        $data = $WechatUserRepository->findUser($openid);
-
-        //转换数据格式
-        $newdata = array(
-            'openid'     => $data['openid'],
-            'nickname'   => $data['nickName'],
-            'sex'        => $data['sex'],
-            'language'   => $data['language'],
-            'city'       => $data['city'],
-            'province'   => $data['province'],
-            'country'    => $data['country'],
-            'headimgurl' => $data['headimgurl'],
-            'privilege'  => '',
-            'unionid'    => $data['unionid'],
-        );
-
-        //绑定会员
-        $connect_user = RC_Api::api('connect', 'connect_user_bind',
-            array(
-                'connect_code'     => 'sns_wechat_weapp',
-                'connect_platform' => 'wechat',
-                'open_id'          => $newdata['openid'],
-                'union_id'         => $newdata['unionid'],
-                'profile'          => $newdata,
-            )
-        );
-
-        if (is_ecjia_error($connect_user)) {
-            return $connect_user;
-        }
-
-        //获取会员信息
-        $user_info = RC_Api::api('user', 'user_info', array('user_id' => $connect_user->getUserId()));
-        if (is_ecjia_error($user_info)) {
-            return $user_info;
-        }
-
-        //会员登录后，相关信息处理
-        (new \Ecjia\App\User\UserManager())->loginSuccessHook($user_info);
-
-        //修正关联设备号
-        RC_Api::api('mobile', 'bind_device_user', array(
-            'device_udid'   => $this->requestDevice('udid'),
-            'device_client' => $this->requestDevice('client'),
-            'device_code'   => $this->requestDevice('code'),
-            'user_type'     => 'user',
-            'user_id'       => $user_info['user_id'],
-        ));
-
-        //返回token及会员信息
-        $out = array(
-            'token' => RC_Session::session_id(),
-            'user'  => $user_info
-        );
-
-        return $out;
-
-    }
-
-
-    /**
-     * API版本小于1.27的时候
-     */
-    protected function versionLessThan_0127()
-    {
-
+        $device        = $this->device;
         $iv            = trim($this->requestData('iv'));
         $encrypteddata = trim($this->requestData('encrypteddata'));
         $uuid          = trim($this->requestData('uuid'));
-
+        $token         = $this->token;
 
         if (empty($iv) || empty($encrypteddata) || empty($uuid)) {
             return new ecjia_error('invalid_parameter', __('参数无效', 'weapp'));
@@ -144,6 +63,8 @@ class weapp_wxbind_module extends api_front implements api_interface
 
         $openid                = session('openid');
         $session_key           = session('session_key');
+        $session_wechat_mobile = session('session_wechat_mobile');
+
 
         //获取小程序的weappid,即小程序自增id
         $WeappUUID = new Ecjia\App\Weapp\WeappUUID($uuid);
@@ -167,28 +88,14 @@ class weapp_wxbind_module extends api_front implements api_interface
             }
         }
 
-        //转换数据格式
-        $data = array(
-            'openid'     => $data['openId'],
-            'nickname'   => $data['nickName'],
-            'sex'        => $data['gender'],
-            'language'   => $data['language'],
-            'city'       => $data['city'],
-            'province'   => $data['province'],
-            'country'    => $data['country'],
-            'headimgurl' => $data['avatarUrl'],
-            'privilege'  => '',
-            'unionid'    => $data['unionId'],
-        );
+        $out = array();
 
         //绑定会员
-        $connect_user = RC_Api::api('connect', 'connect_user_bind',
+        $connect_user = RC_Api::api('connect', 'connect_user',
             array(
                 'connect_code'     => 'sns_wechat_weapp',
-                'connect_platform' => 'wechat',
                 'open_id'          => $data['openid'],
                 'union_id'         => $data['unionid'],
-                'profile'          => $data,
             )
         );
 
@@ -199,29 +106,33 @@ class weapp_wxbind_module extends api_front implements api_interface
         //获取会员信息
         $user_info = RC_Api::api('user', 'user_info', array('user_id' => $connect_user->getUserId()));
         if (is_ecjia_error($user_info)) {
-            return $user_info;
+            $out = array(
+                'token' => RC_Session::getId()
+            );
+
+        } else {
+
+            //会员登录后，相关信息处理
+            (new \Ecjia\App\User\UserManager())->loginSuccessHook($user_info);
+
+            //修正关联设备号
+            RC_Api::api('mobile', 'bind_device_user', array(
+                'device_udid'   => $this->requestDevice('udid'),
+                'device_client' => $this->requestDevice('client'),
+                'device_code'   => $this->requestDevice('code'),
+                'user_type'     => 'user',
+                'user_id'       => $user_info['user_id'],
+            ));
+
+            //如果user_info已经存在，返回user_info信息
+            $out = array(
+                'token' => RC_Session::getId(),
+                'user' => $user_info
+            );
+
         }
 
-        //会员登录后，相关信息处理
-        (new \Ecjia\App\User\UserManager())->loginSuccessHook($user_info);
-
-        //修正关联设备号
-        RC_Api::api('mobile', 'bind_device_user', array(
-            'device_udid'   => $this->requestDevice('udid'),
-            'device_client' => $this->requestDevice('client'),
-            'device_code'   => $this->requestDevice('code'),
-            'user_type'     => 'user',
-            'user_id'       => $user_info['user_id'],
-        ));
-
-        //返回token及会员信息
-        $out = array(
-            'token' => RC_Session::session_id(),
-            'user'  => $user_info
-        );
-
         return $out;
-
     }
 
 }
