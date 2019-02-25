@@ -91,7 +91,13 @@ class weapp_wxmobile_module extends api_front implements api_interface
 
                 }
 
-                return $userinfo;
+                //如果user_info已经存在，返回user_info信息
+                $out = array(
+                    'token' => RC_Session::getId(),
+                    'user' => $userinfo
+                );
+
+                return $out;
 
             }
 
