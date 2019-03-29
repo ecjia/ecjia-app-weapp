@@ -60,6 +60,9 @@ class platform_wechat_pay extends ecjia_platform
         RC_Script::enqueue_script('jquery-form');
         RC_Style::enqueue_style('bootstrap-responsive');
 
+        RC_Script::enqueue_script('ecjia-platform-bootstrap-fileupload-js');
+        RC_Style::enqueue_style('ecjia-platform-bootstrap-fileupload-css');
+
         RC_Script::enqueue_script('clipboard', RC_App::apps_url('statics/platform-js/clipboard.min.js', __FILE__));
         RC_Script::enqueue_script('platform_config', RC_App::apps_url('statics/platform-js/platform_config.js', __FILE__), array(), false, true);
         RC_Script::localize_script('platform_config', 'js_lang', config('app-weapp::jslang.platform_config_page'));
@@ -90,9 +93,11 @@ class platform_wechat_pay extends ecjia_platform
             if ($option_value['enable'] == 1) {
                 $enabled = true;
             }
-            $result['wxpay_mchid']  = $option_value['wxpay_mchid'];
-            $result['wxpay_apipwd'] = $option_value['wxpay_apipwd'];
-            $result['pay_fee']      = $option_value['pay_fee'];
+            $result['wxpay_mchid']       = $option_value['wxpay_mchid'];
+            $result['wxpay_apipwd']      = $option_value['wxpay_apipwd'];
+            $result['pay_fee']           = $option_value['pay_fee'];
+            $result['wxpay_cert_client'] = $option_value['wxpay_cert_client'];
+            $result['wxpay_cert_key']    = $option_value['wxpay_cert_key'];
         }
         $this->assign('result', $result);
         $this->assign('enabled', $enabled);
@@ -127,7 +132,56 @@ class platform_wechat_pay extends ecjia_platform
             );
             RC_DB::table('wechat_options')->insert($data);
         } else {
-            $option_value = array('enable' => 1, 'wxpay_mchid' => $wxpay_mchid, 'wxpay_apipwd' => $wxpay_apipwd, 'pay_fee' => $pay_fee);
+            $option_value = unserialize($result['option_value']);
+
+            $option_value['enable']            = 1;
+            $option_value['wxpay_mchid']       = $wxpay_mchid;
+            $option_value['wxpay_apipwd']      = $wxpay_apipwd;
+            $option_value['pay_fee']           = $pay_fee;
+
+            if (!empty($_FILES['wxpay_cert_client']) || !empty($_FILES['wxpay_cert_key'])) {
+
+                $old_option_value = unserialize($result['option_value']);
+
+                if (!empty($_FILES['wxpay_cert_client'])) {
+                    $upload = RC_Upload::uploader('image', array('save_path' => 'data/weapp/cert/sns_pay', 'auto_sub_dirs' => false));
+                    $upload->allowed_type(['cer', 'pem']);
+                    $upload->allowed_mime(['application/x-x509-ca-cert', 'application/octet-stream']);
+                    $image_info = $upload->upload($_FILES['wxpay_cert_client']);
+
+                    if (!empty($image_info)) {
+                        $image_url = $upload->get_position($image_info);
+
+                        //删除旧的证书
+                        if (!empty($old_option_value['wxpay_cert_client'])) {
+                            $disk = RC_Storage::disk();
+                            $disk->delete(RC_Upload::upload_path($old_option_value['wxpay_cert_client']));
+                        }
+                    } else {
+                        return $this->showmessage($upload->error(), ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_ERROR);
+                    }
+                    $option_value['wxpay_cert_client'] = $image_url;
+                }
+
+                if (!empty($_FILES['wxpay_cert_key'])) {
+                    $upload = RC_Upload::uploader('image', array('save_path' => 'data/weapp/cert/sns_pay', 'auto_sub_dirs' => false));
+                    $upload->allowed_type(['cer', 'pem']);
+                    $upload->allowed_mime(['application/x-x509-ca-cert', 'application/octet-stream']);
+                    $image_info = $upload->upload($_FILES['wxpay_cert_key']);
+
+                    if (!empty($image_info)) {
+                        $image_url = $upload->get_position($image_info);
+                        //删除旧的证书
+                        if (!empty($old_option_value['wxpay_cert_key'])) {
+                            $disk = RC_Storage::disk();
+                            $disk->delete(RC_Upload::upload_path($old_option_value['wxpay_cert_key']));
+                        }
+                    } else {
+                        return $this->showmessage($upload->error(), ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_ERROR);
+                    }
+                    $option_value['wxpay_cert_key'] = $image_url;
+                }
+            }
 
             $data = array(
                 'option_value' => serialize($option_value)
@@ -135,7 +189,7 @@ class platform_wechat_pay extends ecjia_platform
             RC_DB::table('wechat_options')->where('wechat_id', $account['id'])->where('option_name', 'sns_pay')->update($data);
         }
 
-        return $this->showmessage(__('保存成功', 'weapp'), ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_SUCCESS);
+        return $this->showmessage(__('保存成功', 'weapp'), ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_SUCCESS, array('pjaxurl' => RC_Uri::url('weapp/platform_wechat_pay/init')));
     }
 
     public function enable()
@@ -158,7 +212,7 @@ class platform_wechat_pay extends ecjia_platform
         } else {
             $option_value = unserialize($result['option_value']);
 
-            $option_value = array('enable' => 1, 'wxpay_mchid' => $option_value['wxpay_mchid'], 'wxpay_apipwd' => $option_value['wxpay_apipwd'], 'pay_fee' => $option_value['pay_fee']);
+            $option_value['enable'] = 1;
 
             $data = array(
                 'option_value' => serialize($option_value)
@@ -179,7 +233,7 @@ class platform_wechat_pay extends ecjia_platform
 
         $option_value = unserialize($result['option_value']);
 
-        $option_value = array('enable' => 0, 'wxpay_mchid' => $option_value['wxpay_mchid'], 'wxpay_apipwd' => $option_value['wxpay_apipwd'], 'pay_fee' => $option_value['pay_fee']);
+        $option_value['enable'] = 0;
 
         $data = array(
             'option_value' => serialize($option_value)
@@ -187,6 +241,33 @@ class platform_wechat_pay extends ecjia_platform
         RC_DB::table('wechat_options')->where('wechat_id', $account['id'])->where('option_name', 'sns_pay')->update($data);
 
         return $this->showmessage(__('关闭成功', 'weapp'), ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_SUCCESS, array('pjaxurl' => RC_Uri::url('weapp/platform_wechat_pay/init')));
+    }
+
+    public function delete_file()
+    {
+        $this->admin_priv('weapp_config_update', ecjia::MSGTYPE_JSON);
+
+        $type = trim($_GET['type']);
+
+        $account = $this->platformAccount->getAccount(true);
+
+        $result = RC_DB::table('wechat_options')->where('wechat_id', $account['id'])->where('option_name', 'sns_pay')->first();
+
+        $option_value = unserialize($result['option_value']);
+
+        if (!empty($option_value[$type])) {
+            $disk = RC_Storage::disk();
+            $disk->delete(RC_Upload::upload_path($option_value[$type]));
+        }
+
+        $option_value[$type] = '';
+
+        $data = array(
+            'option_value' => serialize($option_value)
+        );
+        RC_DB::table('wechat_options')->where('wechat_id', $account['id'])->where('option_name', 'sns_pay')->update($data);
+
+        return $this->showmessage(__('删除成功', 'weapp'), ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_SUCCESS, array('pjaxurl' => RC_Uri::url('weapp/platform_wechat_pay/init')));
     }
 
 }

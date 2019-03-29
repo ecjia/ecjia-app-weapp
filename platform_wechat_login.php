@@ -123,7 +123,9 @@ class platform_wechat_login extends ecjia_platform
             );
             RC_DB::table('wechat_options')->insert($data);
         } else {
-            $option_value = array('enable' => 1, 'sns_wechat_callback' => $sns_wechat_callback);
+            $option_value = unserialize($result['option_value']);
+
+            $option_value['sns_wechat_callback'] = $sns_wechat_callback;
 
             $data = array(
                 'option_value' => serialize($option_value)
@@ -154,7 +156,7 @@ class platform_wechat_login extends ecjia_platform
         } else {
             $option_value = unserialize($result['option_value']);
 
-            $option_value = array('enable' => 1, 'sns_wechat_callback' => $option_value['sns_wechat_callback']);
+            $option_value['enable'] = 1;
 
             $data = array(
                 'option_value' => serialize($option_value)
@@ -175,7 +177,7 @@ class platform_wechat_login extends ecjia_platform
 
         $option_value = unserialize($result['option_value']);
 
-        $option_value = array('enable' => 0, 'sns_wechat_callback' => $option_value['sns_wechat_callback']);
+        $option_value['enable'] = 0;
 
         $data = array(
             'option_value' => serialize($option_value)

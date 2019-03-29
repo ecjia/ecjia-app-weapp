@@ -86,16 +86,42 @@
                         <div class="form-group row">
                             <label class="col-lg-2 label-control text-right">{t domain="weapp"}客户端证书文件：{/t}</label>
                             <div class="col-lg-6 controls">
-                                wxpay_cert_client
-                                <div class="help-block">
-                                    {t domain="weapp"}客户端证书路径，退款、红包等需要用到。请填写绝对路径，linux 请确保权限问题。pem 格式{/t}
+                                {if $result.wxpay_cert_client}
+                                <div class="m_t5 ecjiaf-wwb">文件地址：{$result.wxpay_cert_client}</div>
+                                <a class="ecjiafc-red cursor_pointer" data-toggle="ajaxremove" data-msg="您確定要刪除此文件嗎？" href="{RC_Uri::url('weapp/platform_wechat_pay/delete_file')}&type=wxpay_cert_client" data-removefile="true">刪除文件</a>
+                                {else}
+                                <div class="fileupload fileupload-new" data-provides="fileupload">
+                                    <span class="btn btn-outline-primary btn-file">
+                                        <span class="fileupload-new">{t domain="weapp"}浏览{/t}</span>
+                                        <span class="fileupload-exists">{t domain="weapp"}修改{/t}</span>
+                                        <input type="file" name="wxpay_cert_client"/>
+                                    </span>
+                                    <span class="fileupload-preview m_t10"></span>
+                                    <a class="close fileupload-exists" style="float: none" data-dismiss="fileupload" href="javascript:;">&times;</a>
                                 </div>
+                                {/if}
+
+                                <div class="help-block">{t domain="weapp"}客户端证书路径，退款、红包等需要用到。请填写绝对路径，linux 请确保权限问题。pem 格式{/t}</div>
                             </div>
                         </div>
                         <div class="form-group row">
                             <label class="col-lg-2 label-control text-right">{t domain="weapp"}客户端秘钥文件：{/t}</label>
                             <div class="col-lg-6 controls">
-                                wxpay_cert_key
+                                {if $result.wxpay_cert_key}
+                                <div class="m_t5 ecjiaf-wwb">文件地址：{$result.wxpay_cert_key}</div>
+                                <a class="ecjiafc-red cursor_pointer" data-toggle="ajaxremove" data-msg="您確定要刪除此文件嗎？" href="{RC_Uri::url('weapp/platform_wechat_pay/delete_file')}&type=wxpay_cert_key" data-removefile="true">刪除文件</a>
+                                {else}
+                                <div class="fileupload fileupload-new" data-provides="fileupload">
+                                    <span class="btn btn-outline-primary btn-file">
+                                        <span class="fileupload-new">{t domain="weapp"}浏览{/t}</span>
+                                        <span class="fileupload-exists">{t domain="weapp"}修改{/t}</span>
+                                        <input type="file" name="wxpay_cert_key"/>
+                                    </span>
+                                    <span class="fileupload-preview m_t10"></span>
+                                    <a class="close fileupload-exists" style="float: none" data-dismiss="fileupload" href="javascript:;">&times;</a>
+                                </div>
+                                {/if}
+
                                 <div class="help-block">
                                     {t domain="weapp"}下载证书 cert.zip 中的 apiclient_cert.pem 文件{/t}
                                 </div>
