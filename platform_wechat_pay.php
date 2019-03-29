@@ -107,6 +107,9 @@ class platform_wechat_pay extends ecjia_platform
 
         $this->assign('images_url', RC_App::apps_url('statics/images/', __FILE__));
 
+        $help_url = __("https://www.ecjia.com/wiki/常见问题:ECJia到家门店小程序:ECJia到家门店小程序的配置使用#.E5.B0.8F.E7.A8.8B.E5.BA.8F.E5.BE.AE.E4.BF.A1.E6.94.AF.E4.BB.98.E6.8F.92.E4.BB.B6.E9.85.8D.E7.BD.AE", 'weapp');
+        $this->assign('help_url', $help_url);
+
         $this->display('weapp_wechat_pay_config.dwt');
     }
 
@@ -134,10 +137,10 @@ class platform_wechat_pay extends ecjia_platform
         } else {
             $option_value = unserialize($result['option_value']);
 
-            $option_value['enable']            = 1;
-            $option_value['wxpay_mchid']       = $wxpay_mchid;
-            $option_value['wxpay_apipwd']      = $wxpay_apipwd;
-            $option_value['pay_fee']           = $pay_fee;
+            $option_value['enable']       = 1;
+            $option_value['wxpay_mchid']  = $wxpay_mchid;
+            $option_value['wxpay_apipwd'] = $wxpay_apipwd;
+            $option_value['pay_fee']      = $pay_fee;
 
             if (!empty($_FILES['wxpay_cert_client']) || !empty($_FILES['wxpay_cert_key'])) {
 

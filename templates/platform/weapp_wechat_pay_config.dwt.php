@@ -15,7 +15,8 @@
     <h4 class="alert-heading mb-2">{t domain="weapp"}操作提示{/t}</h4>
     <p>{t domain="weapp"}1、微信支付配置：实现用户在线支付的必备条件，请务必设置；{/t}</p>
     <p>{t domain="weapp"}2、正常情况下，请不要轻易修改小程序对应微信支付的商户号和商户密钥，配置不正确将导致小程序微信支付异常。{/t}</p>
-    <p>{t domain="weapp"}3、如何配置？详细查看教程{/t} <a target="_blank" href="">{t domain="weapp"}点击此处 >>{/t}</a></p>
+    <p>{t domain="weapp"}3、如何配置？详细查看教程{/t} <a target="_blank" href="{$help_url}">{t domain="weapp"}点击此处 >>{/t}</a>
+    </p>
 </div>
 
 <div class="row">
