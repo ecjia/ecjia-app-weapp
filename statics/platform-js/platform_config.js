@@ -29,7 +29,10 @@
                 },
                 messages: {
                     server_url: {required: js_lang.server_url_required},
-                    server_token: {required: js_lang.server_token_required, rangelength: js_lang.server_token_rangelength},
+                    server_token: {
+                        required: js_lang.server_token_required,
+                        rangelength: js_lang.server_token_rangelength
+                    },
                     aeskey: {required: js_lang.aeskey_required, rangelength: js_lang.aeskey_rangelength},
                 },
                 submitHandler: function () {

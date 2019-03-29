@@ -44,45 +44,69 @@
 //
 //  ---------------------------------------------------------------------------------
 //
+
 defined('IN_ECJIA') or exit('No permission resources.');
 
 /**
- * 后台权限API
- * @author royalwang
+ * ECJIA微信支付配置
  */
-class weapp_platform_purview_api extends Component_Event_Api
+class platform_wechat_pay extends ecjia_platform
 {
-
-    public function call(&$options)
+    public function __construct()
     {
-        $purviews = array(
-            array('action_name' => __('用户管理', 'weapp'), 'action_code' => 'weapp_user_manage', 'relevance' => ''),
-            array('action_name' => __('标签管理', 'weapp'), 'action_code' => 'weapp_tag_manage', 'relevance' => ''),
-            array('action_name' => __('标签更新', 'weapp'), 'action_code' => 'weapp_tag_update', 'relevance' => ''),
-            array('action_name' => __('标签删除', 'weapp'), 'action_code' => 'weapp_tag_delete', 'relevance' => ''),
+        parent::__construct();
 
-            array('action_name' => __('小程序配置管理', 'weapp'), 'action_code' => 'weapp_config_manage', 'relevance' => ''),
-            array('action_name' => __('小程序配置更新', 'weapp'), 'action_code' => 'weapp_config_update', 'relevance' => ''),
+        RC_Script::enqueue_script('jquery-validate');
+        RC_Script::enqueue_script('jquery-form');
+        RC_Style::enqueue_style('bootstrap-responsive');
 
-            array('action_name' => __('客服会话管理', 'weapp'), 'action_code' => 'weapp_customer_session_manage', 'relevance' => ''),
-            array('action_name' => __('客服会话更新', 'weapp'), 'action_code' => 'weapp_customer_session_update', 'relevance' => ''),
-            array('action_name' => __('客服会话删除', 'weapp'), 'action_code' => 'weapp_customer_session_delete', 'relevance' => ''),
+        RC_Script::enqueue_script('clipboard', RC_App::apps_url('statics/platform-js/clipboard.min.js', __FILE__));
+        RC_Script::enqueue_script('platform_config', RC_App::apps_url('statics/platform-js/platform_config.js', __FILE__), array(), false, true);
+        RC_Script::localize_script('platform_config', 'js_lang', config('app-weapp::jslang.platform_config_page'));
 
-            array('action_name' => __('素材管理', 'weapp'), 'action_code' => 'weapp_material_manage', 'relevance' => ''),
-            array('action_name' => __('素材添加', 'weapp'), 'action_code' => 'weapp_material_add', 'relevance' => ''),
-            array('action_name' => __('素材编辑', 'weapp'), 'action_code' => 'weapp_material_update', 'relevance' => ''),
-            array('action_name' => __('素材删除', 'weapp'), 'action_code' => 'weapp_material_delete', 'relevance' => ''),
+        RC_Style::enqueue_style('platform_wechat_pay', RC_App::apps_url('statics/platform-css/platform_wechat_pay.css', __FILE__));
 
-            array('action_name' => __('自动回复管理', 'weapp'), 'action_code' => 'weapp_response_manage', 'relevance' => ''),
-            array('action_name' => __('自动回复添加', 'weapp'), 'action_code' => 'weapp_response_add', 'relevance' => ''),
-            array('action_name' => __('自动回复编辑', 'weapp'), 'action_code' => 'weapp_response_update', 'relevance' => ''),
-            array('action_name' => __('自动回复删除', 'weapp'), 'action_code' => 'weapp_response_delete', 'relevance' => ''),
-
-            array('action_name' => __('用户消息管理', 'weapp'), 'action_code' => 'weapp_subscribe_message_manage', 'relevance' => ''),
-        );
-        return $purviews;
+        ecjia_platform_screen::get_current_screen()->add_nav_here(new admin_nav_here(__('微信支付配置', 'weapp'), RC_Uri::url('weapp/platform_wechat_pay/init')));
+        ecjia_platform_screen::get_current_screen()->set_subject(__('微信支付配置', 'weapp'));
     }
+
+    public function init()
+    {
+        $this->admin_priv('weapp_config_manage');
+
+        ecjia_platform_screen::get_current_screen()->remove_last_nav_here();
+        ecjia_platform_screen::get_current_screen()->add_nav_here(new admin_nav_here(__('微信支付配置', 'weapp')));
+
+
+        $data        = $this->platformAccount->getAccount(true);
+        $data['url'] = RC_Uri::home_url() . '/sites/platform/?uuid=' . $this->platformAccount->getUUID();
+
+        $this->assign('data', $data);
+
+        $this->assign('ur_here', __('微信支付配置', 'weapp'));
+        $this->assign('form_action', RC_Uri::url('weapp/platform_wechat_pay/update'));
+
+        $this->assign('images_url', RC_App::apps_url('statics/images/', __FILE__));
+
+        $this->display('weapp_wechat_pay_config.dwt');
+    }
+
+    public function enable()
+    {
+        $this->admin_priv('weapp_config_update', ecjia::MSGTYPE_JSON);
+
+
+        return $this->showmessage(__('开启成功', 'weapp'), ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_SUCCESS);
+    }
+
+    public function disable()
+    {
+        $this->admin_priv('weapp_config_update', ecjia::MSGTYPE_JSON);
+
+
+        return $this->showmessage(__('关闭成功', 'weapp'), ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_SUCCESS);
+    }
+
 }
 
-
-// end
+//end
