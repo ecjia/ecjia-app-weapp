@@ -3,7 +3,7 @@
 
 <!-- {block name="footer"} -->
 <script type="text/javascript">
-    // ecjia.platform.platform.init();
+    ecjia.platform.platform.init();
 </script>
 <!-- {/block} -->
 <!-- {block name="home-content"} -->
@@ -31,7 +31,7 @@
             </div>
             <div class="card-body">
                 <div class="highlight_box global icon_wrap group" id="js_apply_btn">
-                    {if !$data}
+                    {if !$enabled}
                     <a class="btn btn-success btn-min-width f_r extend_handle" data-msg='{t domain="weapp"}您确定要开启微信支付吗？{/t}' href="{RC_Uri::url('weapp/platform_wechat_pay/enable')}">{t domain="weapp"}开启{/t}</a>
                     {else}
                     <a class="btn btn-danger btn-min-width f_r extend_handle" data-msg='{t domain="weapp"}您确定要关闭微信支付吗？{/t}' href="{RC_Uri::url('weapp/platform_wechat_pay/disable')}">{t domain="weapp"}关闭{/t}</a>
@@ -51,6 +51,7 @@
     </div>
 </div>
 
+{if $enabled}
 <div class="row">
     <div class="col-12">
         <div class="card">
@@ -64,22 +65,22 @@
                     <div class="form-body">
                         <div class="form-group row">
                             <label class="col-lg-2 label-control text-right">{t domain="weapp"}AppID：{/t}</label>
-                            <div class="col-lg-6 controls">{$data.appid}</div>
+                            <div class="col-lg-6 controls">{$account.appid}</div>
                         </div>
                         <div class="form-group row">
                             <label class="col-lg-2 label-control text-right">{t domain="weapp"}AppSecret：{/t}</label>
-                            <div class="col-lg-6 controls">{$data.appsecret}</div>
+                            <div class="col-lg-6 controls">{$account.appsecret}</div>
                         </div>
                         <div class="form-group row">
                             <label class="col-lg-2 label-control text-right">{t domain="weapp"}小程序商户号：{/t}</label>
                             <div class="col-lg-6 controls">
-                                <input class="form-control" name="wxpay_mchid" type="text"/>
+                                <input class="form-control" name="wxpay_mchid" type="text" value="{$result.wxpay_mchid}"/>
                             </div>
                         </div>
                         <div class="form-group row">
                             <label class="col-lg-2 label-control text-right">{t domain="weapp"}支付密钥(Api_Key)：{/t}</label>
                             <div class="col-lg-6 controls">
-                                <input class="form-control" name="wxpay_apipwd" type="text"/>
+                                <input class="form-control" name="wxpay_apipwd" type="text" value="{$result.wxpay_apipwd}"/>
                             </div>
                         </div>
                         <div class="form-group row">
@@ -103,7 +104,7 @@
                         <div class="form-group row">
                             <label class="col-lg-2 label-control text-right">{t domain="weapp"}支付手续费：{/t}</label>
                             <div class="col-lg-6 controls">
-                                <input class="form-control" name="pay_fee" type="text"/>
+                                <input class="form-control" name="pay_fee" type="text" value="{$result.pay_fee}"/>
                                 <div class="help-block">
                                     {t domain="weapp"}设置方式1：固定手续费，如：5{/t}<br>
                                     {t domain="weapp"}设置方式2：比例手续费，如：5%{/t}
@@ -119,4 +120,5 @@
         </div>
     </div>
 </div>
+{/if}
 <!-- {/block} -->
