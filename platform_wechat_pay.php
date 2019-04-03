@@ -87,10 +87,10 @@ class platform_wechat_pay extends ecjia_platform
         $this->assign('account', $account);
 
         $enabled = false;
-        $result  = RC_DB::table('wechat_options')->where('wechat_id', $account['id'])->where('option_name', 'sns_pay')->first();
+        $result  = RC_DB::table('wechat_options')->where('wechat_id', $account['id'])->where('option_name', 'pay_wechat_weapp')->first();
         if (!empty($result)) {
             $option_value = unserialize($result['option_value']);
-            if ($option_value['enable'] == 1) {
+            if ($option_value['enabled'] == 1) {
                 $enabled = true;
             }
             $result['wxpay_mchid']       = $option_value['wxpay_mchid'];
@@ -123,13 +123,13 @@ class platform_wechat_pay extends ecjia_platform
 
         $account = $this->platformAccount->getAccount(true);
 
-        $result = RC_DB::table('wechat_options')->where('wechat_id', $account['id'])->where('option_name', 'sns_pay')->first();
+        $result = RC_DB::table('wechat_options')->where('wechat_id', $account['id'])->where('option_name', 'pay_wechat_weapp')->first();
         if (empty($result)) {
-            $option_value = array('enable' => 1);
+            $option_value = array('enabled' => 1);
 
             $data = array(
                 'wechat_id'    => $account['id'],
-                'option_name'  => 'sns_pay',
+                'option_name'  => 'pay_wechat_weapp',
                 'option_type'  => 'serialize',
                 'option_value' => serialize($option_value)
             );
@@ -137,7 +137,7 @@ class platform_wechat_pay extends ecjia_platform
         } else {
             $option_value = unserialize($result['option_value']);
 
-            $option_value['enable']       = 1;
+            $option_value['enabled']       = 1;
             $option_value['wxpay_mchid']  = $wxpay_mchid;
             $option_value['wxpay_apipwd'] = $wxpay_apipwd;
             $option_value['pay_fee']      = $pay_fee;
@@ -189,7 +189,7 @@ class platform_wechat_pay extends ecjia_platform
             $data = array(
                 'option_value' => serialize($option_value)
             );
-            RC_DB::table('wechat_options')->where('wechat_id', $account['id'])->where('option_name', 'sns_pay')->update($data);
+            RC_DB::table('wechat_options')->where('wechat_id', $account['id'])->where('option_name', 'pay_wechat_weapp')->update($data);
         }
 
         return $this->showmessage(__('保存成功', 'weapp'), ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_SUCCESS, array('pjaxurl' => RC_Uri::url('weapp/platform_wechat_pay/init')));
@@ -201,13 +201,13 @@ class platform_wechat_pay extends ecjia_platform
 
         $account = $this->platformAccount->getAccount(true);
 
-        $result = RC_DB::table('wechat_options')->where('wechat_id', $account['id'])->where('option_name', 'sns_pay')->first();
+        $result = RC_DB::table('wechat_options')->where('wechat_id', $account['id'])->where('option_name', 'pay_wechat_weapp')->first();
         if (empty($result)) {
-            $option_value = array('enable' => 1);
+            $option_value = array('enabled' => 1);
 
             $data = array(
                 'wechat_id'    => $account['id'],
-                'option_name'  => 'sns_pay',
+                'option_name'  => 'pay_wechat_weapp',
                 'option_type'  => 'serialize',
                 'option_value' => serialize($option_value)
             );
@@ -215,12 +215,12 @@ class platform_wechat_pay extends ecjia_platform
         } else {
             $option_value = unserialize($result['option_value']);
 
-            $option_value['enable'] = 1;
+            $option_value['enabled'] = 1;
 
             $data = array(
                 'option_value' => serialize($option_value)
             );
-            RC_DB::table('wechat_options')->where('wechat_id', $account['id'])->where('option_name', 'sns_pay')->update($data);
+            RC_DB::table('wechat_options')->where('wechat_id', $account['id'])->where('option_name', 'pay_wechat_weapp')->update($data);
         }
 
         return $this->showmessage(__('开启成功', 'weapp'), ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_SUCCESS, array('pjaxurl' => RC_Uri::url('weapp/platform_wechat_pay/init')));
@@ -232,16 +232,16 @@ class platform_wechat_pay extends ecjia_platform
 
         $account = $this->platformAccount->getAccount(true);
 
-        $result = RC_DB::table('wechat_options')->where('wechat_id', $account['id'])->where('option_name', 'sns_pay')->first();
+        $result = RC_DB::table('wechat_options')->where('wechat_id', $account['id'])->where('option_name', 'pay_wechat_weapp')->first();
 
         $option_value = unserialize($result['option_value']);
 
-        $option_value['enable'] = 0;
+        $option_value['enabled'] = 0;
 
         $data = array(
             'option_value' => serialize($option_value)
         );
-        RC_DB::table('wechat_options')->where('wechat_id', $account['id'])->where('option_name', 'sns_pay')->update($data);
+        RC_DB::table('wechat_options')->where('wechat_id', $account['id'])->where('option_name', 'pay_wechat_weapp')->update($data);
 
         return $this->showmessage(__('关闭成功', 'weapp'), ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_SUCCESS, array('pjaxurl' => RC_Uri::url('weapp/platform_wechat_pay/init')));
     }
@@ -254,7 +254,7 @@ class platform_wechat_pay extends ecjia_platform
 
         $account = $this->platformAccount->getAccount(true);
 
-        $result = RC_DB::table('wechat_options')->where('wechat_id', $account['id'])->where('option_name', 'sns_pay')->first();
+        $result = RC_DB::table('wechat_options')->where('wechat_id', $account['id'])->where('option_name', 'pay_wechat_weapp')->first();
 
         $option_value = unserialize($result['option_value']);
 
@@ -268,7 +268,7 @@ class platform_wechat_pay extends ecjia_platform
         $data = array(
             'option_value' => serialize($option_value)
         );
-        RC_DB::table('wechat_options')->where('wechat_id', $account['id'])->where('option_name', 'sns_pay')->update($data);
+        RC_DB::table('wechat_options')->where('wechat_id', $account['id'])->where('option_name', 'pay_wechat_weapp')->update($data);
 
         return $this->showmessage(__('删除成功', 'weapp'), ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_SUCCESS, array('pjaxurl' => RC_Uri::url('weapp/platform_wechat_pay/init')));
     }

@@ -84,10 +84,10 @@ class platform_wechat_login extends ecjia_platform
         $this->assign('account', $account);
 
         $enabled = false;
-        $result  = RC_DB::table('wechat_options')->where('wechat_id', $account['id'])->where('option_name', 'sns_wechat')->first();
+        $result  = RC_DB::table('wechat_options')->where('wechat_id', $account['id'])->where('option_name', 'sns_wechat_weapp')->first();
         if (!empty($result)) {
             $option_value = unserialize($result['option_value']);
-            if ($option_value['enable'] == 1) {
+            if ($option_value['enabled'] == 1) {
                 $enabled = true;
             }
             $result['sns_wechat_callback'] = $option_value['sns_wechat_callback'];
@@ -111,13 +111,13 @@ class platform_wechat_login extends ecjia_platform
 
         $account = $this->platformAccount->getAccount(true);
 
-        $result = RC_DB::table('wechat_options')->where('wechat_id', $account['id'])->where('option_name', 'sns_wechat')->first();
+        $result = RC_DB::table('wechat_options')->where('wechat_id', $account['id'])->where('option_name', 'sns_wechat_weapp')->first();
         if (empty($result)) {
-            $option_value = array('enable' => 1, 'sns_wechat_callback' => $sns_wechat_callback);
+            $option_value = array('enabled' => 1, 'sns_wechat_callback' => $sns_wechat_callback);
 
             $data = array(
                 'wechat_id'    => $account['id'],
-                'option_name'  => 'sns_wechat',
+                'option_name'  => 'sns_wechat_weapp',
                 'option_type'  => 'serialize',
                 'option_value' => serialize($option_value)
             );
@@ -130,7 +130,7 @@ class platform_wechat_login extends ecjia_platform
             $data = array(
                 'option_value' => serialize($option_value)
             );
-            RC_DB::table('wechat_options')->where('wechat_id', $account['id'])->where('option_name', 'sns_wechat')->update($data);
+            RC_DB::table('wechat_options')->where('wechat_id', $account['id'])->where('option_name', 'sns_wechat_weapp')->update($data);
         }
 
         return $this->showmessage(__('保存成功', 'weapp'), ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_SUCCESS);
@@ -142,13 +142,13 @@ class platform_wechat_login extends ecjia_platform
 
         $account = $this->platformAccount->getAccount(true);
 
-        $result = RC_DB::table('wechat_options')->where('wechat_id', $account['id'])->where('option_name', 'sns_wechat')->first();
+        $result = RC_DB::table('wechat_options')->where('wechat_id', $account['id'])->where('option_name', 'sns_wechat_weapp')->first();
         if (empty($result)) {
-            $option_value = array('enable' => 1, 'sns_wechat_callback' => '');
+            $option_value = array('enabled' => 1, 'sns_wechat_callback' => '');
 
             $data = array(
                 'wechat_id'    => $account['id'],
-                'option_name'  => 'sns_wechat',
+                'option_name'  => 'sns_wechat_weapp',
                 'option_type'  => 'serialize',
                 'option_value' => serialize($option_value)
             );
@@ -156,12 +156,12 @@ class platform_wechat_login extends ecjia_platform
         } else {
             $option_value = unserialize($result['option_value']);
 
-            $option_value['enable'] = 1;
+            $option_value['enabled'] = 1;
 
             $data = array(
                 'option_value' => serialize($option_value)
             );
-            RC_DB::table('wechat_options')->where('wechat_id', $account['id'])->where('option_name', 'sns_wechat')->update($data);
+            RC_DB::table('wechat_options')->where('wechat_id', $account['id'])->where('option_name', 'sns_wechat_weapp')->update($data);
         }
 
         return $this->showmessage(__('开启成功', 'weapp'), ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_SUCCESS, array('pjaxurl' => RC_Uri::url('weapp/platform_wechat_login/init')));
@@ -173,16 +173,16 @@ class platform_wechat_login extends ecjia_platform
 
         $account = $this->platformAccount->getAccount(true);
 
-        $result = RC_DB::table('wechat_options')->where('wechat_id', $account['id'])->where('option_name', 'sns_wechat')->first();
+        $result = RC_DB::table('wechat_options')->where('wechat_id', $account['id'])->where('option_name', 'sns_wechat_weapp')->first();
 
         $option_value = unserialize($result['option_value']);
 
-        $option_value['enable'] = 0;
+        $option_value['enabled'] = 0;
 
         $data = array(
             'option_value' => serialize($option_value)
         );
-        RC_DB::table('wechat_options')->where('wechat_id', $account['id'])->where('option_name', 'sns_wechat')->update($data);
+        RC_DB::table('wechat_options')->where('wechat_id', $account['id'])->where('option_name', 'sns_wechat_weapp')->update($data);
 
 
         return $this->showmessage(__('关闭成功', 'weapp'), ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_SUCCESS, array('pjaxurl' => RC_Uri::url('weapp/platform_wechat_login/init')));
