@@ -71,10 +71,31 @@ class weapp_store_module extends api_front implements api_interface
         	$store_info['shop_logo'] 				= empty($store_info['shop_logo']) ? '' : RC_Upload::upload_url($store_info['shop_logo']);
         	$store_info['shop_nav_background'] 		= empty($store_info['shop_nav_background']) ? '' : RC_Upload::upload_url($store_info['shop_nav_background']);
         	$store_info['shop_banner_pic'] 			= empty($store_info['shop_banner_pic']) ? '' : RC_Upload::upload_url($store_info['shop_banner_pic']);
-        	$store_info['identity_pic_back'] 		= empty($store_info['identity_pic_back']) ? '' : RC_Upload::upload_url($store_info['identity_pic_back']);
-        	$store_info['identity_pic_front'] 		= empty($store_info['identity_pic_front']) ? '' : RC_Upload::upload_url($store_info['identity_pic_front']);
-        	$store_info['personhand_identity_pic'] 	= empty($store_info['personhand_identity_pic']) ? '' : RC_Upload::upload_url($store_info['personhand_identity_pic']);
         	$store_info['shop_trade_time']  		= get_store_trade_time($weapp_platform->shop_id);
+        	//字段过滤展示
+        	unset($store_info['cat_id']);
+        	unset($store_info['validate_type']);
+        	unset($store_info['apply_time']);
+        	unset($store_info['confirm_time']);
+        	unset($store_info['expired_time']);
+        	unset($store_info['delete_time']);
+        	unset($store_info['activate_time']);
+        	unset($store_info['identity_type']);
+        	unset($store_info['identity_number']);
+        	unset($store_info['personhand_identity_pic']);
+        	unset($store_info['identity_pic_front']);
+        	unset($store_info['identity_pic_back']);
+        	unset($store_info['identity_status']);
+        	unset($store_info['business_licence']);
+        	unset($store_info['business_licence_pic']);
+        	unset($store_info['bank_account_name']);
+        	unset($store_info['bank_name']);
+        	unset($store_info['bank_branch_name']);
+        	unset($store_info['bank_account_number']);
+        	unset($store_info['bank_address']);
+        	unset($store_info['percent_id']);
+        	unset($store_info['remark']);
+        	unset($store_info['geohash']);
         }
         
 		return $store_info;
