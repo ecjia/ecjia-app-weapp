@@ -51,13 +51,24 @@ class weapp_mobilebind_module extends api_front implements api_interface
     public function handleRequest(\Royalcms\Component\HttpKernel\Request $request)
     {
         $this->authSession();
-        $mobile            = trim($this->requestData('mobile'));
+        $mobile        = trim($this->requestData('mobile'));
         $uuid          = trim($this->requestData('uuid'));
+        $smscode       = trim($this->requestData('smscode'));
 
-        if (empty($mobile) || empty($uuid)) {
+        if (empty($mobile) || empty($uuid) || empty($smscode)) {
             return new ecjia_error('invalid_parameter', __(sprintf('%s参数无效', 'weapp/mobilebind'), 'weapp'));
         }
 
+        
+        //判断校验码是否过期
+        if ($_SESSION['captcha']['sms']['weapp_mobilebind']['lifetime'] < RC_Time::gmtime()) {
+        	return new ecjia_error('code_timeout', __('验证码已过期，请重新获取！', 'weapp'));
+        }
+        //判断校验码是否正确
+        if ($smscode != $_SESSION['captcha']['sms']['weapp_mobilebind']['code']) {
+        	return new ecjia_error('code_error', __('验证码错误，请重新填写！', 'weapp'));
+        }
+        
         $openid      = session('openid');
         $unionid      = session('unionid');
         $session_key = session('session_key');
