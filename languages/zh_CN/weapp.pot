@@ -4,7 +4,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Ecjia App weapp 1.28.0\n"
 "Report-Msgid-Bugs-To: https://make.ecjia.com/polyglots/\n"
-"POT-Creation-Date: 2019-03-06 09:04:45+00:00\n"
+"POT-Creation-Date: 2019-04-04 05:54:42+00:00\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -49,7 +49,7 @@ msgstr ""
 #: admin.php:267 merchant.php:324 platform_material.php:742
 #: platform_material.php:864 platform_material.php:993
 #: platform_material.php:1114 platform_material.php:1292
-#: platform_response.php:541 platform_user.php:268
+#: platform_response.php:541 platform_user.php:268 platform_wechat_pay.php:273
 msgid "删除成功"
 msgstr ""
 
@@ -96,7 +96,6 @@ msgid "删除小程序"
 msgstr ""
 
 #: apis/weapp_merchant_purview_api.class.php:55
-#: apis/weapp_platform_purview_api.class.php:64
 #: classes/hooks/admin_weapp.class.php:54
 msgid "小程序管理"
 msgstr ""
@@ -109,88 +108,104 @@ msgstr ""
 msgid "关键词命令"
 msgstr ""
 
-#: apis/weapp_platform_menu_api.class.php:66 platform_config.php:69
-#: platform_config.php:70 platform_config.php:78 platform_config.php:85
-msgid "消息推送配置"
-msgstr ""
-
-#: apis/weapp_platform_menu_api.class.php:69
+#: apis/weapp_platform_menu_api.class.php:66
 #: classes/hooks/merchant_weapp.class.php:55 configs/package.php:55
 #: configs/package.php:56
 msgid "微信小程序"
 msgstr ""
 
-#: apis/weapp_platform_menu_api.class.php:71
-#: apis/weapp_platform_menu_api.class.php:73 platform_message.php:68
+#: apis/weapp_platform_menu_api.class.php:68
+#: apis/weapp_platform_menu_api.class.php:70 platform_message.php:68
 #: platform_message.php:70 platform_message.php:78 platform_message.php:79
 msgid "消息管理"
 msgstr ""
 
-#: apis/weapp_platform_menu_api.class.php:78
-#: apis/weapp_platform_menu_api.class.php:80
+#: apis/weapp_platform_menu_api.class.php:74
+#: apis/weapp_platform_menu_api.class.php:76
 #: apis/weapp_platform_purview_api.class.php:59 platform_user.php:74
 #: platform_user.php:75 platform_user.php:83 platform_user.php:87
 #: platform_user.php:284
 msgid "用户管理"
 msgstr ""
 
-#: apis/weapp_platform_menu_api.class.php:81
+#: apis/weapp_platform_menu_api.class.php:77
 #: apis/weapp_platform_purview_api.class.php:60 platform_user.php:685
 #: platform_user.php:696
 msgid "标签管理"
 msgstr ""
 
-#: apis/weapp_platform_menu_api.class.php:82 platform_user.php:718
+#: apis/weapp_platform_menu_api.class.php:78 platform_user.php:718
 #: platform_user.php:720
 msgid "未授权用户"
 msgstr ""
 
-#: apis/weapp_platform_menu_api.class.php:83 platform_user.php:775
+#: apis/weapp_platform_menu_api.class.php:79 platform_user.php:775
 #: platform_user.php:777
 msgid "黑名单"
 msgstr ""
 
-#: apis/weapp_platform_menu_api.class.php:87 platform_response.php:74
+#: apis/weapp_platform_menu_api.class.php:83 platform_response.php:74
 #: platform_response.php:85 platform_response.php:146
 msgid "自动回复"
 msgstr ""
 
-#: apis/weapp_platform_menu_api.class.php:89 platform_response.php:350
+#: apis/weapp_platform_menu_api.class.php:85 platform_response.php:350
 #: platform_response.php:354 platform_response.php:355
 #: platform_response.php:375 platform_response.php:376
 msgid "关键词回复"
 msgstr ""
 
-#: apis/weapp_platform_menu_api.class.php:90
+#: apis/weapp_platform_menu_api.class.php:86
 msgid "收到消息回复"
 msgstr ""
 
-#: apis/weapp_platform_menu_api.class.php:91
+#: apis/weapp_platform_menu_api.class.php:87
 msgid "打开客服回复 "
 msgstr ""
 
-#: apis/weapp_platform_menu_api.class.php:95
+#: apis/weapp_platform_menu_api.class.php:91
 #: apis/weapp_platform_purview_api.class.php:71 platform_material.php:75
 #: platform_material.php:189 platform_material.php:326
 #: platform_material.php:332 platform_material.php:1146
 msgid "素材管理"
 msgstr ""
 
-#: apis/weapp_platform_menu_api.class.php:97 platform_material.php:90
+#: apis/weapp_platform_menu_api.class.php:93 platform_material.php:90
 #: platform_material.php:1135
 msgid "临时素材"
 msgstr ""
 
-#: apis/weapp_platform_menu_api.class.php:101
+#: apis/weapp_platform_menu_api.class.php:97
 msgid "客服管理"
 msgstr ""
 
-#: apis/weapp_platform_menu_api.class.php:103
+#: apis/weapp_platform_menu_api.class.php:99
 msgid "客服账号"
 msgstr ""
 
-#: apis/weapp_platform_menu_api.class.php:104
+#: apis/weapp_platform_menu_api.class.php:100
 msgid "客服会话"
+msgstr ""
+
+#: apis/weapp_platform_menu_api.class.php:104
+msgid "小程序配置"
+msgstr ""
+
+#: apis/weapp_platform_menu_api.class.php:106 platform_config.php:67
+#: platform_config.php:68 platform_config.php:76 platform_config.php:83
+msgid "消息推送配置"
+msgstr ""
+
+#: apis/weapp_platform_menu_api.class.php:108 platform_wechat_pay.php:72
+#: platform_wechat_pay.php:73 platform_wechat_pay.php:81
+#: platform_wechat_pay.php:105
+msgid "微信支付配置"
+msgstr ""
+
+#: apis/weapp_platform_menu_api.class.php:110 platform_wechat_login.php:69
+#: platform_wechat_login.php:70 platform_wechat_login.php:78
+#: platform_wechat_login.php:98
+msgid "微信登录配置"
 msgstr ""
 
 #: apis/weapp_platform_purview_api.class.php:61
@@ -201,8 +216,12 @@ msgstr ""
 msgid "标签删除"
 msgstr ""
 
+#: apis/weapp_platform_purview_api.class.php:64
+msgid "小程序配置管理"
+msgstr ""
+
 #: apis/weapp_platform_purview_api.class.php:65
-msgid "小程序更新"
+msgid "小程序配置更新"
 msgstr ""
 
 #: apis/weapp_platform_purview_api.class.php:67
@@ -440,6 +459,14 @@ msgstr ""
 msgid "公众号排序不能为空！"
 msgstr ""
 
+#: modules/weapp/mobilebind_module.class.php:65
+msgid "验证码已过期，请重新获取！"
+msgstr ""
+
+#: modules/weapp/mobilebind_module.class.php:69
+msgid "验证码错误，请重新填写！"
+msgstr ""
+
 #: modules/weapp/wxauthorize_module.class.php:87
 #: modules/weapp/wxbind_module.class.php:158
 msgid "更新用户数据失败"
@@ -463,15 +490,15 @@ msgstr ""
 msgid "订单不属于该用户"
 msgstr ""
 
-#: platform_config.php:100
+#: platform_config.php:98
 msgid "Token(令牌)必须为英文或数字，长度为3-32字符"
 msgstr ""
 
-#: platform_config.php:104
+#: platform_config.php:102
 msgid "消息加密密钥由43位字符组成，字符范围为A-Z,a-z,0-9"
 msgstr ""
 
-#: platform_config.php:114
+#: platform_config.php:112
 msgid "操作成功"
 msgstr ""
 
@@ -928,6 +955,25 @@ msgstr ""
 msgid "添加标签"
 msgstr ""
 
+#: platform_wechat_login.php:136 platform_wechat_pay.php:195
+msgid "保存成功"
+msgstr ""
+
+#: platform_wechat_login.php:167 platform_wechat_pay.php:226
+msgid "开启成功"
+msgstr ""
+
+#: platform_wechat_login.php:188 platform_wechat_pay.php:246
+msgid "关闭成功"
+msgstr ""
+
+#: platform_wechat_pay.php:110
+msgid ""
+"https://www.ecjia.com/wiki/常见问题:ECJia到家门店小程序:ECJia到家门店小程序的"
+"配置使用#.E5.B0.8F.E7.A8.8B.E5.BA.8F.E5.BE.AE.E4.BF.A1.E6.94.AF.E4.BB.98."
+"E6.8F.92.E4.BB.B6.E9.85.8D.E7.BD.AE"
+msgstr ""
+
 #: privilege.php:110 privilege.php:134
 msgid "抱歉！该用户没有分配公众平台登录权限。"
 msgstr ""
@@ -998,6 +1044,8 @@ msgid "图片预览"
 msgstr ""
 
 #: content/apps/weapp/templates/platform/weapp_customer_edit.dwt.php:66
+#: content/apps/weapp/templates/platform/weapp_wechat_pay_config.dwt.php:96
+#: content/apps/weapp/templates/platform/weapp_wechat_pay_config.dwt.php:117
 #: content/apps/weapp/templates/platform/weapp_material_add.dwt.php:134
 #: content/apps/weapp/templates/admin/weapp_edit.dwt.php:52
 #: content/apps/weapp/templates/merchant/weapp_edit.dwt.php:76
@@ -1005,6 +1053,8 @@ msgid "浏览"
 msgstr ""
 
 #: content/apps/weapp/templates/platform/weapp_customer_edit.dwt.php:67
+#: content/apps/weapp/templates/platform/weapp_wechat_pay_config.dwt.php:97
+#: content/apps/weapp/templates/platform/weapp_wechat_pay_config.dwt.php:118
 #: content/apps/weapp/templates/admin/weapp_edit.dwt.php:53
 #: content/apps/weapp/templates/merchant/weapp_edit.dwt.php:77
 msgid "修改"
@@ -1035,6 +1085,8 @@ msgid "状态："
 msgstr ""
 
 #: content/apps/weapp/templates/platform/weapp_customer_edit.dwt.php:79
+#: content/apps/weapp/templates/platform/weapp_wechat_pay_config.dwt.php:36
+#: content/apps/weapp/templates/platform/weapp_wechat_login_config.dwt.php:34
 #: content/apps/weapp/templates/admin/weapp_edit.dwt.php:79
 #: content/apps/weapp/templates/merchant/weapp_edit.dwt.php:104
 msgid "开启"
@@ -1042,6 +1094,8 @@ msgstr ""
 
 #: content/apps/weapp/templates/platform/weapp_customer_edit.dwt.php:80
 #: content/apps/weapp/templates/platform/library/weapp_show_message.lbi.php:15
+#: content/apps/weapp/templates/platform/weapp_wechat_pay_config.dwt.php:38
+#: content/apps/weapp/templates/platform/weapp_wechat_login_config.dwt.php:36
 #: content/apps/weapp/templates/admin/weapp_edit.dwt.php:80
 #: content/apps/weapp/templates/merchant/weapp_edit.dwt.php:105
 msgid "关闭"
@@ -1301,6 +1355,8 @@ msgstr ""
 #: content/apps/weapp/templates/platform/weapp_material.dwt.php:22
 #: content/apps/weapp/templates/platform/weapp_subscribe_list.dwt.php:24
 #: content/apps/weapp/templates/platform/weapp_open_reply.dwt.php:22
+#: content/apps/weapp/templates/platform/weapp_wechat_pay_config.dwt.php:15
+#: content/apps/weapp/templates/platform/weapp_wechat_login_config.dwt.php:15
 #: content/apps/weapp/templates/platform/weapp_reply_keywords.dwt.php:21
 #: content/apps/weapp/templates/platform/weapp_reply_msg.dwt.php:22
 #: content/apps/weapp/templates/platform/weapp_material_add.dwt.php:22
@@ -1412,6 +1468,8 @@ msgstr ""
 
 #: content/apps/weapp/templates/platform/library/weapp_material_image.lbi.php:23
 #: content/apps/weapp/templates/platform/library/weapp_material_image.lbi.php:42
+#: content/apps/weapp/templates/platform/weapp_wechat_pay_config.dwt.php:143
+#: content/apps/weapp/templates/platform/weapp_wechat_login_config.dwt.php:84
 msgid "保存"
 msgstr ""
 
@@ -1719,6 +1777,97 @@ msgstr ""
 msgid "三、打开客服回复：即打开客服时自动回复一条设置好的文字或图片。"
 msgstr ""
 
+#: content/apps/weapp/templates/platform/weapp_wechat_pay_config.dwt.php:16
+msgid "1、微信支付配置：实现用户在线支付的必备条件，请务必设置；"
+msgstr ""
+
+#: content/apps/weapp/templates/platform/weapp_wechat_pay_config.dwt.php:17
+msgid ""
+"2、正常情况下，请不要轻易修改小程序对应微信支付的商户号和商户密钥，配置不正确"
+"将导致小程序微信支付异常。"
+msgstr ""
+
+#: content/apps/weapp/templates/platform/weapp_wechat_pay_config.dwt.php:18
+msgid "3、如何配置？详细查看教程"
+msgstr ""
+
+#: content/apps/weapp/templates/platform/weapp_wechat_pay_config.dwt.php:18
+msgid "点击此处 >>"
+msgstr ""
+
+#: content/apps/weapp/templates/platform/weapp_wechat_pay_config.dwt.php:36
+msgid "您确定要开启微信支付吗？"
+msgstr ""
+
+#: content/apps/weapp/templates/platform/weapp_wechat_pay_config.dwt.php:38
+msgid "您确定要关闭微信支付吗？"
+msgstr ""
+
+#: content/apps/weapp/templates/platform/weapp_wechat_pay_config.dwt.php:45
+msgid "微信支付"
+msgstr ""
+
+#: content/apps/weapp/templates/platform/weapp_wechat_pay_config.dwt.php:47
+msgid "启用微信支付后，用户可以在小程序内购物使用微信支付方式。"
+msgstr ""
+
+#: content/apps/weapp/templates/platform/weapp_wechat_pay_config.dwt.php:61
+#: content/apps/weapp/templates/platform/weapp_wechat_login_config.dwt.php:59
+msgid "配置信息"
+msgstr ""
+
+#: content/apps/weapp/templates/platform/weapp_wechat_pay_config.dwt.php:68
+#: content/apps/weapp/templates/platform/weapp_wechat_login_config.dwt.php:66
+#: content/apps/weapp/templates/admin/weapp_edit.dwt.php:61
+#: content/apps/weapp/templates/merchant/weapp_edit.dwt.php:86
+msgid "AppID："
+msgstr ""
+
+#: content/apps/weapp/templates/platform/weapp_wechat_pay_config.dwt.php:72
+#: content/apps/weapp/templates/platform/weapp_wechat_login_config.dwt.php:70
+#: content/apps/weapp/templates/admin/weapp_edit.dwt.php:69
+#: content/apps/weapp/templates/merchant/weapp_edit.dwt.php:94
+msgid "AppSecret："
+msgstr ""
+
+#: content/apps/weapp/templates/platform/weapp_wechat_pay_config.dwt.php:76
+msgid "小程序商户号："
+msgstr ""
+
+#: content/apps/weapp/templates/platform/weapp_wechat_pay_config.dwt.php:82
+msgid "支付密钥(Api_Key)："
+msgstr ""
+
+#: content/apps/weapp/templates/platform/weapp_wechat_pay_config.dwt.php:88
+msgid "客户端证书文件："
+msgstr ""
+
+#: content/apps/weapp/templates/platform/weapp_wechat_pay_config.dwt.php:105
+msgid ""
+"客户端证书路径，退款、红包等需要用到。请填写绝对路径，linux 请确保权限问题。"
+"pem 格式"
+msgstr ""
+
+#: content/apps/weapp/templates/platform/weapp_wechat_pay_config.dwt.php:109
+msgid "客户端秘钥文件："
+msgstr ""
+
+#: content/apps/weapp/templates/platform/weapp_wechat_pay_config.dwt.php:127
+msgid "下载证书 cert.zip 中的 apiclient_cert.pem 文件"
+msgstr ""
+
+#: content/apps/weapp/templates/platform/weapp_wechat_pay_config.dwt.php:132
+msgid "支付手续费："
+msgstr ""
+
+#: content/apps/weapp/templates/platform/weapp_wechat_pay_config.dwt.php:136
+msgid "设置方式1：固定手续费，如：5"
+msgstr ""
+
+#: content/apps/weapp/templates/platform/weapp_wechat_pay_config.dwt.php:137
+msgid "设置方式2：比例手续费，如：5%"
+msgstr ""
+
 #: content/apps/weapp/templates/platform/weapp_config.dwt.php:28
 msgid "URL(服务器地址)："
 msgstr ""
@@ -1769,6 +1918,44 @@ msgstr ""
 
 #: content/apps/weapp/templates/platform/weapp_config.dwt.php:71
 msgid "请选择微信与开发者服务器间传输的数据格式"
+msgstr ""
+
+#: content/apps/weapp/templates/platform/weapp_wechat_login_config.dwt.php:16
+msgid ""
+"1、微信登录配置：实现用户使用微信，授权绑定登录小程序，用户购物无需繁琐的注册"
+"流程；"
+msgstr ""
+
+#: content/apps/weapp/templates/platform/weapp_wechat_login_config.dwt.php:17
+msgid ""
+"2、确保信息都填写正确，若内容已配置好，请不要随意修改，避免导致微信登录异常情"
+"况；"
+msgstr ""
+
+#: content/apps/weapp/templates/platform/weapp_wechat_login_config.dwt.php:34
+msgid "您确定要开启微信登录吗？"
+msgstr ""
+
+#: content/apps/weapp/templates/platform/weapp_wechat_login_config.dwt.php:36
+msgid "您确定要关闭微信登录吗？"
+msgstr ""
+
+#: content/apps/weapp/templates/platform/weapp_wechat_login_config.dwt.php:43
+msgid "微信登录"
+msgstr ""
+
+#: content/apps/weapp/templates/platform/weapp_wechat_login_config.dwt.php:45
+msgid "启用微信登录后，用户打开小程序后，可使用授权绑定微信快捷登录。"
+msgstr ""
+
+#: content/apps/weapp/templates/platform/weapp_wechat_login_config.dwt.php:74
+msgid "回调地址："
+msgstr ""
+
+#: content/apps/weapp/templates/platform/weapp_wechat_login_config.dwt.php:78
+msgid ""
+"(请勿修改，仅供参考)此回调地址的格式，用于填写申请微信公众平台的网页授权域"
+"名。"
 msgstr ""
 
 #: content/apps/weapp/templates/platform/weapp_reply_keywords.dwt.php:23
@@ -1910,16 +2097,6 @@ msgstr ""
 
 #: content/apps/weapp/templates/admin/weapp_edit.dwt.php:56
 msgid "您确定要删除吗？"
-msgstr ""
-
-#: content/apps/weapp/templates/admin/weapp_edit.dwt.php:61
-#: content/apps/weapp/templates/merchant/weapp_edit.dwt.php:86
-msgid "AppID："
-msgstr ""
-
-#: content/apps/weapp/templates/admin/weapp_edit.dwt.php:69
-#: content/apps/weapp/templates/merchant/weapp_edit.dwt.php:94
-msgid "AppSecret："
 msgstr ""
 
 #: content/apps/weapp/templates/admin/weapp_list.dwt.php:25
