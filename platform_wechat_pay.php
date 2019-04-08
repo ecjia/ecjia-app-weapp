@@ -147,7 +147,7 @@ class platform_wechat_pay extends ecjia_platform
                 $old_option_value = unserialize($result['option_value']);
 
                 if (!empty($_FILES['wxpay_cert_client'])) {
-                    $upload = RC_Upload::uploader('image', array('save_path' => 'data/weapp/cert/sns_pay', 'auto_sub_dirs' => false));
+                    $upload = RC_Upload::uploader('image', array('save_path' => 'data/weapp/cert/pay_wechat_weapp', 'auto_sub_dirs' => false));
                     $upload->allowed_type(['cer', 'pem']);
                     $upload->allowed_mime(['application/x-x509-ca-cert', 'application/octet-stream']);
                     $image_info = $upload->upload($_FILES['wxpay_cert_client']);
@@ -167,7 +167,7 @@ class platform_wechat_pay extends ecjia_platform
                 }
 
                 if (!empty($_FILES['wxpay_cert_key'])) {
-                    $upload = RC_Upload::uploader('image', array('save_path' => 'data/weapp/cert/sns_pay', 'auto_sub_dirs' => false));
+                    $upload = RC_Upload::uploader('image', array('save_path' => 'data/weapp/cert/pay_wechat_weapp', 'auto_sub_dirs' => false));
                     $upload->allowed_type(['cer', 'pem']);
                     $upload->allowed_mime(['application/x-x509-ca-cert', 'application/octet-stream']);
                     $image_info = $upload->upload($_FILES['wxpay_cert_key']);
