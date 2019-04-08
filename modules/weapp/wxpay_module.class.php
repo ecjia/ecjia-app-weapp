@@ -112,7 +112,7 @@ class weapp_wxpay_module extends api_front implements api_interface
         if (is_ecjia_error($handler)) {
             return $handler;
         }
-        dd($handler->getCode());
+        dd($WeappAccount->getStoreId());
         if ($WeappAccount->getStoreId() > 0) {
 
             if ($handler->getCode() == 'pay_wechat_merchant') {
