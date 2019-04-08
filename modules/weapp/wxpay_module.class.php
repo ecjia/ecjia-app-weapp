@@ -84,48 +84,17 @@ class weapp_wxpay_module extends api_front implements api_interface
             $_SESSION['user_id'] = $order['user_id'];
         }
 
-        //获取小程序的weappid,即小程序自增id
-        $WeappUUID = new Ecjia\App\Weapp\WeappUUID($uuid);
-        $WeappAccount   = $WeappUUID->getAccount();
-        if ($WeappAccount->getPlatform() != 'weapp') {
-            return new ecjia_error('uuid_not_matched', __('UUID不匹配，请联系管理员。', 'weapp'));
-        }
-
-        $weappId   = $WeappUUID->getWeappID();
-
-        $option = (new \Ecjia\App\Weapp\WeappOptions($weappId))->getOption('pay_wxpay_weapp');
-
-        if ($option['enabled'] !== 1) {
-            return new ecjia_error('wxpay_not_enabled', __('该小程序的微信支付尚未开启', 'weapp'));
-        }
-
-        $wxpay_config = [
-            'wxpay_appid'       => $WeappAccount->getAppId(),
-            'wxpay_appsecret'   => $WeappAccount->getAppSecret(),
-            'wxpay_mchid'       => $option['wxpay_mchid'],
-            'wxpay_apipwd'      => $option['wxpay_apipwd'],
-            'pay_fee'           => $option['pay_fee'],
-        ];
-
         //支付方式信息
         $handler = with(new Ecjia\App\Payment\PaymentPlugin)->channel(intval($order['pay_id']));
         if (is_ecjia_error($handler)) {
             return $handler;
         }
 
-        if ($WeappAccount->getStoreId() > 0) {
-
-            if ($handler->getCode() == 'pay_wxpay_merchant') {
-                $handler->setConfig($wxpay_config);
-            }
-
-        }
-        else {
-
-            if ($handler->getCode() == 'pay_wxpay_weapp') {
-                $handler->setConfig($wxpay_config);
-            }
-
+        $WeappUUID = new Ecjia\App\Weapp\WeappUUID($uuid);
+        $WeappAccount   = $WeappUUID->getAccount();
+        $reset_status = $handler->resetWechatPayConfig($WeappAccount);
+        if (is_ecjia_error($reset_status)) {
+            return $reset_status;
         }
 
         $handler->set_orderinfo($order);
