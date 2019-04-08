@@ -93,7 +93,7 @@ class weapp_wxpay_module extends api_front implements api_interface
 
         $weappId   = $WeappUUID->getWeappID();
 
-        $option = (new \Ecjia\App\Weapp\WeappOptions($weappId))->getOption('pay_wxpay_merchant');
+        $option = (new \Ecjia\App\Weapp\WeappOptions($weappId))->getOption('pay_wechat_weapp');
 
         if ($option['enabled'] !== 1) {
             return new ecjia_error('wxpay_not_enabled', __('该小程序的微信支付尚未开启', 'weapp'));
@@ -115,14 +115,14 @@ class weapp_wxpay_module extends api_front implements api_interface
 
         if ($WeappAccount->getStoreId() > 0) {
 
-            if ($handler->getCode() == 'pay_wechat_merchant') {
+            if ($handler->getCode() == 'pay_wxpay_merchant') {
                 $handler->setConfig($wxpay_config);
             }
 
         }
         else {
 
-            if ($handler->getCode() == 'pay_wxpay_merchant') {
+            if ($handler->getCode() == 'pay_wxpay_weapp') {
                 $handler->setConfig($wxpay_config);
             }
 
@@ -130,7 +130,7 @@ class weapp_wxpay_module extends api_front implements api_interface
 
         $handler->set_orderinfo($order);
         $handler->setPaymentRecord(new Ecjia\App\Payment\Repositories\PaymentRecordRepository());
-
+        dd($handler);
         $result = $handler->get_code(\Ecjia\App\Payment\Enums\PayCodeEnum::PAYCODE_PARAM);
         if (is_ecjia_error($result)) {
             return $result;
