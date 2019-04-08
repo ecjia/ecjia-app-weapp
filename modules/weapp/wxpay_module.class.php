@@ -93,7 +93,7 @@ class weapp_wxpay_module extends api_front implements api_interface
 
         $weappId   = $WeappUUID->getWeappID();
 
-        $option = (new \Ecjia\App\Weapp\WeappOptions($weappId))->getOption('pay_wechat_weapp');
+        $option = (new \Ecjia\App\Weapp\WeappOptions($weappId))->getOption('pay_wxpay_weapp');
 
         if ($option['enabled'] !== 1) {
             return new ecjia_error('wxpay_not_enabled', __('该小程序的微信支付尚未开启', 'weapp'));
