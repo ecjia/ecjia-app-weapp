@@ -44,121 +44,53 @@
 //
 //  ---------------------------------------------------------------------------------
 //
+namespace Ecjia\App\Weapp\Models;
 
-namespace Ecjia\App\Weapp;
+use Royalcms\Component\Database\Eloquent\Model;
 
-use Ecjia\App\Platform\Frameworks\Platform\Account;
-
-class WeappUUID
+/**
+ * Class WechatOptionsModel
+ * @package Ecjia\App\Weapp\Models
+ *
+ * @method $this wechat($wechat_id) 绑定微信ID查询条件
+ */
+class WechatOptionsModel extends Model
 {
+    protected $table = 'wechat_options';
 
-    protected $uuid;
-
-    protected $account;
-
-    public function __construct($uuid = null, $account = null)
-    {
-
-        if (is_null($uuid)) {
-
-            if (royalcms('request')->input('uuid')) {
-                $this->uuid = royalcms('request')->input('uuid');
-            } else if (session('uuid')) {
-                $this->uuid = session('uuid');
-            }
-
-        } else {
-            $this->uuid = trim($uuid);
-        }
-
-        if (is_null($account)) {
-            $this->account = new Account($this->uuid);
-        } else {
-            $this->account = $account;
-        }
-    }
-
-    public function getWechatInstance()
-    {
-        $platform = $this->account->getPlatform();
-
-        if ($platform == 'weapp') {
-            $config = array(
-                'app_id'     => $this->account->getAppId(),
-                'app_secret' => $this->account->getAppSecret(),
-            );
-
-            $wechat = royalcms('wechat');
-            $wechat->init($config);
-
-            $wechat->make('config')->set('mini_app', $config);
-
-            return $wechat;
-        }
-
-        return null;
-    }
+    protected $primaryKey = 'option_id';
 
     /**
-     * @return \Ecjia\App\Platform\Frameworks\Platform\Account
+     * 可以被批量赋值的属性。
+     *
+     * @var array
      */
-    public function getAccount()
-    {
-        return $this->account;
-    }
+    protected $fillable = [
+        'wechat_id',
+        'option_name',
+        'option_type',
+        'option_value',
+    ];
 
     /**
-     * 获取公众号添加后的Weapp_Id
-     * @return integer
+     * 该模型是否被自动维护时间戳
+     *
+     * @var bool
      */
-    public function getWeappID()
-    {
-        return $this->account->getAccountID();
-    }
+    public $timestamps = false;
 
     /**
-     * 获取公众号添加后台UUID
-     * @return string
+     * 限制查询只包括某一微信帐号的用户。
+     *
+     * @param \Royalcms\Component\Database\Eloquent\Builder $query
+     * @return \Royalcms\Component\Database\Eloquent\Builder
      */
-    public function getUUID()
+    public function scopeWechat($query, $wechatId)
     {
-        return $this->uuid;
+        return $query->where('wechat_id', $wechatId);
     }
 
-
-    /**
-     * ============================================
-     */
-
-    /**
-     * 获取公众号的AppId
-     */
-    public function getAppId()
-    {
-        return $this->account->getAppId();
-    }
-
-
-    /**
-     * 获取微信小程序用户对象
-     * @return \Royalcms\Component\WeChat\User\MiniAppUser;
-     */
-    public function getWeappUser()
-    {
-        $wechat = $this->getWechatInstance();
-
-        return $wechat->make('mini_app_user');
-    }
-
-    /**
-     * 获取微信小程序用户对象
-     * @return \Royalcms\Component\Wechat\MiniProgram\MiniProgram;
-     */
-    public function getWeapp()
-    {
-        $wechat = $this->getWechatInstance();
-
-        return $wechat->make('weapp');
-    }
 
 }
+
+// end
