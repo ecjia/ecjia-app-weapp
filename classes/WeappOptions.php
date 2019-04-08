@@ -48,6 +48,10 @@ class WeappOptions
             $option_value = $option->option_value;
         }
 
+        if ($option_value) {
+            $this->options[$key] = $option_value;
+        }
+
         return $option_value;
     }
 
