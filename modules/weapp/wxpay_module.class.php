@@ -115,15 +115,14 @@ class weapp_wxpay_module extends api_front implements api_interface
 
         if ($WeappAccount->getStoreId() > 0) {
 
-            if ($handler->getCode() == 'pay_wechat_merchant') {
+            if ($handler->getCode() == 'pay_wxpay_merchant') {
                 $handler->setConfig($wxpay_config);
-                dd($wxpay_config);
             }
 
         }
         else {
 
-            if ($handler->getCode() == 'pay_wechat_weapp') {
+            if ($handler->getCode() == 'pay_wxpay_weapp') {
                 $handler->setConfig($wxpay_config);
             }
 
