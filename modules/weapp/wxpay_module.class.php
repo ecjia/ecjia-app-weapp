@@ -90,11 +90,13 @@ class weapp_wxpay_module extends api_front implements api_interface
             return $handler;
         }
 
-        $WeappUUID = new Ecjia\App\Weapp\WeappUUID($uuid);
-        $WeappAccount   = $WeappUUID->getAccount();
-        $reset_status = $handler->resetWechatPayConfig($WeappAccount);
-        if (is_ecjia_error($reset_status)) {
-            return $reset_status;
+        if ($handler instanceof \Ecjia\App\Weapp\Contracts\WeappMerchantPayment) {
+            $WeappUUID = new Ecjia\App\Weapp\WeappUUID($uuid);
+            $WeappAccount   = $WeappUUID->getAccount();
+            $reset_status = $handler->resetWechatPayConfig($WeappAccount);
+            if (is_ecjia_error($reset_status)) {
+                return $reset_status;
+            }
         }
 
         $handler->set_orderinfo($order);
