@@ -87,7 +87,7 @@ class platform_wechat_pay extends ecjia_platform
         $this->assign('account', $account);
 
         $enabled = false;
-        $result  = RC_DB::table('wechat_options')->where('wechat_id', $account['id'])->where('option_name', 'pay_wxpay_merchant')->first();
+        $result  = RC_DB::table('wechat_options')->where('wechat_id', $account['id'])->where('option_name', 'pay_wxpay_weapp')->first();
         if (!empty($result)) {
             $option_value = unserialize($result['option_value']);
             if ($option_value['enabled'] == 1) {
@@ -123,13 +123,13 @@ class platform_wechat_pay extends ecjia_platform
 
         $account = $this->platformAccount->getAccount(true);
 
-        $result = RC_DB::table('wechat_options')->where('wechat_id', $account['id'])->where('option_name', 'pay_wxpay_merchant')->first();
+        $result = RC_DB::table('wechat_options')->where('wechat_id', $account['id'])->where('option_name', 'pay_wxpay_weapp')->first();
         if (empty($result)) {
             $option_value = array('enabled' => 1);
 
             $data = array(
                 'wechat_id'    => $account['id'],
-                'option_name'  => 'pay_wxpay_merchant',
+                'option_name'  => 'pay_wxpay_weapp',
                 'option_type'  => 'serialize',
                 'option_value' => serialize($option_value)
             );
@@ -147,7 +147,7 @@ class platform_wechat_pay extends ecjia_platform
                 $old_option_value = unserialize($result['option_value']);
 
                 if (!empty($_FILES['wxpay_cert_client'])) {
-                    $upload = RC_Upload::uploader('image', array('save_path' => 'data/weapp/cert/pay_wxpay_merchant', 'auto_sub_dirs' => false));
+                    $upload = RC_Upload::uploader('image', array('save_path' => 'data/weapp/cert/pay_wxpay_weapp', 'auto_sub_dirs' => false));
                     $upload->allowed_type(['cer', 'pem']);
                     $upload->allowed_mime(['application/x-x509-ca-cert', 'application/octet-stream']);
                     $image_info = $upload->upload($_FILES['wxpay_cert_client']);
@@ -167,7 +167,7 @@ class platform_wechat_pay extends ecjia_platform
                 }
 
                 if (!empty($_FILES['wxpay_cert_key'])) {
-                    $upload = RC_Upload::uploader('image', array('save_path' => 'data/weapp/cert/pay_wxpay_merchant', 'auto_sub_dirs' => false));
+                    $upload = RC_Upload::uploader('image', array('save_path' => 'data/weapp/cert/pay_wxpay_weapp', 'auto_sub_dirs' => false));
                     $upload->allowed_type(['cer', 'pem']);
                     $upload->allowed_mime(['application/x-x509-ca-cert', 'application/octet-stream']);
                     $image_info = $upload->upload($_FILES['wxpay_cert_key']);
@@ -189,7 +189,7 @@ class platform_wechat_pay extends ecjia_platform
             $data = array(
                 'option_value' => serialize($option_value)
             );
-            RC_DB::table('wechat_options')->where('wechat_id', $account['id'])->where('option_name', 'pay_wxpay_merchant')->update($data);
+            RC_DB::table('wechat_options')->where('wechat_id', $account['id'])->where('option_name', 'pay_wxpay_weapp')->update($data);
         }
 
         return $this->showmessage(__('保存成功', 'weapp'), ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_SUCCESS, array('pjaxurl' => RC_Uri::url('weapp/platform_wechat_pay/init')));
@@ -201,13 +201,13 @@ class platform_wechat_pay extends ecjia_platform
 
         $account = $this->platformAccount->getAccount(true);
 
-        $result = RC_DB::table('wechat_options')->where('wechat_id', $account['id'])->where('option_name', 'pay_wxpay_merchant')->first();
+        $result = RC_DB::table('wechat_options')->where('wechat_id', $account['id'])->where('option_name', 'pay_wxpay_weapp')->first();
         if (empty($result)) {
             $option_value = array('enabled' => 1);
 
             $data = array(
                 'wechat_id'    => $account['id'],
-                'option_name'  => 'pay_wxpay_merchant',
+                'option_name'  => 'pay_wxpay_weapp',
                 'option_type'  => 'serialize',
                 'option_value' => serialize($option_value)
             );
@@ -220,7 +220,7 @@ class platform_wechat_pay extends ecjia_platform
             $data = array(
                 'option_value' => serialize($option_value)
             );
-            RC_DB::table('wechat_options')->where('wechat_id', $account['id'])->where('option_name', 'pay_wxpay_merchant')->update($data);
+            RC_DB::table('wechat_options')->where('wechat_id', $account['id'])->where('option_name', 'pay_wxpay_weapp')->update($data);
         }
 
         return $this->showmessage(__('开启成功', 'weapp'), ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_SUCCESS, array('pjaxurl' => RC_Uri::url('weapp/platform_wechat_pay/init')));
@@ -232,7 +232,7 @@ class platform_wechat_pay extends ecjia_platform
 
         $account = $this->platformAccount->getAccount(true);
 
-        $result = RC_DB::table('wechat_options')->where('wechat_id', $account['id'])->where('option_name', 'pay_wxpay_merchant')->first();
+        $result = RC_DB::table('wechat_options')->where('wechat_id', $account['id'])->where('option_name', 'pay_wxpay_weapp')->first();
 
         $option_value = unserialize($result['option_value']);
 
@@ -241,7 +241,7 @@ class platform_wechat_pay extends ecjia_platform
         $data = array(
             'option_value' => serialize($option_value)
         );
-        RC_DB::table('wechat_options')->where('wechat_id', $account['id'])->where('option_name', 'pay_wxpay_merchant')->update($data);
+        RC_DB::table('wechat_options')->where('wechat_id', $account['id'])->where('option_name', 'pay_wxpay_weapp')->update($data);
 
         return $this->showmessage(__('关闭成功', 'weapp'), ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_SUCCESS, array('pjaxurl' => RC_Uri::url('weapp/platform_wechat_pay/init')));
     }
@@ -254,7 +254,7 @@ class platform_wechat_pay extends ecjia_platform
 
         $account = $this->platformAccount->getAccount(true);
 
-        $result = RC_DB::table('wechat_options')->where('wechat_id', $account['id'])->where('option_name', 'pay_wxpay_merchant')->first();
+        $result = RC_DB::table('wechat_options')->where('wechat_id', $account['id'])->where('option_name', 'pay_wxpay_weapp')->first();
 
         $option_value = unserialize($result['option_value']);
 
@@ -268,7 +268,7 @@ class platform_wechat_pay extends ecjia_platform
         $data = array(
             'option_value' => serialize($option_value)
         );
-        RC_DB::table('wechat_options')->where('wechat_id', $account['id'])->where('option_name', 'pay_wxpay_merchant')->update($data);
+        RC_DB::table('wechat_options')->where('wechat_id', $account['id'])->where('option_name', 'pay_wxpay_weapp')->update($data);
 
         return $this->showmessage(__('删除成功', 'weapp'), ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_SUCCESS, array('pjaxurl' => RC_Uri::url('weapp/platform_wechat_pay/init')));
     }
