@@ -320,7 +320,7 @@ class platform_material extends ecjia_platform
             $parent_id = $id;
         }
         if (!empty($article['file'])) {
-            $article['file'] = RC_Upload::upload_url($article['file']);
+            $article['file'] = RC_Upload::local_upload_url($article['file']);
         }
 
         ecjia_platform_screen::get_current_screen()->add_nav_here(new admin_nav_here(__('素材管理', 'weapp'), RC_Uri::url('weapp/platform_material/init', array('type' => 'news', 'material' => 1))));
@@ -337,7 +337,7 @@ class platform_material extends ecjia_platform
         $this->assign('wechat_type', $wechat_type);
 
         $media_data             = RC_DB::table('wechat_media')->where('wechat_id', $wechat_id)->where('id', $parent_id)->first();
-        $media_data['file']     = !empty($media_data['file']) ? RC_Upload::upload_url($media_data['file']) : RC_Uri::admin_url('statics/images/nopic.png');
+        $media_data['file']     = !empty($media_data['file']) ? RC_Upload::local_upload_url($media_data['file']) : RC_Uri::admin_url('statics/images/nopic.png');
         $article['articles'][0] = $media_data;
 
         $db_wechat_media = RC_DB::table('wechat_media')->where('wechat_id', $wechat_id);
@@ -347,7 +347,7 @@ class platform_material extends ecjia_platform
             foreach ($data as $k => $v) {
                 $article['articles'][$k + 1] = $v;
                 if (!empty($v['file'])) {
-                    $article['articles'][$k + 1]['file'] = RC_Upload::upload_url($v['file']);
+                    $article['articles'][$k + 1]['file'] = RC_Upload::local_upload_url($v['file']);
                 }
             }
         }
@@ -1396,7 +1396,7 @@ class platform_material extends ecjia_platform
         } else {
             foreach ($arr as $key => $item) {
                 if (!empty($item['file'])) {
-                    $arr[$key]['file'] = RC_Upload::upload_url($item['file']);
+                    $arr[$key]['file'] = RC_Upload::local_upload_url($item['file']);
                 }
             }
         }
@@ -1429,12 +1429,12 @@ class platform_material extends ecjia_platform
             } else {
                 if ($item->type == 'voice') {
                     $item->thumb = RC_App::apps_url('statics/images/voice.png', __FILE__);
-                    $item->file  = RC_Upload::upload_url($item->file);
+                    $item->file  = RC_Upload::local_upload_url($item->file);
                 } elseif ($item->type == 'video') {
                     $item->thumb = RC_App::apps_url('statics/images/video.png', __FILE__);
-                    $item->file  = RC_Upload::upload_url($item->file);
+                    $item->file  = RC_Upload::local_upload_url($item->file);
                 } else {
-                    $item->file = RC_Upload::upload_url($item->file);
+                    $item->file = RC_Upload::local_upload_url($item->file);
                 }
             }
             $content = !empty($item->digest) ? strip_tags(Ecjia\App\Weapp\Helper::html_out($item->digest)) : strip_tags(Ecjia\App\Weapp\Helper::html_out($item->content));
@@ -1451,7 +1451,7 @@ class platform_material extends ecjia_platform
                         if (empty($item->file)) {
                             $item->file = RC_Uri::admin_url('statics/images/nopic.png');
                         } else {
-                            $item->file = RC_Upload::upload_url($item->file);
+                            $item->file = RC_Upload::local_upload_url($item->file);
                         }
                         return [
                             'id'        => $item->id,
@@ -1501,7 +1501,7 @@ class platform_material extends ecjia_platform
                 $info['file'] = RC_App::apps_url('statics/images/video.png', __FILE__);
             }
         } else {
-            $info['file'] = RC_Upload::upload_url($info['file']);
+            $info['file'] = RC_Upload::local_upload_url($info['file']);
         }
         $info['href'] = RC_Uri::url('weapp/platform_material/remove_file', array('id' => $id));
         return $this->showmessage('', ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_SUCCESS, array('content' => $info));
@@ -1566,16 +1566,16 @@ class platform_material extends ecjia_platform
                 if ($item->type == 'voice') {
 
                     $item->thumb = RC_App::apps_url('statics/images/voice.png', __FILE__);
-                    $item->file  = RC_Upload::upload_url($item->file);
+                    $item->file  = RC_Upload::local_upload_url($item->file);
 
                 } elseif ($item->type == 'video') {
 
                     $item->thumb = RC_App::apps_url('statics/images/video.png', __FILE__);
-                    $item->file  = RC_Upload::upload_url($item->file);
+                    $item->file  = RC_Upload::local_upload_url($item->file);
 
                 } else {
 
-                    $item->file = RC_Upload::upload_url($item->file);
+                    $item->file = RC_Upload::local_upload_url($item->file);
 
                 }
 
@@ -1597,7 +1597,7 @@ class platform_material extends ecjia_platform
                         if (empty($item->file)) {
                             $item->file = RC_Uri::admin_url('statics/images/nopic.png');
                         } else {
-                            $item->file = RC_Upload::upload_url($item->file);
+                            $item->file = RC_Upload::local_upload_url($item->file);
                         }
                         return [
                             'id'        => $item->id,
@@ -1645,7 +1645,7 @@ class platform_material extends ecjia_platform
 
         if (count($images) > 0) {
             foreach ($images as $img) {
-                if (strpos($img, RC_Upload::upload_url()) !== false) {
+                if (strpos($img, RC_Upload::local_upload_url()) !== false) {
 
                     $filename = str_replace(RC_Upload::local_upload_url(), rtrim(RC_Upload::local_upload_path(), '/'), $img);
                     $rs       = $wechat->material->uploadArticleImage($filename);
