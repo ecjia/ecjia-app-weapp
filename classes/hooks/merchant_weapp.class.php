@@ -52,7 +52,7 @@ class weapp_merchant_hooks
     {
         //在父级菜单里添加权限值
         $menus->add_purview('weapp_manage');
-        $menu = ecjia_merchant::make_admin_menu('09_merchant_weapp', __('微信小程序', 'weapp'), RC_Uri::url('weapp/merchant/init'), 9)->add_purview('weapp_manage')->add_icon('fa-navicon');
+        $menu = ecjia_merchant::make_admin_menu('12_merchant_weapp', __('微信小程序', 'weapp'), RC_Uri::url('weapp/merchant/init'), 12)->add_purview('weapp_manage')->add_icon('fa-navicon');
 
         $menus->add_submenu($menu);
         return $menus;
